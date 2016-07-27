@@ -1,0 +1,60 @@
+﻿<div class="container">
+    <h2>Please update menu file!</h2>
+
+    <div class="form-group">
+        <label class="btn btn-default btn-file">
+            Browse...<input type="file" style="display: none;" (change)="onChange($event.srcElement.files)" />
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="startDate">Start date: </label>
+        <input id="startDate" type="date" [(ngModel)]="startDate" />
+    </div>
+</div>
+
+<div class="container" *ngIf='loadedMenus.length'>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Header</th>
+                <th>salad</th>
+                <th>soup</th>
+                <th>mainCourse</th>
+                <th>drink</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let value of loadedMenus'>
+                <td>
+                    <label>{{value.header}}</label>
+                </td>
+                <td>
+                    <div class="list-group">
+                        <label *ngFor='let value of value.salad' class="list-group-item">{{value}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="list-group">
+                        <label *ngFor='let value of value.soup' class="list-group-item">{{value}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="list-group">
+                        <label *ngFor='let value of value.mainCourse' class="list-group-item">{{value}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="list-group">
+                        <label *ngFor='let value of value.drink' class="list-group-item">{{value}}</label>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<footer class="footer">
+    <a class="btn  btn-default" href="/api/files/offlineClient">Download offline parser for Windows</a>
+</footer>
