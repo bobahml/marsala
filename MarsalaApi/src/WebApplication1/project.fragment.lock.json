@@ -5,14 +5,14 @@
       "type": "project",
       "framework": ".NETFramework,Version=v4.5",
       "compile": {
-        "bin/Release/Common.dll": {}
+        "bin/Debug/Common.dll": {}
       },
       "runtime": {
         "../../packages/DocX.1.0.0.22/lib/net40/DocX.dll": {},
-        "bin/Release/Common.dll": {}
+        "bin/Debug/Common.dll": {}
       },
       "contentFiles": {
-        "bin/Release/Common.pdb": {
+        "bin/Debug/Common.pdb": {
           "buildAction": "None",
           "codeLanguage": "any",
           "copyToOutput": true
