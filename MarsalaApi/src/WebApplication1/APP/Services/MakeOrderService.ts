@@ -5,7 +5,7 @@ import { Http, Headers, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/toPromise";
 
-
+import { SETTINGS } from "../shared/settings";
 import {IDailyMenu} from "../Models/dailyMenu";
 import {IOrder, ISummary} from "../Models/order";
 
@@ -19,16 +19,16 @@ export class MakeOrderService {
         this.http = http;
     }
 
-    getTodayMenu(): Promise<IDailyMenu>{
-        return this.get<IDailyMenu>("api/DailyMenu");
+    getTodayMenu(): Promise<IDailyMenu> {
+        return this.get<IDailyMenu>(`${SETTINGS.apiUrl}DailyMenu`);
     }
 
-    getTodaySummary(): Promise<ISummary>{
-        return this.get<ISummary>("api/order/summary");
+    getTodaySummary(): Promise<ISummary> {
+        return this.get<ISummary>(`${SETTINGS.apiUrl}order/summary`);
     }
 
-    removeOrder(userName: string): Promise<ISummary>{
-        return this.delete<ISummary>("api/order/" + userName);
+    removeOrder(userName: string): Promise<ISummary> {
+        return this.delete<ISummary>(`${SETTINGS.apiUrl}order/${userName}`);
     }
 
     makeAnOrder(order: IOrder): Promise<IOrder> {
@@ -36,7 +36,7 @@ export class MakeOrderService {
         var body = JSON.stringify(order);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        
+
         return this.http.post("api/order", body, options)
             .toPromise()
             .then(res => res.json())
@@ -47,7 +47,7 @@ export class MakeOrderService {
 
 
     }
-    
+
 	private delete<T>(url: string): Promise<T> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });

@@ -15,6 +15,7 @@ namespace WebApplication1
         {
 			// Add framework services.
 			services.AddMvc();
+	        services.AddSignalR();
 
 			services.AddLogging();
 
@@ -43,6 +44,8 @@ namespace WebApplication1
 					name: "default",
 					template: "{controller}/{action}/{id?}");
 			});
+
+	        app.UseSignalR("/signalr");
 
         }
 

@@ -7,6 +7,8 @@
         'angular2-in-memory-web-api': 'libs/angular2-in-memory-web-api',
         '@angular': 'libs/@angular',
         'angular2-cookie': 'libs/angular2-cookie',
+        "signalR": "libs/signalr",
+        "jquery": "libs/jquery/dist"
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
@@ -15,6 +17,8 @@
         'rxjs': { defaultExtension: 'js' },
         'angular2-in-memory-web-api': { defaultExtension: 'js' },
         'angular2-cookie': { main: 'core.js', defaultExtension: 'js' },
+        'jquery': { main: 'jquery.js', defaultExtension: 'js' },
+        'signalR': { main: 'jquery.signalR.js', defaultExtension: 'js' },
     };
 
     var packageNames = [
