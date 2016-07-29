@@ -8,7 +8,8 @@
         '@angular': 'libs/@angular',
         'angular2-cookie': 'libs/angular2-cookie',
         "signalR": "libs/signalr",
-        "jquery": "libs/jquery/dist"
+        "jquery": "libs/jquery/dist",
+        "ng2-notifications": "libs/ng2-notifications"
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
@@ -19,6 +20,7 @@
         'angular2-cookie': { main: 'core.js', defaultExtension: 'js' },
         'jquery': { main: 'jquery.js', defaultExtension: 'js' },
         'signalR': { main: 'jquery.signalR.js', defaultExtension: 'js' },
+        'ng2-notifications': { main: 'ng2-notifications.js', defaultExtension: 'js' }
     };
 
     var packageNames = [
@@ -31,7 +33,7 @@
       '@angular/router',
       '@angular/router-deprecated',
       '@angular/testing',
-      '@angular/upgrade'
+      '@angular/upgrade',
     ];
 
     // add package entries for angular packages in the form '@angular/common': { main: 'index.js', defaultExtension: 'js' }

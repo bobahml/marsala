@@ -22,6 +22,7 @@ namespace WebApplication1
             services.AddSingleton<IFileParser, FileParser>();
             services.AddSingleton<IMenuService, MenuService>();
             services.AddSingleton<IOrderService, OrderService>();
+            services.AddSingleton<IClientInterationService, ClientInterationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

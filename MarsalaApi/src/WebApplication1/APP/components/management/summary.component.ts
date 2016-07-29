@@ -3,13 +3,13 @@ import {MakeOrderService} from "../../Services/MakeOrderService";
 import {IOrder, ISummary, Summary} from "../../Models/order";
 import {Collapse} from "../../Directives/collapse";
 import { SignalRService } from "../../Services/SignalRService";
-
+import { PushNotificationComponent } from "ng2-notifications/ng2-notifications";
 
 @Component({
     selector: "summary",
     templateUrl: "./app/components/management/summary.component.html",
     styleUrls: [ "./app/components/management/summary.component.css"],
-	directives: [Collapse],
+	directives: [Collapse, PushNotificationComponent],
     providers: [MakeOrderService]
 })
 
@@ -24,6 +24,7 @@ export class SummaryComponent implements OnInit {
 
 
     ngOnInit() {
+	    this.subscribeToEvents();
         this.reloadSummary();
     }
 
@@ -59,6 +60,13 @@ export class SummaryComponent implements OnInit {
 	}
 
 
+	notification: any = {
+		show: false,
+		title: "",
+		body: ""
+	}
+
+
 	connectionEstablished: boolean;
 
     private subscribeToEvents(): void {
@@ -66,8 +74,10 @@ export class SummaryComponent implements OnInit {
             this.connectionEstablished = true;
         });
 
-        this.signalRService.orderUpdated.subscribe((message: IOrder) => {
-            console.log(message);
+        this.signalRService.orderUpdated.subscribe((user: IOrder) => {
+			this.notification.title = "New order is received";
+			this.notification.body = `User ${user.userName} make an order.`;
+			this.notification.show = true;
         });
     }
 

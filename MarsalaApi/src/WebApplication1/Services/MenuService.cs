@@ -16,11 +16,13 @@ namespace WebApplication1.Services
 
 	public class MenuService : IMenuService
 	{
+		private readonly IClientInterationService _clientInterationService;
 		private readonly Dictionary<string, DailyMenu> _menus;
 		private const string DateFormat = "yyyy-MM-dd";
 
-		public MenuService()
+		public MenuService(IClientInterationService clientInterationService)
 		{
+			_clientInterationService = clientInterationService;
 			_menus = new Dictionary<string, DailyMenu>();
 		}
 
@@ -41,6 +43,11 @@ namespace WebApplication1.Services
 
 				_menus.Add(startDate.ToString(DateFormat), m);
 				startDate = startDate.AddDays(1);
+			}
+
+			if (actualMenu.Any())
+			{
+				_clientInterationService.NotifyAllAboutNewMenu();
 			}
 		}
 

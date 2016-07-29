@@ -9,17 +9,20 @@ namespace WebApplication1.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderService _orderSerevice;
+	    private readonly IClientInterationService _clientInterationService;
 
-        public OrderController(IOrderService orderSerevice)
-        {
-            _orderSerevice = orderSerevice;
-        }
+	    public OrderController(IOrderService orderSerevice, IClientInterationService clientInterationService )
+	    {
+		    _orderSerevice = orderSerevice;
+		    _clientInterationService = clientInterationService;
+	    }
 
-        [HttpPost]
+	    [HttpPost]
         public Order PostOrder([FromBody]Order order)
         {
             _orderSerevice.MakeAnOrder(order);
-            return order;
+			_clientInterationService.NewOrderAdded(order);
+			return order;
         }
 
 		[HttpDelete]

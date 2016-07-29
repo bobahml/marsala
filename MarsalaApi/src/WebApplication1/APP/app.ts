@@ -1,4 +1,4 @@
-﻿import {Component} from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { HTTP_PROVIDERS } from "@angular/http";
 
@@ -12,8 +12,8 @@ import { SummaryComponent } from "./components/management/summary.component";
     templateUrl: './app/app.html',
     directives: [ROUTER_DIRECTIVES],
     providers: [HTTP_PROVIDERS],
-    precompile: [MakeAnOrderComponent, AddDailyMenuComponent, SummaryComponent] 
+    precompile: [MakeAnOrderComponent, AddDailyMenuComponent, SummaryComponent]
 })
 
 
-export class AppComponent {}
+export class AppComponent { }
