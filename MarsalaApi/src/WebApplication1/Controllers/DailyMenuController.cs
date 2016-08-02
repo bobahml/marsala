@@ -1,5 +1,4 @@
 ﻿using Common.Model;
-using CommonLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Services;
 

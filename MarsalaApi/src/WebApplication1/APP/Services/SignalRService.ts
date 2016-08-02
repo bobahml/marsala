@@ -51,8 +51,7 @@ export class SignalRService {
         });
 
         this.proxy.on("OrderUpdated", (data: IOrder) => {
-			console.log(data);
-            this.foodchanged.emit("this could be data");
+            this.orderUpdated.emit(data);
         });
 
 

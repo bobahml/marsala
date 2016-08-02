@@ -1,10 +1,10 @@
-﻿import { Component, Input} from '@angular/core';
-import {Product} from '../../Models/product';
+﻿import { Component, Input} from "@angular/core";
+import {Product} from "../../Models/product";
 
 
 @Component({
-    selector: 'collection-selector',
-    templateUrl: './app/components/makeAnOrder/productSelector.component.html',
+    selector: "collection-selector",
+    templateUrl: "./app/components/makeAnOrder/productSelector.component.html"
 })
 
 export class CollectionSelectorComponent  {

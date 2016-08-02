@@ -1,21 +1,19 @@
 ﻿export interface IOrder {
+    UserName: string; 
 
-    userName: string; 
-
-    salad: string;
-    soup: string;
-    mainCourse: string;
-    drink: string;
+    Salad: string;
+    Soup: string;
+    MainCourse: string;
+    Drink: string;
 }
 
 export class Order implements IOrder {
+    UserName: string;
 
-    userName: string;
-
-    salad: string;
-    soup: string;
-    mainCourse: string;
-    drink: string;
+    Salad: string;
+    Soup: string;
+    MainCourse: string;
+    Drink: string;
 }
 
 
