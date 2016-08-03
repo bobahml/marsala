@@ -17,8 +17,14 @@ namespace WebApplication1.Services
 
 	public class OrderService : IOrderService
 	{
+		private readonly IClientInterationService _clientInterationService;
 		private DateTime _orderDate = DateTime.Now.Date;
 		private readonly ConcurrentDictionary<string, Order> _orders = new ConcurrentDictionary<string, Order>();
+
+		public OrderService(IClientInterationService clientInterationService)
+		{
+			_clientInterationService = clientInterationService;
+		}
 
 		public void MakeAnOrder(Order order)
 		{
@@ -27,8 +33,9 @@ namespace WebApplication1.Services
 				_orderDate = DateTime.Now.Date;
 				_orders.Clear();
 			}
-
 			_orders[order.UserName] = order;
+
+			_clientInterationService.NotifyOrderUpdated(order);
 		}
 
 		public Summary GetSummary()
@@ -55,6 +62,17 @@ namespace WebApplication1.Services
 
 			return total;
 		}
+
+		public Summary DeleteOrder(string userName)
+		{
+			Order o;
+			_orders.TryRemove(userName, out o);
+			var summary =  GetSummary();
+
+			_clientInterationService.NotifyOrderUpdated(new Order() { UserName = userName });
+			return summary;
+		}
+
 
 		private static void BindOrderText(Summary total)
 		{
@@ -84,13 +102,6 @@ namespace WebApplication1.Services
 			sb.AppendLine("Спасибо!");
 
 			total.OrderText = sb.ToString();
-		}
-
-		public Summary DeleteOrder(string userName)
-		{
-			Order o;
-			_orders.TryRemove(userName, out o);
-			return GetSummary();
 		}
 
 		private static void UpdateAggregation(string name, ICollection<Course> dic)
