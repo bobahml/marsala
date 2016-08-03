@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using Common.Model;
-using Microsoft.AspNetCore.SignalR;
+﻿using Common.Model;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
 using WebApplication1.Hubs;
 
@@ -8,11 +6,11 @@ namespace WebApplication1.Services
 {
 	public interface IClientInterationService
 	{
-		void NotifyAllAboutNewMenu();
-		void NewOrderAdded(Order order);
+		void NotifyFoodUpdated();
+		void NotifyOrderUpdated(Order order);
 	}
 
-	class ClientInterationService : IClientInterationService
+	internal class ClientInterationService : IClientInterationService
 	{
 		private readonly IConnectionManager _connectionManager;
 
@@ -22,14 +20,14 @@ namespace WebApplication1.Services
 		}
 
 
-		public void NotifyAllAboutNewMenu()
+		public void NotifyFoodUpdated()
 		{
 			var ctx = _connectionManager.GetHubContext<MessagesHub>();
 
 			ctx.Clients.All.FoodUpdated();
 		}
 
-		public void NewOrderAdded(Order order)
+		public void NotifyOrderUpdated(Order order)
 		{
 			var ctx = _connectionManager.GetHubContext<MessagesHub>();
 

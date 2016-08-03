@@ -47,7 +47,7 @@ namespace WebApplication1.Services
 
 			if (actualMenu.Any())
 			{
-				_clientInterationService.NotifyAllAboutNewMenu();
+				_clientInterationService.NotifyFoodUpdated();
 			}
 		}
 

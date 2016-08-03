@@ -41,11 +41,11 @@ export class PushNotificationComponent implements OnInit, OnChanges, OnDestroy {
     @Output("error") onError: EventEmitter<any> = new EventEmitter();
     @Output("action") onClick: EventEmitter<any> = new EventEmitter();
 
-    checkCompatibility() {
+    checkCompatibility() : boolean {
         return ("Notification" in window);
     }
 
-    isPermissionGranted(permission) {
+    isPermissionGranted(permission): boolean  {
         return permission === "granted";
     }
 

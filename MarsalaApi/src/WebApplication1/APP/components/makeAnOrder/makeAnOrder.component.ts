@@ -1,29 +1,25 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import {CookieService} from "angular2-cookie/core";
+import { CookieService} from "angular2-cookie/core";
 
-import {MakeOrderService} from "../../Services/MakeOrderService";
-import {IDailyMenu} from "../../Models/dailyMenu";
-import {IOrder, Order} from "../../Models/order";
-import {Product} from "../../Models/product";
+import { MakeOrderService } from "../../Services/MakeOrderService";
+import { IDailyMenu } from "../../Models/dailyMenu";
+import { IOrder, Order } from "../../Models/order";
+import { Product } from "../../Models/product";
 
 import {CollectionSelectorComponent} from "./productSelector.component";
-import { SignalRService } from "../../Services/SignalRService";
-
-
 
 @Component({
     selector: "make-order",
     templateUrl: "./app/components/makeAnOrder/makeAnOrder.component.html",
     directives: [CollectionSelectorComponent],
-    providers: [MakeOrderService, CookieService, SignalRService]
+    providers: [MakeOrderService, CookieService]
 })
 export class MakeAnOrderComponent implements OnInit {
 
     constructor(
         private makeOrderService: MakeOrderService,
         private cookieService: CookieService,
-		private signalRService: SignalRService,
         private router: Router
     ) {
     }
@@ -87,10 +83,4 @@ export class MakeAnOrderComponent implements OnInit {
             .catch(error => this.header = error.messsage || error);
     }
 
-	private subscribeToEvents(): void {
-
-		this.signalRService.foodchanged.subscribe((d: any) =>  this.getDailyMenu());
-
-		//TODO Notify
-    }
 }
