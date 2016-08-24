@@ -7,12 +7,14 @@ import { IDailyMenu } from "../../Models/dailyMenu";
 import { IOrder, Order } from "../../Models/order";
 import { Product } from "../../Models/product";
 
-import {CollectionSelectorComponent} from "./productSelector.component";
+import { CollectionSelectorComponent } from "./productSelector.component";
+import { MultiselectDropdown  } from "./multiProductSelector.component";
+
 
 @Component({
     selector: "make-order",
     templateUrl: "./app/components/makeAnOrder/makeAnOrder.component.html",
-    directives: [CollectionSelectorComponent],
+    directives: [CollectionSelectorComponent, MultiselectDropdown],
     providers: [MakeOrderService, CookieService]
 })
 export class MakeAnOrderComponent implements OnInit {
@@ -32,6 +34,7 @@ export class MakeAnOrderComponent implements OnInit {
     soup: Product = new Product("Soup");
     mainCourse: Product = new Product("MainCourse");
     drink: Product = new Product("Drink");
+    snacks: Product = new Product("Snacks");
 
     ngOnInit() {
         this.userName = this.cookieService.get("userName");
@@ -60,6 +63,7 @@ export class MakeAnOrderComponent implements OnInit {
         order.Soup = this.soup.value;
         order.MainCourse = this.mainCourse.value;
         order.Drink = this.drink.value;
+	    order.Snacks = this.snacks.values;
 
         this.makeOrderService.makeAnOrder(order)
             .then(o => this.router.navigate(["summary"]))
@@ -78,6 +82,7 @@ export class MakeAnOrderComponent implements OnInit {
                     this.soup.setCollection(menu.soup);
                     this.mainCourse.setCollection(menu.mainCourse);
                     this.drink.setCollection(menu.drink);
+					this.snacks.setCollection(menu.snacks);
                 }
             })
             .catch(error => this.header = error.messsage || error);

@@ -5,6 +5,7 @@
     Soup: string;
     MainCourse: string;
     Drink: string;
+	Snacks: string[];
 }
 
 export class Order implements IOrder {
@@ -14,6 +15,7 @@ export class Order implements IOrder {
     Soup: string;
     MainCourse: string;
     Drink: string;
+	Snacks: string[] = [];
 }
 
 
@@ -30,6 +32,7 @@ export interface ISummary {
     Soup: ICourse[];
     MainCourse: ICourse[];
     Drink: ICourse[];
+	Snacks: ICourse[];
 }
 
 export class Summary {
@@ -39,4 +42,5 @@ export class Summary {
     Soup: ICourse[] = [];
     MainCourse: ICourse[] = [];
     Drink: ICourse[] = [];
+	Snacks: ICourse[] = [];
 }

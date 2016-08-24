@@ -19,6 +19,7 @@
                     <th>Soup</th>
                     <th>MainCourse</th>
                     <th>Drink</th>
+                    <th>Snacks</th>
                     <th>Remove</th>
                 </tr>
                 </thead>
@@ -29,6 +30,7 @@
                     <td>{{value.soup}}</td>
                     <td>{{value.mainCourse}}</td>
                     <td>{{value.drink}}</td>
+                    <td>{{value.snacks}}</td>
                     <td><button class="btn btn-sm" (click)="removeOrder(value.userName)"><i class="glyphicon glyphicon-remove"></i></button></td>
                 </tr>
                 </tbody>
@@ -53,6 +55,12 @@
                     <li class="list-group-item">{{value.name}} : {{value.count}}</li>
                 </ul>
                 <ul class="list-group" *ngFor='let value of summary.drink'>
+                    <li class="list-group-item">{{value.name}} : {{value.count}}</li>
+                </ul>
+                <ul class="list-group" *ngFor='let value of summary.drink'>
+                    <li class="list-group-item">{{value.name}} : {{value.count}}</li>
+                </ul> 
+                <ul class="list-group" *ngFor='let value of summary.snacks'>
                     <li class="list-group-item">{{value.name}} : {{value.count}}</li>
                 </ul>
             </div>

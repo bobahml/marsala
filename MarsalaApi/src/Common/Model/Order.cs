@@ -1,4 +1,6 @@
-﻿namespace Common.Model
+﻿using System.Collections.Generic;
+
+namespace Common.Model
 {
     public class Order
     {
@@ -7,5 +9,6 @@
         public string Soup { get; set; }
         public string MainCourse { get; set; }
         public string Drink { get; set; }
-    }
+		public ICollection<string> Snacks { get; set; }
+	}
 }

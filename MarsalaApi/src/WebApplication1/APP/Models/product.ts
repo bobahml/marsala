@@ -7,10 +7,12 @@
     header: string;
     collection: string[];
     value: string;
+	values: string[];
 
     setCollection(coll: string[]) {
         this.collection = coll;
         this.value = this.firsOrEmpty(this.collection);
+		this.values = [];
     }
 
     private firsOrEmpty(coll: string[]): string {

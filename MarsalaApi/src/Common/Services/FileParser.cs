@@ -194,6 +194,9 @@ namespace Common.Services
 				rows[17].ElementAt(1).Value,
 			};
 
+			//TODO parse from file
+			result.Snacks = Сatalog.GetSnaks();
+
 			return new[] { result };
 		}
 		#endregion private

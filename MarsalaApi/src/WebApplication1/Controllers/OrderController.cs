@@ -8,17 +8,17 @@ namespace WebApplication1.Controllers
 	[Route("api/[controller]")]
 	public class OrderController : Controller
 	{
-		private readonly IOrderService _orderSerevice;
+		private readonly IOrderService _orderService;
 
-		public OrderController(IOrderService orderSerevice)
+		public OrderController(IOrderService orderService)
 		{
-			_orderSerevice = orderSerevice;
+			_orderService = orderService;
 		}
 
 		[HttpPost]
 		public Order PostOrder([FromBody]Order order)
 		{
-			_orderSerevice.MakeAnOrder(order);
+			_orderService.MakeAnOrder(order);
 		
 			return order;
 		}
@@ -27,16 +27,16 @@ namespace WebApplication1.Controllers
 		[Route("{userName}")]
 		public Summary DeleteOrder(string userName)
 		{
-			var summary = _orderSerevice.DeleteOrder(userName);
+			var summary = _orderService.DeleteOrder(userName);
 	
 			return summary;
 		}
 
 		[HttpGet]
 		[Route("summary")]
-		public Summary GetSummary([FromBody]Order order)
+		public Summary GetSummary()
 		{
-			return _orderSerevice.GetSummary();
+			return _orderService.GetSummary();
 		}
 	}
 

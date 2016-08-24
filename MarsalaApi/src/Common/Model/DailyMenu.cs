@@ -9,5 +9,6 @@ namespace Common.Model
 		public ICollection<string> Soup { get; set; }
 		public ICollection<string> MainCourse { get; set; }
 		public ICollection<string> Drink { get; set; }
+		public ICollection<string> Snacks { get; set; }
 	}
 }

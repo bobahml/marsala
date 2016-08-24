@@ -18,7 +18,7 @@
         'angular2-in-memory-web-api': { defaultExtension: 'js' },
         'angular2-cookie': { main: 'core.js', defaultExtension: 'js' },
         'jquery': { main: 'jquery.js', defaultExtension: 'js' },
-        'signalR': { main: 'jquery.signalR.js', defaultExtension: 'js' }
+        'signalR': { main: 'jquery.signalR.js', defaultExtension: 'js' },
     };
 
     var packageNames = [
