@@ -7,7 +7,6 @@ import { Product } from "../../Models/product";
 
 export interface IMultiSelectSettings {
 	pullRight?: boolean;
-	checkedStyle?: "checkboxes" | "glyphicon";
 	buttonClasses?: string;
 	selectionLimit?: number;
 	closeOnSelect?: boolean;
@@ -47,7 +46,9 @@ export class MultiselectDropdown implements OnInit {
             if (target === this.element.nativeElement) {
                 parentFound = true;
             }
-            target = target.parentElement;
+			if (target) {
+				target = target.parentElement; 
+	        }
         }
         if (!parentFound) {
             this.isVisible = false;
@@ -59,7 +60,6 @@ export class MultiselectDropdown implements OnInit {
     private isVisible: boolean = false;
     private defaultSettings: IMultiSelectSettings = {
         pullRight: false,
-        checkedStyle: "checkboxes",
         buttonClasses: "btn btn-default",
         selectionLimit: 0,
         closeOnSelect: false,
@@ -96,7 +96,7 @@ export class MultiselectDropdown implements OnInit {
         return this.product.values.indexOf(option) > -1;
     }
 
-    setSelected(event: Event, option: string) {
+    setSelected(option: string) {
 
         const index = this.product.values.indexOf(option);
         if (index > -1) {

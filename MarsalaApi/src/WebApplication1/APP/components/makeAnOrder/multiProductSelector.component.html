@@ -1,21 +1,27 @@
 ﻿<div class="btn-group">
     <button type="button" class="dropdown-toggle btn" [ngClass]="settings.buttonClasses" (click)="toggleDropdown()">{{title}}&nbsp;<span class="caret"></span></button>
-    <ul *ngIf="isVisible" class="dropdown-menu" [class.pull-right]="settings.pullRight" [style.max-height]="settings.maxHeight" style="display: block; height: auto; overflow-y: auto;">
 
-        <li *ngIf="settings.showUncheckAll && numSelected > 0">
-            <a href="#" role="menuitem" tabindex="-1" (click)="uncheckAll()">
-                <span style="width: 16px;" class="glyphicon glyphicon-remove"></span>
-                {{texts.uncheckAll}}
-            </a>
-        </li>
-        <li *ngIf="settings.showUncheckAll && numSelected > 0" class="divider"></li>
+
+    <ul *ngIf="isVisible && product.collection && product.collection.length > 0" class="dropdown-menu" style="display: block; height: auto; overflow-y: auto;">
 
         <li *ngFor="let option of product.collection">
-            <a href="#" role="menuitem" tabindex="-1" (click)="setSelected($event, option)">
-                <input *ngIf="settings.checkedStyle == 'checkboxes'" type="checkbox" [checked]="isSelected(option)" />
-                <span *ngIf="settings.checkedStyle == 'glyphicon'" style="width: 16px;" class="glyphicon" [class.glyphicon-ok]="isSelected(option)"></span>
-                {{option}}
-            </a>
+            <div class="checkbox">
+                <label class="" (click)="setSelected(option)">
+                    <span style="width: 16px;" class="glyphicon" [class.glyphicon-ok]="isSelected(option)"></span>
+                    {{option}}
+                </label>
+            </div>
+        </li>
+
+        <li *ngIf="settings.showUncheckAll && numSelected > 0" class="divider"></li>
+
+        <li *ngIf="settings.showUncheckAll && numSelected > 0">
+            <div class="checkbox">
+                <label (click)="uncheckAll()">
+                    <span style="width: 16px;" class="glyphicon glyphicon-remove"></span>
+                    {{texts.uncheckAll}}
+                </label>
+            </div>
         </li>
     </ul>
 </div>

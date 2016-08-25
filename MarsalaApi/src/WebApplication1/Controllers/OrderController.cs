@@ -19,7 +19,6 @@ namespace WebApplication1.Controllers
 		public Order PostOrder([FromBody]Order order)
 		{
 			_orderService.MakeAnOrder(order);
-		
 			return order;
 		}
 
@@ -28,7 +27,6 @@ namespace WebApplication1.Controllers
 		public Summary DeleteOrder(string userName)
 		{
 			var summary = _orderService.DeleteOrder(userName);
-	
 			return summary;
 		}
 

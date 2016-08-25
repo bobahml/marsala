@@ -1,12 +1,11 @@
-﻿import { provideRouter, RouterConfig } from "@angular/router";
+﻿import { Routes, ExtraOptions, RouterModule } from "@angular/router";
 
 import { MakeAnOrderComponent } from "./components/makeAnOrder/makeAnOrder.component";
 import { AddDailyMenuComponent } from "./components/management/addDailyMenu.component";
 import { SummaryComponent } from "./components/management/summary.component";
 
 
-
-const routes: RouterConfig = [
+export const appRoutes: Routes = [
     { path: "makeAnOrder", component: MakeAnOrderComponent },
     { path: "management", component: AddDailyMenuComponent },
     { path: "summary", component: SummaryComponent },
@@ -14,6 +13,16 @@ const routes: RouterConfig = [
     { path: "", component: MakeAnOrderComponent }
 ];
 
-export const appRouterProviders = [
-    provideRouter(routes)
+export const routeConfig: ExtraOptions = {
+	enableTracing: false,
+	useHash: true
+};
+
+
+export const appRoutingProviders: any[] = [
+
 ];
+
+
+export const routing = RouterModule.forRoot(appRoutes, routeConfig);
+

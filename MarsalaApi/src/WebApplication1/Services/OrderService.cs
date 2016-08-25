@@ -75,11 +75,12 @@ namespace WebApplication1.Services
 		public Summary DeleteOrder(string userName)
 		{
 			Order o;
-			_orders.TryRemove(userName, out o);
-			var summary =  GetSummary();
-
-			_clientInterationService.NotifyOrderUpdated(new Order { UserName = userName });
-			return summary;
+			if (_orders.TryRemove(userName, out o))
+			{
+				_clientInterationService.NotifyOrderUpdated(new Order { UserName = userName });
+			}
+			
+			return GetSummary();
 		}
 
 

@@ -52,12 +52,11 @@ export class MakeAnOrderComponent implements OnInit {
 
     makeAnOrder() {
 
-        var expires = new Date();
-        expires.setDate(new Date().getDate() + 10);
+		this.userName = this.userName.replace(/[^A-ZА-Я0-9 ]/gi, "").trim();
 
-        this.cookieService.put("userName", this.userName, { expires: expires });
+		this.saveUserName(this.userName);
 
-        var order = new Order();
+        const order = new Order();
         order.UserName = this.userName ? this.userName : "Unknown";
         order.Salad = this.salad.value;
         order.Soup = this.soup.value;
@@ -70,6 +69,17 @@ export class MakeAnOrderComponent implements OnInit {
             .catch(error => this.header = error.messsage || error);
 
     }
+
+
+	private saveUserName(userName: string) {
+
+		if (userName) {
+			const expires = new Date();
+			expires.setDate(new Date().getDate() + 10);
+			this.cookieService.put("userName", userName, { expires: expires });
+		}
+
+	}
 
     private getDailyMenu() {
 

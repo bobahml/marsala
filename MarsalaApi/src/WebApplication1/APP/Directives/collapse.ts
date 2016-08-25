@@ -1,4 +1,4 @@
-﻿import { Directive, ElementRef } from '@angular/core';
+﻿import { Directive, ElementRef } from "@angular/core";
 
 @Directive({
 	selector: "[collapse]",
@@ -15,7 +15,6 @@
 	}
 })
 export class Collapse {
-	public test: any = "wtf";
 	// style
 	private height: string;
 	// classes

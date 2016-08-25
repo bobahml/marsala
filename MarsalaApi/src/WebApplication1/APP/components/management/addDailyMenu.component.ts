@@ -1,12 +1,12 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit  } from "@angular/core";
 
-import {FileUploadService} from '../../Services/FileUploadService';
-import {IDailyMenu} from '../../Models/dailyMenu';
+import {FileUploadService} from "../../Services/FileUploadService";
+import {IDailyMenu} from "../../Models/dailyMenu";
 
 
 @Component({
-    selector: 'add-dailyMenu',
-    templateUrl: './app/components/management/addDailyMenu.component.html',
+    selector: "add-dailyMenu",
+    templateUrl: "./app/components/management/addDailyMenu.component.html",
     providers: [FileUploadService]
 })
 
@@ -22,14 +22,20 @@ export class AddDailyMenuComponent implements OnInit  {
         this.startDate = this.dateToString(new Date());
     }
 
-    onChange(fileList: FileList) {
+    onChange(event: any) {
+
+		const target = event.target || event.srcElement;
+
+		const fileList: FileList = target.files;
+
+
         if (fileList == null || fileList.length !== 1) {
             return;
         }
 
-        var startDay = this.startDate && this.startDate.length > 0 ? this.startDate : this.dateToString(new Date());
+        const startDay = this.startDate && this.startDate.length > 0 ? this.startDate : this.dateToString(new Date());
 
-	    this.fileUploadService.upload<IDailyMenu[]>("/api/Parsing/upload?date=" + startDay, [fileList.item(0)])
+	    this.fileUploadService.upload<IDailyMenu[]>(`/api/Parsing/upload?date=${startDay}`, [fileList.item(0)])
 		    .then(data =>{
 				this.loadedMenus.length = 0;
 				data.forEach(v => this.loadedMenus.push(v));

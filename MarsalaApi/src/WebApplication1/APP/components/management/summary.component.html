@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div role="form" *ngIf="summary.orders.length>0">
+    <div role="form" *ngIf='summary.orders.length'>
 
         <div class="form-group">
             <label>Total orders: {{summary.orders.length}}</label>
@@ -76,7 +76,7 @@
                 <div class="row">
                     <button class="btn btn-primary" title="Copy order to clipboard!"
                             (click)="copyToClipboard(orderInput)">
-                        <span class="glyphicon glyphicon-copy" aria-hidden="true"></span> Copy to clipboard!
+                        <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>&nbsp;Copy to clipboard!
                     </button>
                 </div>
 
