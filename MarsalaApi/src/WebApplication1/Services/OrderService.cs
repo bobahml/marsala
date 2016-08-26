@@ -47,6 +47,7 @@ namespace WebApplication1.Services
 				Soup = new List<Course>(),
 				MainCourse = new List<Course>(),
 				Drink = new List<Course>(),
+				Snacks = new List<Course>(),
 				OrderText = string.Empty
 			};
 
@@ -56,6 +57,14 @@ namespace WebApplication1.Services
 				UpdateAggregation(order.Soup, total.Soup);
 				UpdateAggregation(order.MainCourse, total.MainCourse);
 				UpdateAggregation(order.Drink, total.Drink);
+
+				if (order.Snacks!= null)
+				{
+					foreach (var snack in order.Snacks)
+					{
+						UpdateAggregation(snack, total.Snacks);
+					}
+				}
 			}
 
 			BindOrderText(total);
@@ -66,11 +75,12 @@ namespace WebApplication1.Services
 		public Summary DeleteOrder(string userName)
 		{
 			Order o;
-			_orders.TryRemove(userName, out o);
-			var summary =  GetSummary();
-
-			_clientInterationService.NotifyOrderUpdated(new Order() { UserName = userName });
-			return summary;
+			if (_orders.TryRemove(userName, out o))
+			{
+				_clientInterationService.NotifyOrderUpdated(new Order { UserName = userName });
+			}
+			
+			return GetSummary();
 		}
 
 
@@ -96,6 +106,11 @@ namespace WebApplication1.Services
 
 
 			foreach (var course in total.Drink)
+				sb.AppendLine($"{course.Name} ({course.Count})");
+			sb.AppendLine();
+
+
+			foreach (var course in total.Snacks)
 				sb.AppendLine($"{course.Name} ({course.Count})");
 			sb.AppendLine();
 

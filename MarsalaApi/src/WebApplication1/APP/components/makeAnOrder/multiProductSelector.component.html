@@ -1,0 +1,27 @@
+﻿<div class="btn-group">
+    <button type="button" class="dropdown-toggle btn" [ngClass]="settings.buttonClasses" (click)="toggleDropdown()">{{title}}&nbsp;<span class="caret"></span></button>
+
+
+    <ul *ngIf="isVisible && product.collection && product.collection.length > 0" class="dropdown-menu" style="display: block; height: auto; overflow-y: auto;">
+
+        <li *ngFor="let option of product.collection">
+            <div class="checkbox">
+                <label class="" (click)="setSelected(option)">
+                    <span style="width: 16px;" class="glyphicon" [class.glyphicon-ok]="isSelected(option)"></span>
+                    {{option}}
+                </label>
+            </div>
+        </li>
+
+        <li *ngIf="settings.showUncheckAll && numSelected > 0" class="divider"></li>
+
+        <li *ngIf="settings.showUncheckAll && numSelected > 0">
+            <div class="checkbox">
+                <label (click)="uncheckAll()">
+                    <span style="width: 16px;" class="glyphicon glyphicon-remove"></span>
+                    {{texts.uncheckAll}}
+                </label>
+            </div>
+        </li>
+    </ul>
+</div>

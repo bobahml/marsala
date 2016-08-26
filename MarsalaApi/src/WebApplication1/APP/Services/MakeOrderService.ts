@@ -1,21 +1,20 @@
 ﻿import { Component, Injectable } from "@angular/core";
-import { Http, Headers, RequestOptions } from "@angular/http";
-
+import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/toPromise";
 
 import { SETTINGS } from "../shared/settings";
-import {IDailyMenu} from "../Models/dailyMenu";
-import {IOrder, ISummary} from "../Models/order";
+import { IDailyMenu } from "../Models/dailyMenu";
+import { IOrder, ISummary } from "../Models/order";
 
 
 @Injectable()
 export class MakeOrderService {
-    private http: Http;
 
+	private baseHeaders = this.getHeaders();
 
-    constructor(http: Http) {
+    constructor(private http: Http) {
         this.http = http;
     }
 
@@ -32,45 +31,53 @@ export class MakeOrderService {
     }
 
     makeAnOrder(order: IOrder): Promise<IOrder> {
-
-        var body = JSON.stringify(order);
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        const body = JSON.stringify(order);
+        const options = new RequestOptions({ headers: this.baseHeaders });
 
         return this.http.post("api/order", body, options)
-            .toPromise()
-            .then(res => res.json())
-            .catch(error => {
-                console.error(error);
-                Promise.reject(error.messsage || error)
-            });
-
-
+			.toPromise()
+			.then(this.extractData)
+			.catch(this.handleError);
     }
+
+
 
 	private delete<T>(url: string): Promise<T> {
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+		const options = new RequestOptions({ body: "", headers: this.baseHeaders });
 
-        return this.http.delete(url, options)
+		return this.http.delete(url, options)
             .toPromise()
-            .then(res => res.json())
-            .catch(error => {
-                console.error(error);
-                Promise.reject(error.messsage || error)
-            });
-    }
+			.then(this.extractData)
+			.catch(this.handleError);
+	}
 
-    private get<T>(url: string): Promise<T> {
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+	private get<T>(url: string): Promise<T> {
 
-        return this.http.get(url, options)
-            .toPromise()
-            .then(res => res.json())
-            .catch(error => {
-                console.error(error);
-                Promise.reject(error.messsage || error)
-            });
-    }
+	    const options = new RequestOptions({
+		    body: "",
+			headers: this.baseHeaders
+	    });
+		
+	    return this.http.get(url, options)
+			.toPromise()
+			.then(this.extractData)
+			.catch(this.handleError);
+	}
+
+	private getHeaders(): Headers {
+		const res = new Headers();
+		res.append("Content-Type", "application/json");
+		res.append("Accept", "application/json");
+
+		return res;
+	}
+
+	private extractData<T>(res: Response): T {
+		return res.json() || {} ;
+	}
+
+	private handleError(error: any): any {
+		console.error("An error occurred", error);
+		return Promise.reject(error.message || error);
+	}
 }

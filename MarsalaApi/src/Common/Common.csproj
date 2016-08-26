@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FileParser.cs" />
     <Compile Include="Services\TextMenuParser.cs" />
+    <Compile Include="Services\Сatalog.cs" />
     <Compile Include="XlsxPivotReader.cs" />
     <Compile Include="XlsxReader.cs" />
   </ItemGroup>

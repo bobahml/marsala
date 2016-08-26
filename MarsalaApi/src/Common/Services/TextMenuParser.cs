@@ -6,7 +6,7 @@ using Common.Model;
 
 namespace CommonLogic
 {
-	internal class TextMenuParser 
+	internal class TextMenuParser
 	{
 		public ICollection<DailyMenu> Parse(string menuDoc)
 		{
@@ -25,6 +25,9 @@ namespace CommonLogic
 				menu.MainCourse = GetCollection(match, "maincorse");
 
 				menu.Drink = GetCollection(match, "drink");
+
+				//TODO parse from file
+				menu.Snacks = Ñatalog.GetSnaks();
 
 				results.Add(menu);
 			}

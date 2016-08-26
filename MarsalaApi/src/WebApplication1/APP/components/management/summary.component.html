@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div role="form" *ngIf="summary.orders.length>0">
+    <div role="form" *ngIf='summary.orders.length'>
 
         <div class="form-group">
             <label>Total orders: {{summary.orders.length}}</label>
@@ -19,6 +19,7 @@
                     <th>Soup</th>
                     <th>MainCourse</th>
                     <th>Drink</th>
+                    <th>Snacks</th>
                     <th>Remove</th>
                 </tr>
                 </thead>
@@ -29,6 +30,7 @@
                     <td>{{value.soup}}</td>
                     <td>{{value.mainCourse}}</td>
                     <td>{{value.drink}}</td>
+                    <td>{{value.snacks}}</td>
                     <td><button class="btn btn-sm" (click)="removeOrder(value.userName)"><i class="glyphicon glyphicon-remove"></i></button></td>
                 </tr>
                 </tbody>
@@ -55,6 +57,12 @@
                 <ul class="list-group" *ngFor='let value of summary.drink'>
                     <li class="list-group-item">{{value.name}} : {{value.count}}</li>
                 </ul>
+                <ul class="list-group" *ngFor='let value of summary.drink'>
+                    <li class="list-group-item">{{value.name}} : {{value.count}}</li>
+                </ul> 
+                <ul class="list-group" *ngFor='let value of summary.snacks'>
+                    <li class="list-group-item">{{value.name}} : {{value.count}}</li>
+                </ul>
             </div>
         </div>
 
@@ -68,7 +76,7 @@
                 <div class="row">
                     <button class="btn btn-primary" title="Copy order to clipboard!"
                             (click)="copyToClipboard(orderInput)">
-                        <span class="glyphicon glyphicon-copy" aria-hidden="true"></span> Copy to clipboard!
+                        <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>&nbsp;Copy to clipboard!
                     </button>
                 </div>
 
