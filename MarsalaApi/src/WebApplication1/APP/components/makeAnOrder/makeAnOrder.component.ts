@@ -7,14 +7,10 @@ import { IDailyMenu } from "../../Models/dailyMenu";
 import { IOrder, Order } from "../../Models/order";
 import { Product } from "../../Models/product";
 
-import { CollectionSelectorComponent } from "./productSelector.component";
-import { MultiselectDropdown  } from "./multiProductSelector.component";
-
 
 @Component({
     selector: "make-order",
     templateUrl: "./app/components/makeAnOrder/makeAnOrder.component.html",
-    directives: [CollectionSelectorComponent, MultiselectDropdown],
     providers: [MakeOrderService, CookieService]
 })
 export class MakeAnOrderComponent implements OnInit {

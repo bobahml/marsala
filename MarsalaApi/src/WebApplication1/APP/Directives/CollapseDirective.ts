@@ -1,10 +1,7 @@
-﻿import { Directive, ElementRef } from "@angular/core";
+﻿import { Directive, Input, ElementRef } from "@angular/core";
 
 @Directive({
 	selector: "[collapse]",
-	properties: [
-		"collapse"
-	],
 	host: {
 		"[class.in]": "isExpanded",
 		"[class.collapse]": "isCollapse",
@@ -14,7 +11,7 @@
 		"[style.height]": "height"
 	}
 })
-export class Collapse {
+export class CollapseDirective {
 	// style
 	private height: string;
 	// classes
@@ -27,17 +24,14 @@ export class Collapse {
 	// animation state
 	private isCollapsing: boolean = false;
 
-	constructor(private el: ElementRef) {
-	}
-
-	private get collapse(): boolean {
-		return this.isExpanded;
-	}
-
-	private set collapse(value: boolean) {
+	@Input() set collapse(value: boolean) {
 		this.isExpanded = value;
 		this.toggle();
 	}
+
+	constructor(private el: ElementRef) {
+	}
+
 
 	toggle() {
 		if (this.isExpanded) {

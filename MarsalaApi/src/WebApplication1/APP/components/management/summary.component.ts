@@ -1,7 +1,6 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import {MakeOrderService} from "../../Services/MakeOrderService";
 import {IOrder, ISummary, Summary} from "../../Models/order";
-import {Collapse} from "../../Directives/collapse";
 
 import {CookieService} from "angular2-cookie/core";
 
@@ -9,7 +8,6 @@ import {CookieService} from "angular2-cookie/core";
     selector: "summary",
     templateUrl: "./app/components/management/summary.component.html",
     styleUrls: ["./app/components/management/summary.component.css"],
-	directives: [Collapse],
 	providers: [MakeOrderService, CookieService]
 })
 

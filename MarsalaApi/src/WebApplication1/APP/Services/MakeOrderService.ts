@@ -15,7 +15,6 @@ export class MakeOrderService {
 	private baseHeaders = this.getHeaders();
 
     constructor(private http: Http) {
-        this.http = http;
     }
 
     getTodayMenu(): Promise<IDailyMenu> {

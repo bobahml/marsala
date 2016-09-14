@@ -7,34 +7,51 @@ import { AppComponent }   from "./app.component";
 import { routing } from "./app.routes";
 
 
-
-import { HTTP_PROVIDERS } from "@angular/http";
 import { CookieService } from "angular2-cookie/core";
-
-import { MakeAnOrderComponent } from "./components/makeAnOrder/makeAnOrder.component";
-import { AddDailyMenuComponent } from "./components/management/addDailyMenu.component";
-import { SummaryComponent } from "./components/management/summary.component";
-
 import { SignalRService } from "./Services/SignalRService";
 
+
+import { MakeAnOrderComponent } from "./components/makeAnOrder/makeAnOrder.component";
+import { CollectionSelectorComponent } from "./components/makeAnOrder/productSelector.component";
+import { MultiselectDropdown  } from "./components/makeAnOrder/multiProductSelector.component";
+
+
+import { AddDailyMenuComponent } from "./components/management/addDailyMenu.component";
+
+
+import { SummaryComponent } from "./components/management/summary.component";
+import { CollapseDirective } from "./Directives/CollapseDirective";
+
+
+
 @NgModule({
-    declarations: [
-		AppComponent,
-		MakeAnOrderComponent,
-		AddDailyMenuComponent,
-		SummaryComponent],
-    imports: [
+	imports: [
 		BrowserModule,
 		FormsModule,
 		HttpModule,
-		routing,
+		routing
 	],
-    bootstrap: [AppComponent],
+	declarations: [
+		AppComponent,
+		MakeAnOrderComponent,
+		CollectionSelectorComponent,
+		MultiselectDropdown,
+
+
+
+		AddDailyMenuComponent,
+
+
+		SummaryComponent,
+		CollapseDirective
+	],
 
 	providers: [
 		SignalRService,
-		HTTP_PROVIDERS,
 		CookieService
 	],
+
+	bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {
+}
