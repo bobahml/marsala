@@ -25,18 +25,16 @@ export class MakeOrderService {
         return this.get<ISummary>(`${SETTINGS.apiUrl}order/summary`);
     }
 
+	sendByEmail(): Promise<ISummary> {
+        return this.post<ISummary>(`${SETTINGS.apiUrl}order/send`, "");
+    }
+
     removeOrder(userName: string): Promise<ISummary> {
         return this.delete<ISummary>(`${SETTINGS.apiUrl}order/${userName}`);
     }
 
     makeAnOrder(order: IOrder): Promise<IOrder> {
-        const body = JSON.stringify(order);
-        const options = new RequestOptions({ headers: this.baseHeaders });
-
-        return this.http.post("api/order", body, options)
-			.toPromise()
-			.then(this.extractData)
-			.catch(this.handleError);
+		return this.post<IOrder>(`${SETTINGS.apiUrl}order`, order);
     }
 
 
@@ -46,6 +44,17 @@ export class MakeOrderService {
 
 		return this.http.delete(url, options)
             .toPromise()
+			.then(this.extractData)
+			.catch(this.handleError);
+	}
+
+	private post<T>(url: string, object: any): Promise<T> {
+
+		const body = JSON.stringify(object);
+        const options = new RequestOptions({ headers: this.baseHeaders });
+
+        return this.http.post(url, body, options)
+			.toPromise()
 			.then(this.extractData)
 			.catch(this.handleError);
 	}

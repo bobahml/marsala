@@ -71,7 +71,14 @@
             <div class="container col-md-3">
 
                 <div class="row">
-                    <button class="btn btn-primary" title="Copy order to clipboard!"
+                    <button class="btn btn-primary" title="Send by e-mail!"
+                            (click)="sendByEmail()">
+                        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Send by e-mail!
+                    </button>
+                </div>
+                
+                <div class="row top-buffer">
+                    <button class="btn" title="Copy order to clipboard!"
                             (click)="copyToClipboard(orderInput)">
                         <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>&nbsp;Copy to clipboard!
                     </button>

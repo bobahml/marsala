@@ -47,6 +47,11 @@ export class SummaryComponent implements OnInit {
 		}
 	}
 
+	sendByEmail(copyTextarea: any) {
+		this.makeOrderService.sendByEmail()
+			.then(res => this.summary = res)
+			.catch(error => log.error(error.messsage || error));
+	}
 
 	private clearSelection() {
 		if (document.getSelection()) {
