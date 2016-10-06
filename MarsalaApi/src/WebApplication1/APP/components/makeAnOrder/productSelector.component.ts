@@ -4,7 +4,8 @@ import { Product } from "../../Models/product";
 
 @Component({
     selector: "collection-selector",
-    templateUrl: "./app/components/makeAnOrder/productSelector.component.html"
+    templateUrl: "./app/components/makeAnOrder/productSelector.component.html",
+	styles: [".dots {  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }"]
 })
 
 export class CollectionSelectorComponent  {

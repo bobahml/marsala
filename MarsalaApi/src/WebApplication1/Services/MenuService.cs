@@ -8,8 +8,12 @@ namespace WebApplication1.Services
 {
 	public interface IMenuService
 	{
+		DateTime? LastUpdateDate { get; }
+
 		void SetActualMenu(ICollection<DailyMenu> result, DateTime startDate);
 		DailyMenu GetTodaysMenu();
+
+		DailyMenu[] GetAllMenus();
 	}
 
 
@@ -26,6 +30,8 @@ namespace WebApplication1.Services
 		}
 
 
+		public DateTime? LastUpdateDate { get; private set; }
+
 		public void SetActualMenu(ICollection<DailyMenu> actualMenu, DateTime date)
 		{
 			if (actualMenu.Count == 0)
@@ -34,6 +40,7 @@ namespace WebApplication1.Services
 			_menus.Clear();
 
 			var startDate = date.Date;
+			LastUpdateDate = startDate;
 
 			foreach (var m in actualMenu)
 			{
@@ -44,10 +51,7 @@ namespace WebApplication1.Services
 				startDate = startDate.AddDays(1);
 			}
 
-			if (actualMenu.Any())
-			{
-				_clientInterationService.NotifyFoodUpdated();
-			}
+			_clientInterationService.NotifyFoodUpdated();
 		}
 
 		public DailyMenu GetTodaysMenu()
@@ -68,6 +72,11 @@ namespace WebApplication1.Services
 					.First();
 
 			return mindiff.Value;
+		}
+
+		public DailyMenu[] GetAllMenus()
+		{
+			return _menus.Values.ToArray();
 		}
 	}
 }

@@ -201,7 +201,7 @@ namespace MenuParser.ViewModels
                 CurrentFileName = file;
             });
 
-            var menuList = _menuParser.ProcessLocalFile(file);
+            var menuList = _menuParser.ProcessFile(file);
 
             _dispatcherService.BeginInvoke(() =>
             {

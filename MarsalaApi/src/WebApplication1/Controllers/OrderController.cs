@@ -2,6 +2,7 @@
 using Common.Model;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Services;
+using WebApplication1.Services.Mail;
 
 
 namespace WebApplication1.Controllers
@@ -47,8 +48,9 @@ namespace WebApplication1.Controllers
 			var summary = _orderService.GetSummary();
 			try
 			{
-				//"marsala.restaurant@ya.ru"
-				_mailWorker.Send("bobahml@mail.ru", "Заказ бизнес ланч", summary.OrderText);
+				_mailWorker.Send("Заказ бизнес ланч", summary.OrderText);
+
+				summary.OrderText = "Successfully sent";
 			}
 			catch (Exception e)
 			{

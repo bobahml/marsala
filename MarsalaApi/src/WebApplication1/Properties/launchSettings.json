@@ -17,7 +17,6 @@
     },
     "WebApplication1": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "http://localhost:5000/#/makeAnOrder",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

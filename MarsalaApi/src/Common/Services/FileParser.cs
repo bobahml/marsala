@@ -10,8 +10,9 @@ namespace Common.Services
 {
 	public interface IFileParser
 	{
-		ICollection<DailyMenu> ProcessLocalFile(string fileName);
-		ICollection<DailyMenu> ProcessStreamFile(Stream file, string ext);
+		ICollection<DailyMenu> ProcessFile(string fileName);
+		ICollection<DailyMenu> ProcessFile(Stream file, string ext);
+		ICollection<DailyMenu> ProcessFile(byte[] file, string ext);
 		Stream GenerateSummary(Summary summary);
 	}
 
@@ -25,7 +26,7 @@ namespace Common.Services
 			_menuParser = new TextMenuParser();
 		}
 
-		public ICollection<DailyMenu> ProcessLocalFile(string fileName)
+		public ICollection<DailyMenu> ProcessFile(string fileName)
 		{
 			var ext = Path.GetExtension(fileName)?.ToLower();
 			if (string.IsNullOrEmpty(ext))
@@ -45,7 +46,7 @@ namespace Common.Services
 			return menuList;
 		}
 
-		public ICollection<DailyMenu> ProcessStreamFile(Stream file, string ext)
+		public ICollection<DailyMenu> ProcessFile(Stream file, string ext)
 		{
 			ICollection<DailyMenu> menuList;
 			if (ext == ".docx" || ext == ".doc")
@@ -59,6 +60,14 @@ namespace Common.Services
 			}
 
 			return menuList;
+		}
+
+		public ICollection<DailyMenu> ProcessFile(byte[] file, string ext)
+		{
+			using (var stream = new MemoryStream(file))
+			{
+				return ProcessFile(stream, ext);
+			}
 		}
 
 		public Stream GenerateSummary(Summary summary)

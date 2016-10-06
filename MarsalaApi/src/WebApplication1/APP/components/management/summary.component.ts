@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from "@angular/core";
-import {MakeOrderService} from "../../Services/MakeOrderService";
+import {OrderService} from "../../Services/OrderService";
 import {IOrder, ISummary, Summary} from "../../Models/order";
 
 import {CookieService} from "angular2-cookie/core";
@@ -8,7 +8,7 @@ import {CookieService} from "angular2-cookie/core";
     selector: "summary",
     templateUrl: "./app/components/management/summary.component.html",
     styleUrls: ["./app/components/management/summary.component.css"],
-	providers: [MakeOrderService, CookieService]
+	providers: [OrderService, CookieService]
 })
 
 
@@ -17,7 +17,7 @@ export class SummaryComponent implements OnInit {
     summary: ISummary = new Summary();
     isDetailsCollapsed: boolean = true;
 
-    constructor(private makeOrderService: MakeOrderService, private cookieService: CookieService) {
+    constructor(private makeOrderService: OrderService, private cookieService: CookieService) {
     }
 
 

@@ -9,6 +9,8 @@ import { routing } from "./app.routes";
 
 import { CookieService } from "angular2-cookie/core";
 import { SignalRService } from "./Services/SignalRService";
+import { HttpService } from "./Services/HttpService"; 
+import { FileUploadService } from "./Services/FileUploadService";
 
 
 import { MakeAnOrderComponent } from "./components/makeAnOrder/makeAnOrder.component";
@@ -48,6 +50,8 @@ import { CollapseDirective } from "./Directives/CollapseDirective";
 
 	providers: [
 		SignalRService,
+		HttpService,
+		FileUploadService,
 		CookieService
 	],
 

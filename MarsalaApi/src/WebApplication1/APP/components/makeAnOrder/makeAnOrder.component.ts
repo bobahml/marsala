@@ -2,7 +2,8 @@
 import { Router } from "@angular/router";
 import { CookieService} from "angular2-cookie/core";
 
-import { MakeOrderService } from "../../Services/MakeOrderService";
+import { OrderService } from "../../Services/OrderService";
+import { MenuService } from "../../Services/MenuService";
 import { IDailyMenu } from "../../Models/dailyMenu";
 import { IOrder, Order } from "../../Models/order";
 import { Product } from "../../Models/product";
@@ -11,12 +12,13 @@ import { Product } from "../../Models/product";
 @Component({
     selector: "make-order",
     templateUrl: "./app/components/makeAnOrder/makeAnOrder.component.html",
-    providers: [MakeOrderService, CookieService]
+    providers: [OrderService, MenuService, CookieService]
 })
 export class MakeAnOrderComponent implements OnInit {
 
     constructor(
-        private makeOrderService: MakeOrderService,
+        private orderService: OrderService,
+		private menuService: MenuService,
         private cookieService: CookieService,
         private router: Router
     ) {
@@ -60,7 +62,7 @@ export class MakeAnOrderComponent implements OnInit {
         order.Drink = this.drink.value;
 	    order.Snacks = this.snacks.values;
 
-        this.makeOrderService.makeAnOrder(order)
+        this.orderService.makeAnOrder(order)
             .then(o => this.router.navigate(["summary"]))
             .catch(error => this.header = error.messsage || error);
 
@@ -79,7 +81,7 @@ export class MakeAnOrderComponent implements OnInit {
 
     private getDailyMenu() {
 
-        this.makeOrderService.getTodayMenu()
+        this.menuService.getTodayMenu()
             .then(menu => {
 
                 if (menu) {

@@ -1,18 +1,17 @@
 import { Component, OnInit  } from "@angular/core";
 
-import {FileUploadService} from "../../Services/FileUploadService";
-import {IDailyMenu} from "../../Models/dailyMenu";
+import { MenuService } from "../../Services/MenuService";
+import { IDailyMenu, DailyMenu } from "../../Models/dailyMenu";
 
 
 @Component({
     selector: "add-dailyMenu",
     templateUrl: "./app/components/management/addDailyMenu.component.html",
-    providers: [FileUploadService]
+    providers: [MenuService]
 })
-
 export class AddDailyMenuComponent implements OnInit  {
 
-    constructor(private fileUploadService: FileUploadService) {
+    constructor(private menuService: MenuService) {
     }
 
     startDate: string;
@@ -23,11 +22,8 @@ export class AddDailyMenuComponent implements OnInit  {
     }
 
     onChange(event: any) {
-
 		const target = event.target || event.srcElement;
-
 		const fileList: FileList = target.files;
-
 
         if (fileList == null || fileList.length !== 1) {
             return;
@@ -35,13 +31,33 @@ export class AddDailyMenuComponent implements OnInit  {
 
         const startDay = this.startDate && this.startDate.length > 0 ? this.startDate : this.dateToString(new Date());
 
-	    this.fileUploadService.upload<IDailyMenu[]>(`/api/Parsing/upload?date=${startDay}`, [fileList.item(0)])
-		    .then(data =>{
+	    this.menuService.uploadMenuFromLocalFile(fileList.item(0), startDay)
+		    .then(data => {
+			    this.loadedMenus.length = 0;
+			    data.forEach(v => this.loadedMenus.push(v));
+		    })
+			.catch(error => {
+				this.setErrorMessage(error);
+		    });
+    }
+
+
+	uploadFromEmail() {
+		this.menuService.getMenuFromEmail()
+			.then(data => {
 				this.loadedMenus.length = 0;
 				data.forEach(v => this.loadedMenus.push(v));
-            })
-            .catch(error => console.log(error));
-    }
+			})
+			.catch(error => {
+				this.setErrorMessage(error);
+			});
+	}
+
+	private setErrorMessage(error: any) {
+		this.loadedMenus.length = 0;
+		const errorMenu = new DailyMenu(`Error! ${error}`, [], [], [], []);
+		this.loadedMenus.push(errorMenu);
+	}
 
     private dateToString(date: Date): string {
         return date.toISOString().substring(0, 10); 

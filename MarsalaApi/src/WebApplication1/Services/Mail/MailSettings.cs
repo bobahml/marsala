@@ -1,4 +1,4 @@
-namespace WebApplication1.Services
+namespace WebApplication1.Services.Mail
 {
 	internal class MailSettings
 	{
@@ -10,5 +10,8 @@ namespace WebApplication1.Services
 		public string UserName { get; set; }
 		public string Password { get; set; }
 		public bool Ssl { get; set; } = true;
+
+		public string Recipient { get; set; }
+		public string CopyToFolder { get; set; }
 	}
 }
