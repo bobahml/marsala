@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Common.Model;
 using Common.Services;
 using Microsoft.AspNetCore.Http;
@@ -41,7 +39,7 @@ namespace WebApplication1.Controllers
 			if (file == null) //No fresh messages to parse
 				return Ok(_menuService.GetAllMenus());
 
-			var dates = TryParseStartDateFromSubject(file.MessageSubject).ToArray();
+			var dates = CustomDateParser.TryParseStartDateFromSubject(file.MessageSubject).ToArray();
 			var startDate = dates.Any() ? dates[0] : file.MessageDate.Date;
 
 			var ext = System.IO.Path.GetExtension(file.FileName ?? "unknown.docx");
@@ -86,30 +84,7 @@ namespace WebApplication1.Controllers
 			return BadRequest("Could not get a menu from a file");
 		}
 
-		private static IEnumerable<DateTime> TryParseStartDateFromSubject(string message)
-		{
-			//Меню БЛ на один день 07.10
-			//БИЗНЕС ЛАНЧ!!!  05.10 и 06.10
-			var dateRegex = new Regex(@"\s\d{1,2}\.\d{1,2}");
-			var matches = dateRegex.Matches(message);
-
-			for (int i = 0; i < matches.Count; i++)
-			{
-				var match = matches[i];
-				var d = match.Value.Trim();
-
-				var parts = d.Split('.');
-
-
-				var day = int.Parse(parts[0]);
-				var month = int.Parse(parts[1]);
-
-				if (day > 31 || month > 12)
-					continue;
-
-				yield return new DateTime(DateTime.Now.Year, month, day, 0, 0, 0, DateTimeKind.Local);
-			}
-		}
+		
 	}
 
 }
