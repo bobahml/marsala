@@ -28,7 +28,7 @@ namespace WebApplication1
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
 			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-
+			loggerFactory.AddAzureWebAppDiagnostics(); // for default setting.
 
 			if (env.IsDevelopment())
 			{
