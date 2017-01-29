@@ -1,72 +1,78 @@
 ﻿import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
-import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/toPromise";
 
 import { SETTINGS } from "../shared/settings";
-
+import { ContextStore } from "../shared/ContextStore";
 
 @Injectable()
 export class HttpService {
 
-	private baseHeaders = this.getHeaders();
-
-    constructor(private http: Http) {
+    constructor(private http: Http, private contextStore: ContextStore) {
     }
 
-	getapiUrl() : string {
-		return SETTINGS.apiUrl;
-	}
+    getapiUrl(): string {
+        return SETTINGS.apiUrl;
+    }
 
 
     delete<T>(url: string): Promise<T> {
-		const options = new RequestOptions({ body: "", headers: this.baseHeaders });
-
-		return this.http.delete(`${SETTINGS.apiUrl}${url}`, options)
+        return this.http.delete(`${SETTINGS.apiUrl}${url}`, this.getRequestOptions())
             .toPromise()
-			.then(this.extractData)
-			.catch(this.handleError);
-	}
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
 
-	post<T>(url: string, object: any): Promise<T> {
+    post<T>(url: string, object: any): Promise<T> {
+        const options: RequestOptions = this.getRequestOptions(object);
 
-		const body = JSON.stringify(object);
-        const options = new RequestOptions({ headers: this.baseHeaders });
+        return this.http.post(`${SETTINGS.apiUrl}${url}`, options.body, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
 
-        return this.http.post(`${SETTINGS.apiUrl}${url}`, body, options)
-			.toPromise()
-			.then(this.extractData)
-			.catch(this.handleError);
-	}
+    get<T>(url: string): Promise<T> {
 
-	get<T>(url: string): Promise<T> {
+        const options: RequestOptions = this.getRequestOptions();
 
-		const options = new RequestOptions({
-			body: "",
-			headers: this.baseHeaders
-		});
+        return this.http.get(`${SETTINGS.apiUrl}${url}`, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
 
-		return this.http.get(`${SETTINGS.apiUrl}${url}`, options)
-			.toPromise()
-			.then(this.extractData)
-			.catch(this.handleError);
-	}
+    private getHeaders(): Headers {
+        const headers: Headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Accept", "application/json");
 
-	private getHeaders(): Headers {
-		const res = new Headers();
-		res.append("Content-Type", "application/json");
-		res.append("Accept", "application/json");
+        var token: string = this.contextStore.getToken();
+        if (token) {
+            headers.append("Authorization", "Bearer " + token);
+        }
 
-		return res;
-	}
+        return headers;
+    }
 
-	private extractData<T>(res: Response): T {
-		return res.json() || {};
-	}
+    private getRequestOptions(object?: any): RequestOptions {
+        var body: string;
 
-	private handleError(error: any): any {
-		console.error("An error occurred", error);
-		return Promise.reject(error.message || error);
-	}
+        if (object != null) {
+            body = JSON.stringify(object);
+        } else {
+            body = "";
+        }
+        return new RequestOptions({ body: body, headers: this.getHeaders() });
+    }
+
+    private extractData<T>(res: Response): T {
+        return res.json() || {};
+    }
+
+    private handleError(error: any): any {
+        console.error("An error occurred", error);
+        return Promise.reject(error.message || error);
+    }
 }

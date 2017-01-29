@@ -2,7 +2,6 @@
 import { Router } from "@angular/router";
 import { CookieService } from "angular2-cookie/core";
 
-
 import { IOrder } from "./Models/order";
 import { PushNotificationComponent } from "./components/notification.component";
 import { SignalRService } from "./Services/SignalRService";

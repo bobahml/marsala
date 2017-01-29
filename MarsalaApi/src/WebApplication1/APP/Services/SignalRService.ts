@@ -31,10 +31,6 @@ export class SignalRService {
         this.startConnection();
     }
 
-    public sendChatMessage(message: IOrder) {
-        this.proxy.invoke("SendMessage", message);
-    }
-
     private startConnection(): void {
         this.connection.start().done((data) => {
             console.log("Now connected " + data.transport.name + ", connection ID= " + data.id);

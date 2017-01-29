@@ -1,10 +1,9 @@
-﻿//https://github.com/alexcastillo/ng2-notifications/blob/master/src/app/components/notification.component.ts
+﻿// https://github.com/alexcastillo/ng2-notifications/blob/master/src/app/components/notification.component.ts
 
 import {
     Component,
     EventEmitter,
     OnInit,
-    OnChanges,
     OnDestroy,
     Input,
     Output
@@ -18,7 +17,7 @@ declare var Notification;
     template: ""
 })
 
-export class PushNotificationComponent implements OnInit, OnChanges, OnDestroy {
+export class PushNotificationComponent implements OnInit, OnDestroy {
 
     @Input() title: string;
     @Input() body: string;
@@ -41,11 +40,11 @@ export class PushNotificationComponent implements OnInit, OnChanges, OnDestroy {
     @Output("error") onError: EventEmitter<any> = new EventEmitter();
     @Output("action") onClick: EventEmitter<any> = new EventEmitter();
 
-    checkCompatibility() : boolean {
+    checkCompatibility(): boolean {
         return ("Notification" in window);
     }
 
-    isPermissionGranted(permission): boolean  {
+    isPermissionGranted(permission): boolean {
         return permission === "granted";
     }
 
@@ -128,8 +127,4 @@ export class PushNotificationComponent implements OnInit, OnChanges, OnDestroy {
     ngOnDestroy(): void {
         this.closeAll();
     }
-
-    ngOnChanges(): void {
-    }
-
 }
