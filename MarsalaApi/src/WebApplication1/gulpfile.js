@@ -1,7 +1,7 @@
 /// <binding BeforeBuild='copy-static' />
 "use strict";
 
-var ts = require('gulp-typescript');
+var typescript = require('gulp-typescript');
 var gulp = require('gulp');
 var clean = require('gulp-clean');
 
@@ -41,13 +41,9 @@ gulp.task("scriptsNStyles", () => {
 
 });
 
-var tsProject = ts.createProject('app/tsconfig.json');
-gulp.task('ts', function (done) {
-    //var tsResult = tsProject.src()
-    var tsResult = gulp.src([
-            "app/*.ts"
-    ])
-        .pipe(ts(tsProject), undefined, ts.reporter.fullReporter());
+var tsProject = typescript.createProject('app/tsconfig.json');
+gulp.task('ts', function () {
+    var tsResult = tsProject.src().pipe(tsProject());
     return tsResult.js.pipe(gulp.dest('./wwwroot/app'));
 });
 
