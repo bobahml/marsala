@@ -1,9 +1,11 @@
 ﻿using Common.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using WebApplication1.Auth;
 using WebApplication1.Services;
 using WebApplication1.Services.Mail;
 
@@ -38,8 +40,9 @@ namespace WebApplication1
 			app.UseDefaultFiles();
 			app.UseStaticFiles();
 
+            app.UseIdentity();
 
-			app.UseMvc(routes =>
+            app.UseMvc(routes =>
 			{
 				routes.MapRoute(
 					name: "default",
@@ -72,6 +75,11 @@ namespace WebApplication1
 			services.AddSingleton<IOrderService, OrderService>();
 			services.AddSingleton<IClientInterationService, ClientInterationService>();
 			services.AddSingleton<IMailWorker, MailWorker>();
-		}
+
+            //AUTH
+            services.AddSingleton<IUserStore<ApplicationUser>, TempUserStore>();
+            services.AddSingleton<IRoleStore<ApplicationRole>, TempRoleStore>();
+            services.AddIdentity<ApplicationUser, ApplicationRole>().AddDefaultTokenProviders();
+        }
 	}
 }
