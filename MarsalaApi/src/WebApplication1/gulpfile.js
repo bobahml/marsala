@@ -23,8 +23,8 @@ gulp.task("scriptsNStyles", () => {
             'zone.js/dist/**',
             '@angular/**',
             'angular2-cookie/**',
-			'signalr/*js',
-            'jquery/dist/jquery.*js',
+            'signalr/jquery.signalR.min.js',
+            "jquery/dist/jquery.min.js",
             'bootstrap/dist/js/bootstrap.*js'
     ], {
         cwd: "node_modules/**"

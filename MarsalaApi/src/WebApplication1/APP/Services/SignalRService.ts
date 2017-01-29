@@ -1,8 +1,9 @@
 ﻿import { Injectable, EventEmitter } from "@angular/core";
 import { SETTINGS } from "../shared/settings";
-import {IOrder, ISummary} from "../Models/order";
+import { IOrder, ISummary } from "../Models/order";
 
-declare var $: JQueryStatic;
+import 'signalR';
+import * as $ from 'jquery'; 
 
 @Injectable()
 export class SignalRService {
@@ -53,7 +54,5 @@ export class SignalRService {
         this.proxy.on("OrderUpdated", (data: IOrder) => {
             this.orderUpdated.emit(data);
         });
-
-
     }
 }
