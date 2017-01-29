@@ -2,7 +2,6 @@
   "dependencies": {
     "AE.Net.Mail": "1.7.10",
     "Microsoft.AspNetCore.Diagnostics": "1.1.0",
-    "Microsoft.AspNetCore.Mvc": "1.1.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
     "Microsoft.AspNetCore.StaticFiles": "1.1.0",
@@ -12,7 +11,8 @@
     "Microsoft.Extensions.Logging.AzureAppServices": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.1.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
-    "Gray.Microsoft.AspNetCore.SignalR.Server": "0.2.0-alpha1"
+    "Microsoft.AspNetCore.SignalR.Server": "0.2.0-preview2-22683",
+    "Microsoft.AspNetCore.Mvc": "1.1.1"
   },
 
   "tools": {
