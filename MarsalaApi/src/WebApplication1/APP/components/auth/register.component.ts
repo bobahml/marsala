@@ -1,5 +1,4 @@
-﻿import { Component } from "@angular/core";
-import { Router } from "@angular/router";
+﻿import { Component, OnInit } from "@angular/core";
 import { AuthenticationService } from "../../Services/AuthenticationService";
 import { RegisterUser } from "../../models/user"
 
@@ -8,24 +7,40 @@ import { RegisterUser } from "../../models/user"
     templateUrl: "register.component.html"
 })
 
-export class RegisterComponent {
-	model = new RegisterUser();
-	error = "";
-    loading = false;
+export class RegisterComponent implements OnInit {
+    public user: RegisterUser;
+    public registrationCompleted: boolean;
+    public error: string;
 
-    constructor(
-        private router: Router,
-		private authenticationService: AuthenticationService) { }
+    constructor(private authenticationService: AuthenticationService) { }
 
-    register() {
-        this.loading = true;
-		this.authenticationService.register(this.model)
-			.then(o => {
-				this.router.navigate(["login"]);
-			})
-			.catch(error => {
-				error = error;
-				this.loading = false;
-			});
+
+    ngOnInit() {
+        this.registrationCompleted = false
+        this.resetState();
+    }
+
+
+    private resetState() {
+        this.error = null;
+        this.user = {
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+        }
+    }
+
+    save(event) {
+        event.preventDefault();
+        this.authenticationService.register(this.user)
+            .then(o => {
+                this.registrationCompleted = true;
+                this.resetState();
+            })
+            .catch(error => {
+                this.error = error;
+                this.registrationCompleted = false;
+            });
     }
 }

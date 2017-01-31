@@ -12,6 +12,8 @@ import { MultiselectDropdown } from "./components/makeAnOrder/multiProductSelect
 import { AddDailyMenuComponent } from "./components/management/addDailyMenu.component";
 import { SummaryComponent } from "./components/management/summary.component";
 import { CollapseDirective } from "./Directives/CollapseDirective";
+import { EqualValidator } from "./Directives/EqualValidator";
+
 
 import { AuthGuard } from "./Services/AuthGuard";
 
@@ -60,7 +62,8 @@ const routing = RouterModule.forRoot(appRoutes, routeConfig);
         MultiselectDropdown,
         AddDailyMenuComponent,
         SummaryComponent,
-        CollapseDirective
+        CollapseDirective,
+        EqualValidator
     ],
 
     providers: [

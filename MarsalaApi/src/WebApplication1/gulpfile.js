@@ -53,13 +53,14 @@ gulp.task('watch.ts', ['ts'], function () {
     return gulp.watch('app/*.ts', ['ts']);
 });
 
-gulp.task("copy-static", () => {
-    return  gulp.src([
-        '*.html',
-         '*.css'
-    ]
-    , { cwd: "app/**" }
-    )
+
+gulp.task('watch-folder', function () {
+    gulp.watch('./APP/**/*', ['copy-static']);
+});
+
+
+gulp.task("copy-static", function () {
+    return gulp.src(['*.html', '*.css'], { cwd: "./app/**" })
     .pipe(gulp.dest('./wwwroot/app'));
 });
 
