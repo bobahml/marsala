@@ -13,7 +13,10 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
     "Microsoft.AspNetCore.SignalR.Server": "0.2.0-preview2-22683",
     "Microsoft.AspNetCore.Mvc": "1.1.1",
-    "Microsoft.AspNetCore.Identity": "1.1.0"
+    "Microsoft.AspNetCore.Identity": "1.1.0",
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Sqlite": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Tools": "1.1.0-preview4-final"
   },
 
   "tools": {

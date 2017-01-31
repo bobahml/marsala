@@ -4,7 +4,8 @@ import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
 import { AppComponent } from "./app.component";
-import { LoginComponent } from "./components/login/login.component";
+import { LoginComponent } from "./components/auth/login.component";
+import { RegisterComponent } from "./components/auth/register.component";
 import { MakeAnOrderComponent } from "./components/makeAnOrder/makeAnOrder.component";
 import { CollectionSelectorComponent } from "./components/makeAnOrder/productSelector.component";
 import { MultiselectDropdown } from "./components/makeAnOrder/multiProductSelector.component";
@@ -26,7 +27,8 @@ import { ContextStore } from "./shared/ContextStore";
 import { Routes, ExtraOptions, RouterModule } from "@angular/router";
 
 const appRoutes: Routes = [
-    { path: "login", component: LoginComponent },
+	{ path: "login", component: LoginComponent },
+	{ path: "register", component: RegisterComponent },
     { path: "makeAnOrder", component: MakeAnOrderComponent, canActivate: [AuthGuard] },
     { path: "management", component: AddDailyMenuComponent, canActivate: [AuthGuard] },
     { path: "summary", component: SummaryComponent, canActivate: [AuthGuard] },
@@ -52,6 +54,7 @@ const routing = RouterModule.forRoot(appRoutes, routeConfig);
     declarations: [
         AppComponent,
         LoginComponent,
+		RegisterComponent,
         MakeAnOrderComponent,
         CollectionSelectorComponent,
         MultiselectDropdown,

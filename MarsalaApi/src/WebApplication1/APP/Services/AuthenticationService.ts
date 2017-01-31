@@ -1,6 +1,6 @@
 ﻿import { Injectable } from "@angular/core";
 import { HttpService } from "../Services/HttpService";
-import { IUserToken, User } from "../Models/user";
+import { IUserToken, User, RegisterUser } from "../Models/user";
 import { ContextStore } from "../shared/ContextStore";
 
 @Injectable()
@@ -28,4 +28,20 @@ export class AuthenticationService {
     logout(): void {
         this.contextStore.clear();
     }
+
+	register(model: RegisterUser): Promise<boolean> {
+
+		return this.http.post<IUserToken>("account/login", model)
+			.then(data => {
+				if (data.token) {
+					this.contextStore.setCurrentUser(data);
+					return true;
+				}
+				return false;
+			})
+			.catch(error => {
+				return false;
+			});
+		
+	}
 }

@@ -1,11 +1,19 @@
-﻿using Common.Services;
+﻿using System;
+using Common.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WebApplication1.Auth;
+using WebApplication1.Auth.Model;
+using WebApplication1.DAL;
 using WebApplication1.Services;
 using WebApplication1.Services.Mail;
 
@@ -33,16 +41,17 @@ namespace WebApplication1
 			loggerFactory.AddAzureWebAppDiagnostics(); // for default setting.
 
 			if (env.IsDevelopment())
-			{
 				app.UseDeveloperExceptionPage();
-			}
-
+			
 			app.UseDefaultFiles();
 			app.UseStaticFiles();
 
-            app.UseIdentity();
 
-            app.UseMvc(routes =>
+		
+
+
+
+			app.UseMvc(routes =>
 			{
 				routes.MapRoute(
 					name: "default",
@@ -62,8 +71,7 @@ namespace WebApplication1
 
 			// Configure MailSettings using a sub-section of the appsettings.json file
 			services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-
-
+			
 			// Add framework services.
 			services.AddMvc();
 			services.AddSignalR();
@@ -76,10 +84,50 @@ namespace WebApplication1
 			services.AddSingleton<IClientInterationService, ClientInterationService>();
 			services.AddSingleton<IMailWorker, MailWorker>();
 
-            //AUTH
-            services.AddSingleton<IUserStore<ApplicationUser>, TempUserStore>();
-            services.AddSingleton<IRoleStore<ApplicationRole>, TempRoleStore>();
-            services.AddIdentity<ApplicationUser, ApplicationRole>().AddDefaultTokenProviders();
-        }
+			//AUTH
+			SetupAuthentificationServices(services);
+			}
+
+		private void SetupAuthentificationServices(IServiceCollection services)
+		{
+			services.AddEntityFramework()
+				.AddEntityFrameworkSqlite()
+				.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddIdentity<ApplicationUser, IdentityRole>()
+				.AddEntityFrameworkStores<ApplicationDbContext>()
+				.AddDefaultTokenProviders();
+
+			services.Configure<IdentityOptions>(options =>
+			{
+				// Password settings
+				options.Password.RequireDigit = true;
+				options.Password.RequiredLength = 6;
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireUppercase = false;
+				options.Password.RequireLowercase = false;
+
+				// Lockout settings
+				options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+				options.Lockout.MaxFailedAccessAttempts = 10;
+
+				// Cookie settings
+				options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
+				options.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
+				options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
+
+				// User settings
+				options.User.RequireUniqueEmail = true;
+			});
+		}
+
+		private static SqliteConnection GetCs()
+		{
+			var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "MyDb.db" };
+			var connectionString = connectionStringBuilder.ToString();
+			var connection = new SqliteConnection(connectionString);
+
+			return connection;
+		}
 	}
 }

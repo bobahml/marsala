@@ -10,7 +10,8 @@ import { AuthenticationService } from '../../Services/AuthenticationService';
 })
 
 export class LoginComponent implements OnInit {
-    model: User = new User();
+	model = new User();
+	error = "";
     loading = false;
     returnUrl: string;
 
@@ -31,7 +32,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigate([this.returnUrl]);
             })
             .catch(error => {
-                console.error(error);
+                error = error;
                 this.loading = false;
             });
     }

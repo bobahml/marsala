@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using AE.Net.Mail;
 using Microsoft.Extensions.Options;
 using Attachment = AE.Net.Mail.Attachment;
@@ -12,6 +13,7 @@ namespace WebApplication1.Services.Mail
 	{
 		MenuFile GetLastSupportedAttachment(DateTime? lastDate);
 		void Send(string subject, string body);
+		void SendEmail(string email, string subject, string body);
 	}
 
 	internal class MailWorker : IMailWorker
@@ -64,12 +66,16 @@ namespace WebApplication1.Services.Mail
 
 		public void Send(string subject, string body)
 		{
-			var toAddress = _mailSettings.Recipient;
+			SendEmail(_mailSettings.Recipient, subject, body);
+		}
+
+		public void SendEmail(string email, string subject, string body)
+		{
 			lock (_mailSettings)
 			{
 				using (var smtpClient = GetSmtpClient())
 				{
-					var mail = new System.Net.Mail.MailMessage(_mailSettings.UserName, toAddress)
+					var mail = new System.Net.Mail.MailMessage(_mailSettings.UserName, email)
 					{
 						Subject = subject,
 						Body = body
@@ -78,26 +84,26 @@ namespace WebApplication1.Services.Mail
 				}
 
 
-				if (!string.IsNullOrEmpty(_mailSettings.CopyToFolder))
-				{
-					try
-					{
-						//Copy the message to sent folder. 
-						using (var imapClient = GetImapClient())
-						{
-							var msg = new AE.Net.Mail.MailMessage
-							{
-								From = new MailAddress(_mailSettings.UserName),
-								To = { new MailAddress(toAddress) },
-								Subject = subject,
-								Body = body
-							};
+				if (string.IsNullOrEmpty(_mailSettings.CopyToFolder))
+					return;
 
-							imapClient.AppendMail(msg, _mailSettings.CopyToFolder);
-						}
+				try
+				{
+					//Copy the message to sent folder. 
+					using (var imapClient = GetImapClient())
+					{
+						var msg = new AE.Net.Mail.MailMessage
+						{
+							From = new MailAddress(_mailSettings.UserName),
+							To = { new MailAddress(email) },
+							Subject = subject,
+							Body = body
+						};
+
+						imapClient.AppendMail(msg, _mailSettings.CopyToFolder);
 					}
-					catch { }
 				}
+				catch { }
 			}
 		}
 

@@ -1,21 +1,9 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace WebApplication1.Auth
+namespace WebApplication1.Auth.Model
 {
-    public class ApplicationUser : ClaimsIdentity
-    {
-        public string UserId { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public bool PhoneNumberConfirmed { get; set; }
-        public string PasswordHash { get; set; }
-        public bool TwoFactorEnabled { get; set; }
-    }
-
-    public class ApplicationRole
-    {
-        public string RoleId { get; set; }
-        public string RoleName { get; set; }
-    }
+	public class ApplicationUser : IdentityUser
+	{
+		public string Company { get; set; }   
+	}
 }
