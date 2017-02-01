@@ -3,52 +3,47 @@
     <form #f="ngForm" novalidate (ngSubmit)="save($event);">
         <div class="form-group">
             <label for="">Username</label>
-            <input type="text" class="form-control" name="username" [ngModel]="user.username"
-                   required minlength="4" maxlength="15" #username="ngModel">
+            <input type="text" class="form-control" name="username" [(ngModel)]="user.UserName"
+                   required minlength="4" maxlength="15" pattern="^[a-zA-Z0-9]+$" #username="ngModel">
             <small [hidden]="username.valid || (username.pristine && !f.submitted)" class="text-danger">
-                Username is required (minimum 4 characters).
+                Username is required (4-15 characters) alphanumeric format.
             </small>
         </div>
         <div class="form-group">
             <label for="">Email</label>
-            <input type="email" class="form-control" name="email" [ngModel]="user.email"
-                   required #email="ngModel" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$">
+            <input type="email" class="form-control" name="email" [(ngModel)]="user.Email"
+                   required #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
             <small [hidden]="email.valid || (email.pristine && !f.submitted)" class="text-danger">
                 Email is required and format should be <i>a@b.com</i>.
             </small>
         </div>
         <div class="form-group">
             <label for="">Password</label>
-            <input type="password" class="form-control" name="password" [ngModel]="user.password"
-                   required validateEqual="confirmPassword" reverse="true" #password="ngModel">
+            <input type="password" class="form-control" name="password" [(ngModel)]="user.Password"
+                   required validateEqual="confirmPassword" minlength="6" reverse="true" #password="ngModel">
             <small [hidden]="password.valid || (password.pristine && !f.submitted)" class="text-danger">
-                Password is required
+                Password is required (6+ characters).
             </small>
         </div>
         <div class="form-group">
             <label for="">Retype password</label>
-            <input type="password" class="form-control" name="confirmPassword" [ngModel]="user.confirmPassword"
+            <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="user.ConfirmPassword"
                    required validateEqual="password" reverse="false" #confirmPassword="ngModel">
             <small [hidden]="confirmPassword.valid || (confirmPassword.pristine && !f.submitted)" class="text-danger">
-                Password mismatch
+                The password and confirmation password do not match.
             </small>
         </div>
-        <button [disabled]="f.form.invalid" type="submit" class="btn btn-default">Submit</button>
-        <div class="margin-20" *ngIf="f">
-        
-            <pre>Is form valid?: <br>{{f.valid | json}}</pre>
-            <pre>Is form submitted?: <br>{{f.submitted | json}}</pre>
-            <pre>submitted value: <br>{{f.value | json}}</pre>
-        </div>
 
+        <button [disabled]="f.form.invalid" type="submit" class="btn btn-default">Submit</button>
+       
+        <a routerLink="/login" routerLinkActive="active">Go to Login page</a>
 
         <div *ngIf="registrationCompleted" class="alert alert-info">
             <label>Please check your email to complete registration</label>
-            <a routerLink="/login" routerLinkActive="active">Go to Login page</a>
         </div>
 
         <div *ngIf="error" class="alert alert-danger">
-            {{error}}
+            {{error | json}}
         </div>
     </form>
 </div>

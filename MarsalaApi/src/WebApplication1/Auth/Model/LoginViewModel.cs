@@ -5,9 +5,10 @@ namespace WebApplication1.Auth.Model
     public class LoginViewModel
     {
         [Required]
-		[EmailAddress]
-		[Display(Name = "Email")]
-		public string Email { get; set; }
+        [MinLength(4)]
+        [MaxLength(15)]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -19,7 +20,13 @@ namespace WebApplication1.Auth.Model
 
 	public class RegisterViewModel
 	{
-		[Required]
+        [Required]
+        [MinLength(4)]
+        [MaxLength(15)]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
+        [Required]
 		[EmailAddress]
 		[Display(Name = "Email")]
 		public string Email { get; set; }

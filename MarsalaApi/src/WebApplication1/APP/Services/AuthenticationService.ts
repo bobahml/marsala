@@ -9,8 +9,8 @@ export class AuthenticationService {
     constructor(private http: HttpService, private contextStore: ContextStore) {
     }
 
-    login(username: string, password: string): Promise<boolean> {
-        var loginRequest: User = { username: username, password: password };
+    login(userName: string, password: string): Promise<boolean> {
+        var loginRequest: User = { UserName: userName, Password: password };
 
         return this.http.post<IUserToken>("account/login", loginRequest)
             .then(data => {
@@ -29,19 +29,13 @@ export class AuthenticationService {
         this.contextStore.clear();
     }
 
-	register(model: RegisterUser): Promise<boolean> {
-
-		return this.http.post<IUserToken>("account/login", model)
+    register(model: RegisterUser): Promise<void> {
+        console.log(model);
+        return this.http.post<IUserToken>("account/register", model)
 			.then(data => {
 				if (data.token) {
 					this.contextStore.setCurrentUser(data);
-					return true;
 				}
-				return false;
-			})
-			.catch(error => {
-				return false;
 			});
-		
 	}
 }

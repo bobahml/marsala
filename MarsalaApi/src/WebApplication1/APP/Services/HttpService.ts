@@ -71,8 +71,11 @@ export class HttpService {
         return res.json() || {};
     }
 
-    private handleError(error: any): any {
+    private handleError(error: Response): any {
         console.error("An error occurred", error);
-        return Promise.reject(error.message || error);
+        if (error.status == 400) {
+            return Promise.reject(error.json());
+        }
+        return Promise.reject(error.statusText);
     }
 }

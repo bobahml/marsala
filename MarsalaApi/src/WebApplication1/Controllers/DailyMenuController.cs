@@ -33,7 +33,8 @@ namespace WebApplication1.Controllers
 
 		[HttpPost]
 		[Route("uploadByEmail")]
-		public IActionResult UploadByEmail()
+        [ProducesResponseType(typeof(DailyMenu[]), 200)]
+        public IActionResult UploadByEmail()
 		{
 			var file = _mailWorker.GetLastSupportedAttachment(null);
 			if (file == null) //No fresh messages to parse

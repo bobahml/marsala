@@ -1,18 +1,18 @@
 ﻿export class User {
-    username: string;
-    password: string;
+    UserName: string;
+    Password: string;
 }
 
 export interface RegisterUser {
-    username: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
+    UserName: string;
+    Email: string;
+    Password: string;
+    ConfirmPassword: string;
 }
 
 
 export interface IUserToken {
-    username: string;
+    userName: string;
     email: string;
     token: string;
 }

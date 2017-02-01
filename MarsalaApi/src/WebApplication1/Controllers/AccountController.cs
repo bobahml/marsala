@@ -31,15 +31,14 @@ namespace WebApplication1.Controllers
 
 
 		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Register(RegisterViewModel model)
+        [Route("register")]
+        [AllowAnonymous]
+		public async Task<IActionResult> Register([FromBody]RegisterViewModel model)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-
-			var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+			var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
 			var result = await _userManager.CreateAsync(user, model.Password);
 			if (result.Succeeded)
 			{
@@ -82,7 +81,7 @@ namespace WebApplication1.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
 
-			var user = await _userManager.FindByNameAsync(model.Email);
+			var user = await _userManager.FindByNameAsync(model.UserName);
 			if (user != null)
 			{
 				if (!await _userManager.IsEmailConfirmedAsync(user))
@@ -92,10 +91,10 @@ namespace WebApplication1.Controllers
 				}
 			}
 
-			var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+			var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
 			if (result.Succeeded)
 			{
-				_logger.LogInformation($"User {model.Email} logged in.");
+				_logger.LogInformation($"User {model.UserName} logged in.");
 				return Ok(new UserViewModel { Token = "asdasdasdas" });
 			}
 			if (result.IsLockedOut)

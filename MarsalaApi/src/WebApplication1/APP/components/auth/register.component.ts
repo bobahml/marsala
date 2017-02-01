@@ -10,7 +10,7 @@ import { RegisterUser } from "../../models/user"
 export class RegisterComponent implements OnInit {
     public user: RegisterUser;
     public registrationCompleted: boolean;
-    public error: string;
+    public error: JSON;
 
     constructor(private authenticationService: AuthenticationService) { }
 
@@ -24,10 +24,10 @@ export class RegisterComponent implements OnInit {
     private resetState() {
         this.error = null;
         this.user = {
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
+            UserName: '',
+            Email: '',
+            Password: '',
+            ConfirmPassword: ''
         }
     }
 
