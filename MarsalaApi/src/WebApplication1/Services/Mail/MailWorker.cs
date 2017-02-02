@@ -83,7 +83,6 @@ namespace WebApplication1.Services.Mail
 					smtpClient.Send(mail);
 				}
 
-
 				if (string.IsNullOrEmpty(_mailSettings.CopyToFolder))
 					return;
 

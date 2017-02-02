@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApplication1.Auth.Model;
 using WebApplication1.Services.Mail;
+using Microsoft.AspNetCore.Hosting;
 
 namespace WebApplication1.Controllers
 {
@@ -17,13 +18,13 @@ namespace WebApplication1.Controllers
 		private readonly IMailWorker _mailWorker;
 		private readonly ILogger _logger;
 
-		public AccountController(
-			UserManager<ApplicationUser> userManager,
+        public AccountController(
+            UserManager<ApplicationUser> userManager,
 			SignInManager<ApplicationUser> signInManager,
 			IMailWorker mailWorker,
 			ILoggerFactory loggerFactory)
 		{
-			_userManager = userManager;
+            _userManager = userManager;
 			_signInManager = signInManager;
 			_mailWorker = mailWorker;
 			_logger = loggerFactory.CreateLogger<AccountController>();
@@ -46,8 +47,17 @@ namespace WebApplication1.Controllers
 				var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, HttpContext.Request.Scheme);
 				_mailWorker.SendEmail(model.Email, "Confirm your account", $"Please confirm your account by clicking this link: <a href=\"{callbackUrl}\">link</a>");
 				_logger.LogInformation($"User created a new account {model.Email} with password.");
-			}
-			return Ok();
+                return Ok();
+            }
+            else
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.Code, item.Description);
+                }
+                return BadRequest(ModelState);
+            }
+
 		}
 
 		[HttpGet]
@@ -65,16 +75,18 @@ namespace WebApplication1.Controllers
 			var res = await _userManager.ConfirmEmailAsync(user, code);
 			if (!res.Succeeded)
 			{
-				ModelState.AddModelError(string.Empty, "Invalid user code.");
-				return BadRequest(ModelState);
-			}
-			return Redirect(Url.Content("index.html"));
+                foreach (var item in res.Errors)
+                {
+                    ModelState.AddModelError(item.Code, item.Description);
+                }
+                return BadRequest(ModelState);
+            }
+			return LocalRedirect($"~/");
 		}
 
 
-
-		[Route("Login")]
-		[HttpPost]
+        [HttpPost]
+        [Route("Login")]
 		[AllowAnonymous]
 		public async Task<IActionResult> Login([FromBody]LoginViewModel model)
 		{
@@ -89,24 +101,22 @@ namespace WebApplication1.Controllers
 					ModelState.AddModelError(string.Empty, "You must have a confirmed email to log in.");
 					return BadRequest(ModelState);
 				}
-			}
 
-			var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
-			if (result.Succeeded)
-			{
-				_logger.LogInformation($"User {model.UserName} logged in.");
-				return Ok(new UserViewModel { Token = "asdasdasdas" });
-			}
-			if (result.IsLockedOut)
-			{
-				_logger.LogWarning("User account locked out.");
-				return Unauthorized();
-			}
-			else
-			{
-				ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-				return BadRequest(ModelState);
-			}
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"User {model.UserName} logged in.");
+                    return Ok(new UserViewModel { Token = "asdasdasdas" });
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("User account locked out.");
+                    return Unauthorized();
+                }
+            }
+    
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return BadRequest(ModelState);
 		}
 
 		[HttpPost]

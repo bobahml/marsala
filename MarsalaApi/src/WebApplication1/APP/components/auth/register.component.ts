@@ -8,9 +8,9 @@ import { RegisterUser } from "../../models/user"
 })
 
 export class RegisterComponent implements OnInit {
-    public user: RegisterUser;
-    public registrationCompleted: boolean;
-    public error: JSON;
+    user: RegisterUser;
+    registrationCompleted: boolean;
+    error: JSON;
 
     constructor(private authenticationService: AuthenticationService) { }
 
@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
         }
     }
 
-    save(event) {
+    save(event: Event) {
         event.preventDefault();
         this.authenticationService.register(this.user)
             .then(o => {

@@ -1,5 +1,5 @@
 ﻿<div class="container">
-    <h1>Register user</h1>
+    <h1>Create a new account</h1>
     <form #f="ngForm" novalidate (ngSubmit)="save($event);">
         <div class="form-group">
             <label for="">Username</label>
@@ -34,9 +34,9 @@
             </small>
         </div>
 
-        <button [disabled]="f.form.invalid" type="submit" class="btn btn-default">Submit</button>
+        <button [disabled]="f.form.invalid" type="submit" class="btn btn-default">Create Account</button>
        
-        <a routerLink="/login" routerLinkActive="active">Go to Login page</a>
+        <a routerLink="login" routerLinkActive="active">Log In to Existing Account</a>
 
         <div *ngIf="registrationCompleted" class="alert alert-info">
             <label>Please check your email to complete registration</label>

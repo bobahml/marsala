@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { User } from '../../models/user'
 import { AuthenticationService } from '../../Services/AuthenticationService';
@@ -10,30 +10,25 @@ import { AuthenticationService } from '../../Services/AuthenticationService';
 })
 
 export class LoginComponent implements OnInit {
-	model = new User();
-	error = "";
-    loading = false;
-    returnUrl: string;
+	user = new User();
+    error: JSON;
 
     constructor(
-        private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService) { }
 
     ngOnInit() {
         this.authenticationService.logout();
-        this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "";
     }
 
-    login() {
-        this.loading = true;
-        this.authenticationService.login(this.model.UserName, this.model.Password)
+    login(event: Event) {
+        event.preventDefault();
+        this.authenticationService.login(this.user.UserName, this.user.Password)
             .then(o => {
-                this.router.navigate([this.returnUrl]);
+                this.router.navigate(["makeAnOrder"]);
             })
             .catch(error => {
                 error = error;
-                this.loading = false;
             });
     }
 }

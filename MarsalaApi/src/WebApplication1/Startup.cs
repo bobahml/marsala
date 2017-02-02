@@ -3,7 +3,6 @@ using Common.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -43,7 +42,7 @@ namespace WebApplication1
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
+            app.UseIdentity();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -81,9 +80,12 @@ namespace WebApplication1
 
         private void SetupAuthentificationServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddEntityFramework()
                 .AddEntityFrameworkSqlite()
-                .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
+
+            DbInitializer.Initialize(connectionString);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -113,13 +115,5 @@ namespace WebApplication1
             
         }
 
-        private static SqliteConnection GetCs()
-        {
-            var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "MyDb.db" };
-            var connectionString = connectionStringBuilder.ToString();
-            var connection = new SqliteConnection(connectionString);
-
-            return connection;
-        }
     }
 }
