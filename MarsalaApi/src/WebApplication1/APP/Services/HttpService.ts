@@ -33,6 +33,15 @@ export class HttpService {
             .catch(this.handleError);
     }
 
+    postEmpty(url: string, object: any): Promise<boolean> {
+        const options: RequestOptions = this.getRequestOptions(object);
+
+        return this.http.post(`${SETTINGS.apiUrl}${url}`, options.body, options)
+            .toPromise()
+            .then(o => true)
+            .catch(this.handleError);
+    }
+
     get<T>(url: string): Promise<T> {
 
         const options: RequestOptions = this.getRequestOptions();

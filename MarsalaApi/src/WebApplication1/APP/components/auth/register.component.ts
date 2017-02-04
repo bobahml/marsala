@@ -35,10 +35,12 @@ export class RegisterComponent implements OnInit {
         event.preventDefault();
         this.authenticationService.register(this.user)
             .then(o => {
+                console.log("register Completed");
                 this.registrationCompleted = true;
                 this.resetState();
             })
             .catch(error => {
+                console.log("register error");
                 this.error = error;
                 this.registrationCompleted = false;
             });

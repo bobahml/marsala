@@ -1,5 +1,4 @@
 ﻿using System;
-using Common.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -8,11 +7,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Common.Services;
 using WebApplication1.Auth.Model;
 using WebApplication1.DAL;
 using WebApplication1.Services;
 using WebApplication1.Services.Mail;
-
+using WebApplication1.Auth;
 
 namespace WebApplication1
 {
@@ -32,7 +32,7 @@ namespace WebApplication1
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IAuthService authService)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddAzureWebAppDiagnostics(); // for default setting.
@@ -42,7 +42,9 @@ namespace WebApplication1
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseIdentity();
+
+            app.UseJwtBearerAuthentication(authService.GetBearerOptions());
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -52,6 +54,7 @@ namespace WebApplication1
 
             app.UseSignalR("/signalr");
         }
+            
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
@@ -62,7 +65,11 @@ namespace WebApplication1
 
             // Configure MailSettings using a sub-section of the appsettings.json file
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddSingleton<IMailWorker, MailWorker>();
 
+            services.Configure<AuthOptions>(Configuration.GetSection("AuthOptions"));
+            services.AddSingleton<IAuthService, AuthService>();
+            
             // Add framework services.
             services.AddMvc();
             services.AddSignalR();
@@ -73,12 +80,11 @@ namespace WebApplication1
             services.AddSingleton<IMenuService, MenuService>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IClientInterationService, ClientInterationService>();
-            services.AddSingleton<IMailWorker, MailWorker>();
 
-            SetupAuthentificationServices(services);
+            SetupIdentityServices(services);
         }
 
-        private void SetupAuthentificationServices(IServiceCollection services)
+        private void SetupIdentityServices(IServiceCollection services)
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddEntityFramework()
@@ -112,8 +118,6 @@ namespace WebApplication1
                 // User settings
                 options.User.RequireUniqueEmail = true;
             });
-            
         }
-
     }
 }

@@ -29,13 +29,7 @@ export class AuthenticationService {
         this.contextStore.clear();
     }
 
-    register(model: RegisterUser): Promise<void> {
-        console.log(model);
-        return this.http.post<IUserToken>("account/register", model)
-			.then(data => {
-				if (data.token) {
-					this.contextStore.setCurrentUser(data);
-				}
-			});
+    register(model: RegisterUser): Promise<boolean> {
+        return this.http.postEmpty("account/register", model);
 	}
 }
