@@ -18,10 +18,8 @@ import { EqualValidator } from "./Directives/EqualValidator";
 import { AuthGuard } from "./Services/AuthGuard";
 
 
-import { CookieService } from "angular2-cookie/core";
 import { SignalRService } from "./Services/SignalRService";
 import { HttpService } from "./Services/HttpService";
-import { FileUploadService } from "./Services/FileUploadService";
 import { AuthenticationService } from "./Services/AuthenticationService";
 import { ContextStore } from "./shared/ContextStore";
 
@@ -72,9 +70,7 @@ const routing = RouterModule.forRoot(appRoutes, routeConfig);
         ContextStore,
       
         SignalRService,
-        HttpService,
-        FileUploadService,
-        CookieService
+        HttpService
     ],
     
     bootstrap: [AppComponent]

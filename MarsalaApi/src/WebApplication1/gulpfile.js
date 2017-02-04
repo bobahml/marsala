@@ -22,7 +22,6 @@ gulp.task("scriptsNStyles", () => {
             'rxjs/**',
             'zone.js/dist/**',
             '@angular/**',
-            'angular2-cookie/**',
             'signalr/jquery.signalR.min.js',
             "jquery/dist/jquery.min.js",
             'bootstrap/dist/js/bootstrap.*js'

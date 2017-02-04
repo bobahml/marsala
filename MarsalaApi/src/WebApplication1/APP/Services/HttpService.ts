@@ -52,6 +52,45 @@ export class HttpService {
             .catch(this.handleError);
     }
 
+    /**
+     * Upload files through XMLHttpRequest
+     *
+     * @param url
+     * @param files
+     * @returns {Promise<T>}
+     */
+    upload<T>(url: string, files: File[]): Promise<T> {
+        return new Promise((resolve, reject) => {
+            var xhr: XMLHttpRequest = new XMLHttpRequest();
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        const result: T = JSON.parse(xhr.response);
+                        resolve(result);
+                    } else {
+                        reject(xhr.response);
+                    }
+                }
+            };
+
+            var formData: FormData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append(files[i].name, files[i], files[i].name);
+            }
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Accept", "application/json");
+            var token: string = this.contextStore.getToken();
+            if (token) {
+                xhr.setRequestHeader("Authorization", "Bearer " + token);
+            }
+            xhr.send(formData);
+        });
+    }
+
+
+
+
     private getHeaders(): Headers {
         const headers: Headers = new Headers();
         headers.append("Content-Type", "application/json");
@@ -61,7 +100,6 @@ export class HttpService {
         if (token) {
             headers.append("Authorization", "Bearer " + token);
         }
-
         return headers;
     }
 

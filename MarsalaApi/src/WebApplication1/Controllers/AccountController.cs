@@ -10,7 +10,6 @@ using System.Security.Claims;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
@@ -98,50 +97,41 @@ namespace WebApplication1.Controllers
                 return BadRequest(ModelState);
 
             var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user != null)
+            if (user == null)
             {
-                if (!await _userManager.IsEmailConfirmedAsync(user))
-                {
-                    ModelState.AddModelError(string.Empty, "You must have a confirmed email to log in.");
-                    return BadRequest(ModelState);
-                }
-
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation($"User {model.UserName} logged in.");
-
-                    var identity = await GetIdentity(user);
-                    var jwt = _authService.GenerateToken(identity);
-
-                    return Ok(new UserViewModel { Token = jwt });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return Unauthorized();
-                }
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return BadRequest(ModelState);
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return BadRequest(ModelState);
-        }
-
-
-        private async Task<ClaimsIdentity> GetIdentity(ApplicationUser user)
-        {
-            ClaimsIdentity identity = new ClaimsIdentity("JWT", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
-            identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
+            if (!await _userManager.IsEmailConfirmedAsync(user))
             {
-                identity.AddClaim(new Claim(ClaimTypes.Role, role));
+                ModelState.AddModelError(string.Empty, "You must have a confirmed email to log in.");
+                return BadRequest(ModelState);
             }
 
-            return identity;
+            if (_userManager.SupportsUserLockout && await _userManager.IsLockedOutAsync(user))
+            {
+                ModelState.AddModelError(string.Empty, "The specified user cannot sign in.");
+                return BadRequest(ModelState);
+            }
+            
+            if (!await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                _logger.LogWarning("User account locked out.");
+                return Unauthorized();
+            }
+
+            _logger.LogInformation($"User {model.UserName} logged in.");
+
+            if (_userManager.SupportsUserLockout)
+            {
+                await _userManager.ResetAccessFailedCountAsync(user);
+            }
+
+            // Create the principal
+            var principal = await _signInManager.CreateUserPrincipalAsync(user);
+            var jwt = _authService.GenerateToken(principal.Claims);
+            return Ok(new UserViewModel { UserId=user.Id, UserName = user.UserName, Email = user.Email, Token = jwt });
         }
 
         [HttpPost]

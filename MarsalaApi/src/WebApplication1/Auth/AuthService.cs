@@ -5,12 +5,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
+using System.Collections.Generic;
 
 namespace WebApplication1.Auth
 {
     public interface IAuthService
     {
-        string GenerateToken(ClaimsIdentity identity);
+        string GenerateToken(IEnumerable<Claim> claims);
         SymmetricSecurityKey GetSymmetricSecurityKey();
         JwtBearerOptions GetBearerOptions();
     }
@@ -24,14 +25,14 @@ namespace WebApplication1.Auth
             _authOptions = options.Value;
         }
 
-        public string GenerateToken(ClaimsIdentity identity)
+        public string GenerateToken(IEnumerable<Claim> claims)
         {
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
                            issuer: _authOptions.Issuer,
                            audience: _authOptions.Audience,
                            notBefore: now,
-                           claims: identity.Claims,
+                           claims: claims,
                            expires: now.Add(TimeSpan.FromMinutes(_authOptions.Lifetime)),
                            signingCredentials: new SigningCredentials(GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);

@@ -13,6 +13,8 @@ using WebApplication1.DAL;
 using WebApplication1.Services;
 using WebApplication1.Services.Mail;
 using WebApplication1.Auth;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace WebApplication1
 {
@@ -69,9 +71,16 @@ namespace WebApplication1
 
             services.Configure<AuthOptions>(Configuration.GetSection("AuthOptions"));
             services.AddSingleton<IAuthService, AuthService>();
-            
+
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                             .RequireAuthenticatedUser()
+                             .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
+
             services.AddSignalR();
 
             services.AddLogging();

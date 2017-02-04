@@ -1,65 +1,65 @@
 ﻿import { Component, OnInit, EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
-import { CookieService } from "angular2-cookie/core";
 
 import { IOrder } from "./Models/order";
 import { PushNotificationComponent } from "./components/notification.component";
 import { SignalRService } from "./Services/SignalRService";
+import { ContextStore } from "./Shared/ContextStore";
 
 @Component({
     selector: "my-app",
     templateUrl: "./app/app.component.html",
+    providers: [ContextStore]
 })
 
 
 export class AppComponent implements OnInit {
 
-	constructor(private signalRService: SignalRService, private cookieService: CookieService, private router: Router) {
-	}
+    constructor(private signalRService: SignalRService, private router: Router, private contextStore: ContextStore) {
+    }
 
 
-	ngOnInit() {
-		this.subscribeToEvents();
-	}
+    ngOnInit() {
+        this.subscribeToEvents();
+    }
 
-	private showNotification(title: string, body: string, click: () => any) {
+    private showNotification(title: string, body: string, click: () => any) {
 
-		const notificationComponent = new PushNotificationComponent();
+        const notificationComponent = new PushNotificationComponent();
 
-		if (notificationComponent.checkCompatibility()) {
+        if (notificationComponent.checkCompatibility()) {
 
-			notificationComponent.title = title;
-			notificationComponent.body = body;
-			notificationComponent.icon = "favicon.ico";
+            notificationComponent.title = title;
+            notificationComponent.body = body;
+            notificationComponent.icon = "favicon.ico";
 
-			notificationComponent.onClick.subscribe(e => {
-				if (e.notification) {
-					notificationComponent.close(e.notification);
-				}
+            notificationComponent.onClick.subscribe(e => {
+                if (e.notification) {
+                    notificationComponent.close(e.notification);
+                }
 
-				if (click) {
-					click();
-				}
-			});
-			
-			notificationComponent.show();
-		}
-	}
+                if (click) {
+                    click();
+                }
+            });
 
-	private subscribeToEvents(): void {
+            notificationComponent.show();
+        }
+    }
 
-		this.signalRService.orderUpdated.subscribe((order: IOrder) => {
+    private subscribeToEvents(): void {
 
-			if (order.UserName === this.cookieService.get("userName")) {
-				return;
-			}
-			this.showNotification("List of orders changed.", `${order.UserName} just made an order.`, () => this.router.navigate(["summary"]));
-		});
+        this.signalRService.orderUpdated.subscribe((order: IOrder) => {
+            var user = this.contextStore.getCurrentUser();
+            if (order.UserName !== user.userName) {
+                this.showNotification("List of orders changed.", `${order.UserName} just made an order.`, () => this.router.navigate(["summary"]));
+            }
+        });
 
 
-		this.signalRService.foodchanged.subscribe(() => {
-			this.showNotification("Menu file uploaded.", "New menu file uploaded.", () => this.router.navigate([""]));
-		});
-	}
+        this.signalRService.foodchanged.subscribe(() => {
+            this.showNotification("Menu file uploaded.", "New menu file uploaded.", () => this.router.navigate([""]));
+        });
+    }
 
 }

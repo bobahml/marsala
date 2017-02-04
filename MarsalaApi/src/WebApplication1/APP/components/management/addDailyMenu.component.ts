@@ -21,9 +21,11 @@ export class AddDailyMenuComponent implements OnInit  {
         this.startDate = this.dateToString(new Date());
     }
 
-    onChange(event: any) {
-		const target = event.target || event.srcElement;
-		const fileList: FileList = target.files;
+    onChange(event: EventTarget) {
+
+        let eventObj: MSInputMethodContext = <MSInputMethodContext>event;
+        let target: HTMLInputElement = <HTMLInputElement>eventObj.target;
+        let fileList: FileList = target.files;
 
         if (fileList == null || fileList.length !== 1) {
             return;

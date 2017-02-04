@@ -22,7 +22,6 @@
             // other libraries
             'rxjs': 'npm:rxjs',
 
-            'angular2-cookie': "npm:angular2-cookie",
             "signalR": "npm:signalr/jquery.signalR.min.js",
             "jquery": "npm:jquery/dist/jquery.min.js"
         },
@@ -33,7 +32,6 @@
             'app': {main: './main.js', defaultExtension: 'js'},
             'rxjs': {defaultExtension: 'js'},
 
-            'angular2-cookie': { main: "core.js", defaultExtension: "js" },
             'jquery': { defaultExtension: "js" },
             'signalR': { defaultExtension: "js" }
         }

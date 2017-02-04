@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { CookieService} from "angular2-cookie/core";
 
+import { ContextStore } from "../../Shared/ContextStore";
 import { OrderService } from "../../Services/OrderService";
 import { MenuService } from "../../Services/MenuService";
 import { IDailyMenu } from "../../Models/dailyMenu";
@@ -12,14 +12,14 @@ import { Product } from "../../Models/product";
 @Component({
     selector: "make-order",
     templateUrl: "./app/components/makeAnOrder/makeAnOrder.component.html",
-    providers: [OrderService, MenuService, CookieService]
+    providers: [OrderService, MenuService, ContextStore]
 })
 export class MakeAnOrderComponent implements OnInit {
 
     constructor(
         private orderService: OrderService,
 		private menuService: MenuService,
-        private cookieService: CookieService,
+        private contextStore: ContextStore,
         private router: Router
     ) {
     }
@@ -35,7 +35,8 @@ export class MakeAnOrderComponent implements OnInit {
     snacks: Product = new Product("Snacks");
 
     ngOnInit() {
-        this.userName = this.cookieService.get("userName");
+        var user = this.contextStore.getCurrentUser();
+        this.userName = user.userName;
         this.getDailyMenu();
     }
 
@@ -50,10 +51,6 @@ export class MakeAnOrderComponent implements OnInit {
 
     makeAnOrder() {
 
-		this.userName = this.userName.replace(/[^A-ZА-Я0-9 ]/gi, "").trim();
-
-		this.saveUserName(this.userName);
-
         const order = new Order();
         order.UserName = this.userName ? this.userName : "Unknown";
         order.Salad = this.salad.value;
@@ -67,17 +64,6 @@ export class MakeAnOrderComponent implements OnInit {
             .catch(error => this.header = error.messsage || error);
 
     }
-
-
-	private saveUserName(userName: string) {
-
-		if (userName) {
-			const expires = new Date();
-			expires.setDate(new Date().getDate() + 10);
-			this.cookieService.put("userName", userName, { expires: expires });
-		}
-
-	}
 
     private getDailyMenu() {
 
