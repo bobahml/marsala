@@ -1,22 +1,26 @@
-﻿import { Injectable } from "@angular/core";
+﻿import { Injectable, EventEmitter } from "@angular/core";
 import { IUserToken } from "../Models/user";
 
 @Injectable()
 export class ContextStore {
     private currentUser: IUserToken;
+    userChanged: EventEmitter<IUserToken> = new EventEmitter<IUserToken>();
 
     constructor() {
         this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
     }
 
     setCurrentUser(user: IUserToken) {
-        this.currentUser = user;
+
         localStorage.setItem("currentUser", JSON.stringify(user));
+        this.currentUser = user;
+        this.userChanged.emit(this.currentUser);
     }
 
-    clear() {
-        this.currentUser = null;
+    clearCurrentUser() {
         localStorage.removeItem("currentUser");
+        this.currentUser = null;
+        this.userChanged.emit(this.currentUser);
     }
 
     getCurrentUser(): IUserToken   {

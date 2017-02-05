@@ -19,14 +19,11 @@ export class AuthenticationService {
                     return true;
                 }
                 return false;
-            })
-            .catch(error => {
-                return false;
             });
     }
 
     logout(): void {
-        this.contextStore.clear();
+        this.contextStore.clearCurrentUser();
     }
 
     register(model: RegisterUser): Promise<boolean> {

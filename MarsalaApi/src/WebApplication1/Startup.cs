@@ -15,6 +15,7 @@ using WebApplication1.Services.Mail;
 using WebApplication1.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Linq;
 
 namespace WebApplication1
 {
@@ -44,6 +45,25 @@ namespace WebApplication1
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            //SignalR authorization info passing
+            app.Use((context, next) =>
+            {
+                if (context.Request.Path.StartsWithSegments("/signalr") && string.IsNullOrWhiteSpace(context.Request.Headers["Authorization"]))
+                {
+                    if (context.Request.QueryString.HasValue)
+                    {
+                        var authInfo = context.Request.QueryString.Value.Split('&').FirstOrDefault(x => x.Contains("authorization"));
+                        var token = authInfo?.Split('=')[1];
+
+                        if (!string.IsNullOrWhiteSpace(token))
+                        {
+                            context.Request.Headers.Add("Authorization", new[] { $"Bearer {token}" });
+                        }
+                    }
+                }
+                return next.Invoke();
+            });
 
             app.UseJwtBearerAuthentication(authService.GetBearerOptions());
 

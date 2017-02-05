@@ -12,6 +12,7 @@ export interface RegisterUser {
 
 
 export interface IUserToken {
+    userId: string;
     userName: string;
     email: string;
     token: string;

@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(["makeAnOrder"]);
             })
             .catch(error => {
-                error = error;
+                this.error = error;
             });
     }
 }

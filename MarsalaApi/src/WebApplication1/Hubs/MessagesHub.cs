@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.SignalR.Hubs;
 
 namespace WebApplication1.Hubs
 {
-	[HubName("messages")]
+    [Authorize]
+    [HubName("messages")]
 	public class MessagesHub : Hub
 	{
 		public void NewOrder(Order chatMessage)
