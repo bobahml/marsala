@@ -4,17 +4,18 @@ import { IUserToken } from "../Models/user";
 @Injectable()
 export class ContextStore {
     private currentUser: IUserToken;
-    userChanged: EventEmitter<IUserToken> = new EventEmitter<IUserToken>();
+    userChanged: EventEmitter<IUserToken>;
 
-    constructor() {
+	constructor() {
+		console.log("ContextStore created");
+	    this.userChanged = new EventEmitter<IUserToken>();
         this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
     }
 
     setCurrentUser(user: IUserToken) {
-
         localStorage.setItem("currentUser", JSON.stringify(user));
-        this.currentUser = user;
-        this.userChanged.emit(this.currentUser);
+		this.currentUser = user;
+		this.userChanged.emit(this.currentUser);
     }
 
     clearCurrentUser() {

@@ -1,12 +1,13 @@
-﻿import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+﻿import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
-import { User } from '../../models/user'
-import { AuthenticationService } from '../../Services/AuthenticationService';
+import { User } from "../../models/user"
+import { AuthenticationService } from "../../Services/AuthenticationService";
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'login.component.html'
+	templateUrl: "login.component.html",
+	providers: [AuthenticationService]
 })
 
 export class LoginComponent implements OnInit {

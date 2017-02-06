@@ -10,9 +10,9 @@ export class AuthenticationService {
     }
 
     login(userName: string, password: string): Promise<boolean> {
-        var loginRequest: User = { UserName: userName, Password: password };
+	    const loginRequest: User = { UserName: userName, Password: password };
 
-        return this.http.post<IUserToken>("account/login", loginRequest)
+	    return this.http.post<IUserToken>("account/login", loginRequest)
             .then(data => {
                 if (data.token) {
                     this.contextStore.setCurrentUser(data);
@@ -20,9 +20,9 @@ export class AuthenticationService {
                 }
                 return false;
             });
-    }
+	}
 
-    logout(): void {
+	logout(): void {
         this.contextStore.clearCurrentUser();
     }
 

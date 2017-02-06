@@ -4,7 +4,8 @@ import { RegisterUser } from "../../models/user"
 
 @Component({
     moduleId: module.id,
-    templateUrl: "register.component.html"
+	templateUrl: "register.component.html",
+	providers: [AuthenticationService]
 })
 
 export class RegisterComponent implements OnInit {
@@ -16,7 +17,7 @@ export class RegisterComponent implements OnInit {
 
 
     ngOnInit() {
-        this.registrationCompleted = false
+	    this.registrationCompleted = false;
         this.resetState();
     }
 

@@ -1,4 +1,4 @@
-﻿<nav class="navbar navbar-default navbar-static-top">
+﻿<nav *ngIf="isAuthorizationPassed" class="navbar navbar-default navbar-static-top">
     <div class="navbar-header">
         <ul class="nav navbar-nav">
             <li [routerLinkActive]="['active']"><a [routerLink]="['/management']">Management</a></li>

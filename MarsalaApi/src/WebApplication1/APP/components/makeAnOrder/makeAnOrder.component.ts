@@ -12,7 +12,7 @@ import { Product } from "../../Models/product";
 @Component({
     selector: "make-order",
     templateUrl: "./app/components/makeAnOrder/makeAnOrder.component.html",
-    providers: [OrderService, MenuService, ContextStore]
+    providers: [OrderService, MenuService]
 })
 export class MakeAnOrderComponent implements OnInit {
 
@@ -35,8 +35,11 @@ export class MakeAnOrderComponent implements OnInit {
     snacks: Product = new Product("Snacks");
 
     ngOnInit() {
-        var user = this.contextStore.getCurrentUser();
-        this.userName = user.userName;
+		const user = this.contextStore.getCurrentUser();
+		if (user) {
+			this.userName = user.userName;
+	    }
+       
         this.getDailyMenu();
     }
 

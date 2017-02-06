@@ -66,9 +66,8 @@ const routing = RouterModule.forRoot(appRoutes, routeConfig);
 
     providers: [
         AuthGuard,
-        AuthenticationService,
-        ContextStore,      
-        SignalRService,
+		ContextStore,
+		SignalRService, 
         HttpService
     ],
     
