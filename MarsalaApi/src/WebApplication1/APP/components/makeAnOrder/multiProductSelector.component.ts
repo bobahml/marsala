@@ -1,61 +1,38 @@
-﻿//Based on https://github.com/softsimon/angular-2-dropdown-multiselect
-
-import {Component, OnInit, HostListener, Input, ElementRef, Output, EventEmitter} from "@angular/core";
-import { Observable } from "rxjs/Observable";
+﻿// Based on https://github.com/softsimon/angular-2-dropdown-multiselect
+import { Component, OnInit, HostListener, Input, ElementRef, Output, EventEmitter } from "@angular/core";
 import { Product } from "../../Models/product";
 
-
 export interface IMultiSelectSettings {
-	pullRight?: boolean;
-	buttonClasses?: string;
-	selectionLimit?: number;
-	closeOnSelect?: boolean;
-	showCheckAll?: boolean;
-	showUncheckAll?: boolean;
-	dynamicTitleMaxItems?: number;
+    pullRight?: boolean;
+    buttonClasses?: string;
+    selectionLimit?: number;
+    closeOnSelect?: boolean;
+    showCheckAll?: boolean;
+    showUncheckAll?: boolean;
+    dynamicTitleMaxItems?: number;
     maxHeight?: string;
 }
 
 export interface IMultiSelectTexts {
-	checkAll?: string;
-	uncheckAll?: string;
-	checked?: string;
-	checkedPlural?: string;
-	defaultTitle?: string;
+    checkAll?: string;
+    uncheckAll?: string;
+    checked?: string;
+    checkedPlural?: string;
+    defaultTitle?: string;
 }
-
-
 
 @Component({
     selector: "multiselect-dropdown",
-	styles: ["a { outline: none; }"],
+    styles: ["a { outline: none; }"],
     templateUrl: "./app/components/makeAnOrder/multiProductSelector.component.html"
 })
-
 export class MultiselectDropdown implements OnInit {
-	@Input() product: Product;
+    title: string;
+    @Input() product: Product;
     @Input() settings: IMultiSelectSettings;
     @Input() texts: IMultiSelectTexts;
     @Output() selectionLimitReached = new EventEmitter();
-    @HostListener("document: click", ["$event.target"])
 
-
-	onClick(target) {
-        let parentFound = false;
-        while (target !== null && !parentFound) {
-            if (target === this.element.nativeElement) {
-                parentFound = true;
-            }
-			if (target) {
-				target = target.parentElement; 
-	        }
-        }
-        if (!parentFound) {
-            this.isVisible = false;
-        }
-    }
-
-	title : string;
     private numSelected: number = 0;
     private isVisible: boolean = false;
     private defaultSettings: IMultiSelectSettings = {
@@ -86,11 +63,25 @@ export class MultiselectDropdown implements OnInit {
         this.updateNumSelected();
     }
 
+    @HostListener("document: click", ["$event.target"])
+    onClick(target) {
+        let parentFound = false;
+        while (target !== null && !parentFound) {
+            if (target === this.element.nativeElement) {
+                parentFound = true;
+            }
+            if (target) {
+                target = target.parentElement;
+            }
+        }
+        if (!parentFound) {
+            this.isVisible = false;
+        }
+    }
 
     toggleDropdown() {
         this.isVisible = !this.isVisible;
     }
-
 
     isSelected(option: string): boolean {
         return this.product.values.indexOf(option) > -1;
@@ -112,18 +103,18 @@ export class MultiselectDropdown implements OnInit {
         if (this.settings.closeOnSelect) {
             this.toggleDropdown();
         }
-		this.updateNumSelected();
+        this.updateNumSelected();
     }
 
     updateNumSelected() {
-		if (this.product && this.product.values) {
-			this.numSelected = this.product.values.length;
-		} else {
-				this.numSelected = 0;
-		}
+        if (this.product && this.product.values) {
+            this.numSelected = this.product.values.length;
+        } else {
+            this.numSelected = 0;
+        }
 
 
-		this.title = this.getTitle();
+        this.title = this.getTitle();
     }
 
     checkAll() {
@@ -135,8 +126,6 @@ export class MultiselectDropdown implements OnInit {
         this.product.values = [];
         this.updateNumSelected();
     }
-
-
 
     private getTitle() {
         if (this.numSelected === 0) {

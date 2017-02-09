@@ -3,11 +3,9 @@ export interface IDailyMenu {
     salad: string[];
     soup: string[];
     mainCourse: string[];
-    drink: string[]; 
-	snacks: string[];
+    drink: string[];
+    snacks: string[];
 }
-
-
 
 export class DailyMenu implements IDailyMenu {
     header: string;
@@ -15,7 +13,7 @@ export class DailyMenu implements IDailyMenu {
     soup: string[];
     mainCourse: string[];
     drink: string[];
-	snacks: string[];
+    snacks: string[];
 
     constructor(header: string, salad: string[], soup: string[], mainCourse: string[], drink: string[]) {
         this.header = header;
@@ -24,5 +22,4 @@ export class DailyMenu implements IDailyMenu {
         this.mainCourse = mainCourse;
         this.drink = drink;
     }
-
 }

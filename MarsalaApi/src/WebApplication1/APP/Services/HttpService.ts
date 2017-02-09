@@ -61,7 +61,7 @@ export class HttpService {
      */
     upload<T>(url: string, files: File[]): Promise<T> {
         return new Promise((resolve, reject) => {
-            var xhr: XMLHttpRequest = new XMLHttpRequest();
+            let xhr: XMLHttpRequest = new XMLHttpRequest();
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
@@ -73,14 +73,14 @@ export class HttpService {
                 }
             };
 
-            var formData: FormData = new FormData();
+            let formData: FormData = new FormData();
             for (let i = 0; i < files.length; i++) {
                 formData.append(files[i].name, files[i], files[i].name);
             }
 
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Accept", "application/json");
-            var token: string = this.contextStore.getToken();
+            let token: string = this.contextStore.getToken();
             if (token) {
                 xhr.setRequestHeader("Authorization", "Bearer " + token);
             }
@@ -96,7 +96,7 @@ export class HttpService {
         headers.append("Content-Type", "application/json");
         headers.append("Accept", "application/json");
 
-        var token: string = this.contextStore.getToken();
+        let token: string = this.contextStore.getToken();
         if (token) {
             headers.append("Authorization", "Bearer " + token);
         }
@@ -104,7 +104,7 @@ export class HttpService {
     }
 
     private getRequestOptions(object?: any): RequestOptions {
-        var body: string;
+        let body: string;
 
         if (object != null) {
             body = JSON.stringify(object);
@@ -120,7 +120,7 @@ export class HttpService {
 
     private handleError(error: Response): any {
         console.error("An error occurred", error);
-        if (error.status == 400) {
+        if (error.status === 400) {
             return Promise.reject(error.json());
         }
         return Promise.reject(error.statusText);

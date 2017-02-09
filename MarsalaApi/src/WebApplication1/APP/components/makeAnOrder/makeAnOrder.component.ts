@@ -4,8 +4,7 @@ import { Router } from "@angular/router";
 import { ContextStore } from "../../Shared/ContextStore";
 import { OrderService } from "../../Services/OrderService";
 import { MenuService } from "../../Services/MenuService";
-import { IDailyMenu } from "../../Models/dailyMenu";
-import { IOrder, Order } from "../../Models/order";
+import { Order } from "../../Models/order";
 import { Product } from "../../Models/product";
 
 
@@ -16,17 +15,7 @@ import { Product } from "../../Models/product";
 })
 export class MakeAnOrderComponent implements OnInit {
 
-    constructor(
-        private orderService: OrderService,
-		private menuService: MenuService,
-        private contextStore: ContextStore,
-        private router: Router
-    ) {
-    }
-
-
     userName: string;
-
     header: string = "Loading...";
     salad: Product = new Product("Salad");
     soup: Product = new Product("Soup");
@@ -34,12 +23,19 @@ export class MakeAnOrderComponent implements OnInit {
     drink: Product = new Product("Drink");
     snacks: Product = new Product("Snacks");
 
+    constructor(
+        private orderService: OrderService,
+        private menuService: MenuService,
+        private contextStore: ContextStore,
+        private router: Router
+    ) {}
+
     ngOnInit() {
-		const user = this.contextStore.getCurrentUser();
-		if (user) {
-			this.userName = user.userName;
-	    }
-       
+        const user = this.contextStore.getCurrentUser();
+        if (user) {
+            this.userName = user.userName;
+        }
+
         this.getDailyMenu();
     }
 
@@ -60,7 +56,7 @@ export class MakeAnOrderComponent implements OnInit {
         order.Soup = this.soup.value;
         order.MainCourse = this.mainCourse.value;
         order.Drink = this.drink.value;
-	    order.Snacks = this.snacks.values;
+        order.Snacks = this.snacks.values;
 
         this.orderService.makeAnOrder(order)
             .then(o => this.router.navigate(["summary"]))
@@ -79,7 +75,7 @@ export class MakeAnOrderComponent implements OnInit {
                     this.soup.setCollection(menu.soup);
                     this.mainCourse.setCollection(menu.mainCourse);
                     this.drink.setCollection(menu.drink);
-					this.snacks.setCollection(menu.snacks);
+                    this.snacks.setCollection(menu.snacks);
                 }
             })
             .catch(error => this.header = error.messsage || error);

@@ -29,12 +29,7 @@ export class ContextStore {
     }
 
     isLoggedIn(): boolean   {
-        if (this.currentUser && this.currentUser.token && this.currentUser.token.length > 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return this.currentUser && this.currentUser.token && this.currentUser.token.length > 0;
     }
 
     getToken(): string {

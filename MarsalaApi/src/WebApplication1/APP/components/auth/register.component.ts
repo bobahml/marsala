@@ -1,13 +1,12 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { AuthenticationService } from "../../Services/AuthenticationService";
-import { RegisterUser } from "../../models/user"
+import { RegisterUser } from "../../models/user";
 
 @Component({
     moduleId: module.id,
 	templateUrl: "register.component.html",
 	providers: [AuthenticationService]
 })
-
 export class RegisterComponent implements OnInit {
     user: RegisterUser;
     registrationCompleted: boolean;
@@ -25,11 +24,11 @@ export class RegisterComponent implements OnInit {
     private resetState() {
         this.error = null;
         this.user = {
-            UserName: '',
-            Email: '',
-            Password: '',
-            ConfirmPassword: ''
-        }
+            UserName: "",
+            Email: "",
+            Password: "",
+            ConfirmPassword: ""
+        };
     }
 
     save(event: Event) {

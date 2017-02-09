@@ -1,18 +1,18 @@
 ﻿export class Product {
 
+    header: string;
+    collection: string[];
+    value: string;
+    values: string[];
+
     constructor(productType: string) {
         this.header = productType;
     }
 
-    header: string;
-    collection: string[];
-    value: string;
-	values: string[];
-
     setCollection(coll: string[]) {
         this.collection = coll;
         this.value = this.firsOrEmpty(this.collection);
-		this.values = [];
+        this.values = [];
     }
 
     private firsOrEmpty(coll: string[]): string {

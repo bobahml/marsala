@@ -1,24 +1,20 @@
 ﻿export interface IOrder {
-    UserName: string; 
-
+    UserName: string;
     Salad: string;
     Soup: string;
     MainCourse: string;
     Drink: string;
-	Snacks: string[];
+    Snacks: string[];
 }
 
 export class Order implements IOrder {
     UserName: string;
-
     Salad: string;
     Soup: string;
     MainCourse: string;
     Drink: string;
-	Snacks: string[] = [];
+    Snacks: string[] = [];
 }
-
-
 
 export interface ICourse {
     name: string;
@@ -27,20 +23,20 @@ export interface ICourse {
 
 export interface ISummary {
     orders: IOrder[];
-	orderText: string;
+    orderText: string;
     Salad: ICourse[];
     Soup: ICourse[];
     MainCourse: ICourse[];
     Drink: ICourse[];
-	Snacks: ICourse[];
+    Snacks: ICourse[];
 }
 
 export class Summary {
     orders: IOrder[] = [];
-	orderText: string = "";
+    orderText: string = "";
     Salad: ICourse[] = [];
     Soup: ICourse[] = [];
     MainCourse: ICourse[] = [];
     Drink: ICourse[] = [];
-	Snacks: ICourse[] = [];
+    Snacks: ICourse[] = [];
 }

@@ -16,19 +16,13 @@ import { EqualValidator } from "./Directives/EqualValidator";
 
 
 import { AuthGuard } from "./Services/AuthGuard";
-
-
-import { SignalRService } from "./Services/SignalRService";
 import { HttpService } from "./Services/HttpService";
-import { AuthenticationService } from "./Services/AuthenticationService";
 import { ContextStore } from "./shared/ContextStore";
-
-
 import { Routes, ExtraOptions, RouterModule } from "@angular/router";
 
 const appRoutes: Routes = [
-	{ path: "login", component: LoginComponent },
-	{ path: "register", component: RegisterComponent },
+    { path: "login", component: LoginComponent },
+    { path: "register", component: RegisterComponent },
     { path: "makeAnOrder", component: MakeAnOrderComponent, canActivate: [AuthGuard] },
     { path: "management", component: AddDailyMenuComponent, canActivate: [AuthGuard] },
     { path: "summary", component: SummaryComponent, canActivate: [AuthGuard] },
@@ -40,10 +34,10 @@ const routeConfig: ExtraOptions = {
     useHash: true
 };
 
-const routing = RouterModule.forRoot(appRoutes, routeConfig);
+const routing = RouterModule.forRoot( appRoutes, routeConfig );
 
 
-@NgModule({
+@NgModule( {
     imports: [
         BrowserModule,
         FormsModule,
@@ -54,7 +48,7 @@ const routing = RouterModule.forRoot(appRoutes, routeConfig);
     declarations: [
         AppComponent,
         LoginComponent,
-		RegisterComponent,
+        RegisterComponent,
         MakeAnOrderComponent,
         CollectionSelectorComponent,
         MultiselectDropdown,
@@ -66,11 +60,10 @@ const routing = RouterModule.forRoot(appRoutes, routeConfig);
 
     providers: [
         AuthGuard,
-		ContextStore,
-		SignalRService, 
+        ContextStore,
         HttpService
     ],
-    
+
     bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
