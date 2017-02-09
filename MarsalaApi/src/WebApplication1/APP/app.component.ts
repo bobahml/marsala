@@ -6,41 +6,45 @@ import { IUserToken } from "./Models/user";
 import { PushNotificationComponent } from "./components/notification.component";
 import { SignalRService } from "./Services/SignalRService";
 import { ContextStore } from "./Shared/ContextStore";
+import { AuthGuard } from "./Services/AuthGuard";
 
-@Component( {
+
+@Component({
     selector: "my-app",
-    templateUrl: "./app/app.component.html",
-    providers: [SignalRService, ContextStore]
+    templateUrl: "./app/app.component.html"
 })
 export class AppComponent implements OnInit {
 
     isAuthorizationPassed: boolean;
+    private contextStore: ContextStore;
 
-    constructor( private signalRService: SignalRService,
+    constructor(private signalRService: SignalRService,
         private router: Router,
-        private contextStore: ContextStore ) { }
+        authGuard: AuthGuard) {
+        this.contextStore = authGuard.contextStore;
+    }
 
     ngOnInit() {
         this.subscribeToEvents();
         this.isAuthorizationPassed = this.contextStore.isLoggedIn();
     }
 
-    private showNotification( title: string, body: string, click: () => any ) {
+    private showNotification(title: string, body: string, click: () => any) {
 
         const notificationComponent = new PushNotificationComponent();
 
-        if ( notificationComponent.checkCompatibility() ) {
+        if (notificationComponent.checkCompatibility()) {
 
             notificationComponent.title = title;
             notificationComponent.body = body;
             notificationComponent.icon = "favicon.ico";
 
-            notificationComponent.onClick.subscribe( e => {
-                if ( e.notification ) {
-                    notificationComponent.close( e.notification );
+            notificationComponent.onClick.subscribe(e => {
+                if (e.notification) {
+                    notificationComponent.close(e.notification);
                 }
 
-                if ( click ) {
+                if (click) {
                     click();
                 }
             });
@@ -51,28 +55,27 @@ export class AppComponent implements OnInit {
 
     private subscribeToEvents(): void {
 
-        this.contextStore.userChanged.subscribe(( user: IUserToken ) => {
-            console.log( `isAuthorizationPassed = ${this.isAuthorizationPassed}` );
+        this.contextStore.userChanged.subscribe((user: IUserToken) => {
             this.isAuthorizationPassed = this.contextStore.isLoggedIn();
 
-            if ( this.isAuthorizationPassed ) {
-                this.signalRService.connect( user.token );
+            if (this.isAuthorizationPassed) {
+                this.signalRService.connect(user.token);
             } else {
                 this.signalRService.disconnect();
             }
         });
 
-        this.signalRService.orderUpdated.subscribe(( order: IOrder ) => {
+        this.signalRService.orderUpdated.subscribe((order: IOrder) => {
             let user = this.contextStore.getCurrentUser();
-            if ( order.UserName !== user.userName ) {
-                this.showNotification( "List of orders changed.", `${order.UserName} just made an order.`,
-                    () => this.router.navigate( ["summary"] ) );
+            if (order.UserName !== user.userName) {
+                this.showNotification("List of orders changed.", `${order.UserName} just made an order.`,
+                    () => this.router.navigate(["summary"]));
             }
         });
 
 
         this.signalRService.foodchanged.subscribe(() => {
-            this.showNotification( "Menu file uploaded.", "New menu file uploaded.", () => this.router.navigate( [""] ) );
+            this.showNotification("Menu file uploaded.", "New menu file uploaded.", () => this.router.navigate([""]));
         });
     }
 

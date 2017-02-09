@@ -6,8 +6,7 @@ export class ContextStore {
     private currentUser: IUserToken;
     userChanged: EventEmitter<IUserToken>;
 
-	constructor() {
-		console.log("ContextStore created");
+    constructor() {
 	    this.userChanged = new EventEmitter<IUserToken>();
         this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
     }

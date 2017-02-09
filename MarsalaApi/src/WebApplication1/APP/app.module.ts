@@ -17,6 +17,7 @@ import { EqualValidator } from "./Directives/EqualValidator";
 
 import { AuthGuard } from "./Services/AuthGuard";
 import { HttpService } from "./Services/HttpService";
+import { SignalRService } from "./Services/SignalRService";
 import { ContextStore } from "./shared/ContextStore";
 import { Routes, ExtraOptions, RouterModule } from "@angular/router";
 
@@ -61,6 +62,7 @@ const routing = RouterModule.forRoot( appRoutes, routeConfig );
     providers: [
         AuthGuard,
         ContextStore,
+        SignalRService,
         HttpService
     ],
 

@@ -16,7 +16,6 @@ export class HttpService {
         return SETTINGS.apiUrl;
     }
 
-
     delete<T>(url: string): Promise<T> {
         return this.http.delete(`${SETTINGS.apiUrl}${url}`, this.getRequestOptions())
             .toPromise()

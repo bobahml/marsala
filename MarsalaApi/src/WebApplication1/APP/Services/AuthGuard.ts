@@ -5,7 +5,7 @@ import { ContextStore } from "../shared/ContextStore";
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-    constructor(private router: Router, private contextStore: ContextStore) { }
+    constructor(private router: Router, public contextStore: ContextStore) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 

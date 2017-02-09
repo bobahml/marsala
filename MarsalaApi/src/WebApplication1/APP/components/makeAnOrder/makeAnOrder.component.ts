@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 
 import { ContextStore } from "../../Shared/ContextStore";
 import { OrderService } from "../../Services/OrderService";
+import { AuthGuard } from "../../Services/AuthGuard";
 import { MenuService } from "../../Services/MenuService";
 import { Order } from "../../Models/order";
 import { Product } from "../../Models/product";
@@ -23,12 +24,16 @@ export class MakeAnOrderComponent implements OnInit {
     drink: Product = new Product("Drink");
     snacks: Product = new Product("Snacks");
 
+    private contextStore: ContextStore;
+
     constructor(
         private orderService: OrderService,
         private menuService: MenuService,
-        private contextStore: ContextStore,
-        private router: Router
-    ) {}
+        private router: Router,
+        authGuard: AuthGuard
+    ) {
+        this.contextStore = authGuard.contextStore;
+    }
 
     ngOnInit() {
         const user = this.contextStore.getCurrentUser();
