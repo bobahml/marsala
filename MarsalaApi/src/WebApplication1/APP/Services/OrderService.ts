@@ -14,8 +14,8 @@ export class OrderService {
         return this.request.get<ISummary>("order/summary");
     }
 
-	sendByEmail(): Promise<ISummary> {
-        return this.request.post<ISummary>("order/send", "");
+	sendByEmail(): Promise<boolean> {
+        return this.request.postEmpty("order/send", "");
     }
 
     removeOrder(userName: string): Promise<ISummary> {

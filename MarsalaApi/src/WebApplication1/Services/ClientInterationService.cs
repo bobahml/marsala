@@ -6,6 +6,7 @@ namespace WebApplication1.Services
 {
 	public interface IClientInterationService
 	{
+		void NotifyOrderSent(OrderSentStatus status);
 		void NotifyFoodUpdated();
 		void NotifyOrderUpdated(Order order);
 	}
@@ -19,18 +20,21 @@ namespace WebApplication1.Services
 			_connectionManager = connectionManager;
 		}
 
-
 		public void NotifyFoodUpdated()
 		{
 			var ctx = _connectionManager.GetHubContext<MessagesHub>();
-
 			ctx.Clients.All.FoodUpdated();
+		}
+
+		public void NotifyOrderSent(OrderSentStatus status)
+		{
+			var ctx = _connectionManager.GetHubContext<MessagesHub>();
+			ctx.Clients.All.OrderSent(status);
 		}
 
 		public void NotifyOrderUpdated(Order order)
 		{
 			var ctx = _connectionManager.GetHubContext<MessagesHub>();
-
 			ctx.Clients.All.OrderUpdated(order);
 		}
 	}

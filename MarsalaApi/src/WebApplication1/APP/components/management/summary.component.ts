@@ -47,8 +47,11 @@ export class SummaryComponent implements OnInit {
 
     sendByEmail(copyTextarea: any) {
         this.makeOrderService.sendByEmail()
-            .then(res => this.summary = res)
-            .catch(error => console.log(error.messsage || error));
+            .then(res => this.summary.orderText = "The order will be sent shortly. You will receive a notification.")
+            .catch(error => {
+                this.summary.orderText = error;
+                console.log(error);
+            });
     }
 
     private clearSelection() {

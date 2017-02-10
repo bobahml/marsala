@@ -40,3 +40,9 @@ export class Summary {
     Drink: ICourse[] = [];
     Snacks: ICourse[] = [];
 }
+
+export interface IOrderSentStatus {
+    SenderName: string;
+    StatusText: string;
+    IsSuccess: boolean;
+}

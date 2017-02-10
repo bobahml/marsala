@@ -1,9 +1,7 @@
-﻿using System;
-using Common.Model;
+﻿using Common.Model;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Services;
-using WebApplication1.Services.Mail;
-
+using System.Security.Claims;
 
 namespace WebApplication1.Controllers
 {
@@ -11,12 +9,10 @@ namespace WebApplication1.Controllers
 	public class OrderController : Controller
 	{
 		private readonly IOrderService _orderService;
-		private readonly IMailWorker _mailWorker;
 
-		public OrderController(IOrderService orderService, IMailWorker mailWorker)
+		public OrderController(IOrderService orderService)
 		{
 			_orderService = orderService;
-			_mailWorker = mailWorker;
 		}
 
 		[HttpPost]
@@ -45,22 +41,9 @@ namespace WebApplication1.Controllers
 		[Route("send")]
 		public IActionResult SendSummary()
 		{
-			var summary = _orderService.GetSummary();
-			try
-			{
-				_mailWorker.Send("Заказ бизнес ланч", summary.OrderText);
-
-				summary.OrderText = "Successfully sent";
-			}
-			catch (Exception e)
-			{
-				summary.OrderText = e.Message;
-			}
-	
-
-			return Ok(summary);
+			var currentUser = HttpContext.User.FindFirst(ClaimTypes.Name).Value;
+			_orderService.SendOrderAsync(currentUser);
+			return Ok();
 		}
-
 	}
-
 }

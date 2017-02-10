@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WebApplication1.Services.Mail;
 
 namespace WebApplication1.Services
 {
@@ -12,18 +13,21 @@ namespace WebApplication1.Services
 		void MakeAnOrder(Order order);
 		Summary GetSummary();
 		Summary DeleteOrder(string userName);
+		void SendOrderAsync(string senderName);
 	}
 
 
 	public class OrderService : IOrderService
 	{
 		private readonly IClientInterationService _clientInterationService;
+		private readonly IMailWorker _mailWorker;
 		private DateTime _orderDate = DateTime.Now.Date;
 		private readonly ConcurrentDictionary<string, Order> _orders = new ConcurrentDictionary<string, Order>();
 
-		public OrderService(IClientInterationService clientInterationService)
+		public OrderService(IClientInterationService clientInterationService, IMailWorker mailWorker)
 		{
 			_clientInterationService = clientInterationService;
+			_mailWorker = mailWorker;
 		}
 
 		public void MakeAnOrder(Order order)
@@ -83,7 +87,6 @@ namespace WebApplication1.Services
 			return GetSummary();
 		}
 
-
 		private static void BindOrderText(Summary total)
 		{
 			var sb = new StringBuilder();
@@ -129,6 +132,22 @@ namespace WebApplication1.Services
 					exists.Count++;
 				else dic.Add(new Course { Name = val, Count = 1 });
 			}
+		}
+
+		public void SendOrderAsync(string senderName)
+		{
+			var summary = GetSummary();
+			
+			_mailWorker.SendAsync("Заказ бизнес ланч", summary.OrderText, result => 
+			{
+				var status = new OrderSentStatus
+				{
+					SenderName = senderName,
+					StatusText = result.StatusText,
+					IsSuccess = result.IsSuccess
+				};
+				_clientInterationService.NotifyOrderSent(status);
+			});
 		}
 	}
 }

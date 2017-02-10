@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\OrderSentStatus.cs" />
     <Compile Include="Model\Summary.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\DailyMenu.cs" />

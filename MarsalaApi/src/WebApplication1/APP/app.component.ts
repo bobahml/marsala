@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 
-import { IOrder } from "./Models/order";
+import { IOrder, IOrderSentStatus } from "./Models/order";
 import { IUserToken } from "./Models/user";
 import { PushNotificationComponent } from "./components/notification.component";
 import { SignalRService } from "./Services/SignalRService";
@@ -73,9 +73,14 @@ export class AppComponent implements OnInit {
             }
         });
 
-
-        this.signalRService.foodchanged.subscribe(() => {
+        this.signalRService.foodChanged.subscribe(() => {
             this.showNotification("Menu file uploaded.", "New menu file uploaded.", () => this.router.navigate([""]));
+        });
+
+        this.signalRService.orderSent.subscribe((status: IOrderSentStatus) => {
+            console.log(status);
+            let header = status.IsSuccess ? "📧 Success." : "📧 Error.";
+            this.showNotification(header, `Sender: ${status.SenderName}. ${status.StatusText}`, () => this.router.navigate(["summary"]));
         });
     }
 

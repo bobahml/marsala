@@ -15,25 +15,41 @@ namespace WebApplication1.Services.Mail
 	public interface IMailWorker
 	{
 		MenuFile GetLastSupportedAttachment(DateTime? lastDate);
-		void Send(string subject, string body);
-        void FastSendEmail(string email, string subject, string body, bool isBodyHtml);
-    }
+		void SendAsync(string subject, string body, Action<SentStatus> calback);
+		void SendAsync(string email, string subject, string body, bool isBodyHtml);
+	}
 
 	internal class MailWorker : IMailWorker, IDisposable
 	{
-		private readonly MailSettings _mailSettings;
-        private readonly CancellationTokenSource _cts;
-        private readonly Task _workerTask;
-        private readonly ILogger _logger;
+		private class MailMessageTask
+		{
+			public MailMessageTask(System.Net.Mail.MailMessage mailMessage, string copyToFolder, Action<SentStatus> callback)
+			{
+				MailMessage = mailMessage;
+				CopyToFolder = copyToFolder;
+				Callback = callback;
+			}
 
-        public MailWorker(IOptions<MailSettings> mailSettings, ILoggerFactory loggerFactory)
+			public System.Net.Mail.MailMessage MailMessage { get; }
+			public Action<SentStatus> Callback { get; }
+			public string CopyToFolder { get; }
+		}
+
+		private readonly AsyncQueue<MailMessageTask> _asyncQueue = new AsyncQueue<MailMessageTask>();
+		private static readonly string[] SupportedExtensions = new[] { ".docx", ".doc", ".xls", ".xlsx" };
+		private readonly MailSettings _mailSettings;
+		private readonly CancellationTokenSource _cts;
+		private readonly Task _workerTask;
+		private readonly ILogger _logger;
+
+		public MailWorker(IOptions<MailSettings> mailSettings, ILoggerFactory loggerFactory)
 		{
 			_mailSettings = mailSettings.Value;
-            _logger = loggerFactory.CreateLogger<MailWorker>();
+			_logger = loggerFactory.CreateLogger<MailWorker>();
 
-            _cts = new CancellationTokenSource();
-            _workerTask = Worker(_cts.Token);
-        }
+			_cts = new CancellationTokenSource();
+			_workerTask = Worker(_cts.Token);
+		}
 
 		public MenuFile GetLastSupportedAttachment(DateTime? lastDate)
 		{
@@ -54,7 +70,7 @@ namespace WebApplication1.Services.Mail
 						if (lastDate.HasValue && message.Date < lastDate)
 							break;
 
-						var at = message.Attachments.Where(SupportedAttachment)
+						var at = message.Attachments.Where(IsSupportedAttachment)
 								.Select(a => new MenuFile
 								{
 									MessageDate = message.Date,
@@ -74,91 +90,85 @@ namespace WebApplication1.Services.Mail
 			}
 		}
 
-		public void Send(string subject, string body)
+		public void SendAsync(string subject, string body, Action<SentStatus> calback)
 		{
-			SendEmail(_mailSettings.Recipient, subject, body);
+			var mail = new System.Net.Mail.MailMessage(_mailSettings.UserName, _mailSettings.Recipient)
+			{
+				Subject = subject,
+				Body = body
+			};
+
+			_asyncQueue.Add(new MailMessageTask(mail, _mailSettings.CopyToFolder, calback));
 		}
 
-		private void SendEmail(string email, string subject, string body)
+		public void SendAsync(string email, string subject, string body, bool isBodyHtml)
+		{
+			var mail = new System.Net.Mail.MailMessage(_mailSettings.UserName, email)
+			{
+				Subject = subject,
+				IsBodyHtml = isBodyHtml,
+				Body = body
+			};
+
+			_asyncQueue.Add(new MailMessageTask(mail, "", s => { }));
+		}
+
+		private async Task Worker(CancellationToken token)
+		{
+			while (!token.IsCancellationRequested)
+			{
+				var item = await _asyncQueue.TakeAsync(token).ConfigureAwait(false);
+				var status = new SentStatus();
+				try
+				{
+					SendInternal(item.MailMessage, item.CopyToFolder);
+					status.StatusText = "The mail was successfully sent.";
+					status.IsSuccess = true;
+					_logger.LogInformation($"{status.StatusText} : {item.MailMessage.To}.");
+				}
+				catch (Exception e)
+				{
+					status.StatusText = $"Failure sending mail error message: {e.Message}";
+					status.IsSuccess = true;
+					_logger.LogError($"SendMailError {item.MailMessage.To}: {item.MailMessage.Body}. Error={e}");
+				}
+				finally
+				{
+					item.MailMessage.Dispose();
+				}
+
+				item.Callback(status);
+			}
+		}
+
+		private void SendInternal(System.Net.Mail.MailMessage mail, string copyToFolder)
 		{
 			lock (_mailSettings)
 			{
 				using (var smtpClient = GetSmtpClient())
 				{
-					var mail = new System.Net.Mail.MailMessage(_mailSettings.UserName, email)
-					{
-						Subject = subject,
-						Body = body
-					};
 					smtpClient.Send(mail);
 				}
 
-				if (string.IsNullOrEmpty(_mailSettings.CopyToFolder))
+				if (string.IsNullOrEmpty(copyToFolder))
 					return;
 
 				try
 				{
-					//Copy the message to sent folder. 
 					using (var imapClient = GetImapClient())
 					{
-						var msg = new AE.Net.Mail.MailMessage
-						{
-							From = new MailAddress(_mailSettings.UserName),
-							To = { new MailAddress(email) },
-							Subject = subject,
-							Body = body
-						};
-
+						var msg = ConvertMessage(mail);
 						imapClient.AppendMail(msg, _mailSettings.CopyToFolder);
 					}
 				}
-				catch { }
+				catch (Exception e)
+				{
+					_logger.LogWarning($"Error when COPYING message to={mail.To}, Exception={e}");
+				}
 			}
 		}
 
-        private readonly AsyncQueue<System.Net.Mail.MailMessage> _asyncQueue = new AsyncQueue<System.Net.Mail.MailMessage>();
-
-        private async Task Worker(CancellationToken token)
-        {
-            while (!token.IsCancellationRequested)
-            {
-                var item = await _asyncQueue.TakeAsync(token);
-                try
-                {
-                    Send(item);
-                    _logger.LogInformation($"SendMailSuccess {item.To}.");
-                }
-                catch (Exception e)
-                {
-                    _logger.LogError($"SendMailError {item.To}: {item.Body} error={e}");
-                }
-            }
-        } 
-
-        private void Send(System.Net.Mail.MailMessage mail)
-        {
-            lock (_mailSettings)
-            {
-                using (var smtpClient = GetSmtpClient())
-                {
-                    smtpClient.Send(mail);
-                }
-            }
-        }
-
-        public void FastSendEmail(string email, string subject, string body, bool isBodyHtml)
-        {
-            var mail = new System.Net.Mail.MailMessage(_mailSettings.UserName, email)
-            {
-                Subject = subject,
-                IsBodyHtml = isBodyHtml,
-                Body = body
-            };
-
-            _asyncQueue.Add(mail);
-        }
-
-        private ImapClient GetImapClient()
+		private ImapClient GetImapClient()
 		{
 			return new ImapClient(_mailSettings.InHost, _mailSettings.UserName, _mailSettings.Password, port: _mailSettings.InPort, secure: _mailSettings.Ssl);
 		}
@@ -168,26 +178,43 @@ namespace WebApplication1.Services.Mail
 			var smtpClient = new SmtpClient(_mailSettings.OutHost, _mailSettings.OutPort)
 			{
 				Credentials = new System.Net.NetworkCredential(_mailSettings.UserName, _mailSettings.Password),
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                EnableSsl = _mailSettings.Ssl
+				DeliveryMethod = SmtpDeliveryMethod.Network,
+				EnableSsl = _mailSettings.Ssl
 			};
 			return smtpClient;
 		}
 
-		private static bool SupportedAttachment(Attachment a)
+		private static AE.Net.Mail.MailMessage ConvertMessage(System.Net.Mail.MailMessage mail)
+		{
+			var msg = new AE.Net.Mail.MailMessage()
+			{
+				From = mail.From,
+				To = { },
+				Subject = mail.Subject,
+				Body = mail.Body
+			};
+
+			foreach (var item in mail.To)
+			{
+				msg.To.Add(item);
+			}
+
+			return msg;
+		}
+
+		private static bool IsSupportedAttachment(Attachment a)
 		{
 			var ext = Path.GetExtension(a.Filename)?.ToLower();
 
 			if (string.IsNullOrEmpty(ext))
 				return false;
 
-			return ext == ".docx" || ext == ".doc" || ext == ".xls" || ext == ".xlsx";
+			return SupportedExtensions.Contains(ext);
 		}
 
-        public void Dispose()
-        {
-            _cts.Cancel();
-        }
-    }
-
+		public void Dispose()
+		{
+			_cts.Cancel();
+		}
+	}
 }

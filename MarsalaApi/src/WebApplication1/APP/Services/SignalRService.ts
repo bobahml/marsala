@@ -1,6 +1,6 @@
 ﻿import { Injectable, EventEmitter } from "@angular/core";
 import { SETTINGS } from "../shared/settings";
-import { IOrder } from "../Models/order";
+import { IOrder, IOrderSentStatus } from "../Models/order";
 
 import "signalR";
 import * as $ from "jquery";
@@ -12,15 +12,17 @@ export class SignalRService {
     private proxyName: string = "messages";
     private connection: SignalR.Hub.Connection;
 
-    foodchanged: EventEmitter<any>;
+    foodChanged: EventEmitter<any>;
     orderUpdated: EventEmitter<IOrder>;
+    orderSent: EventEmitter<IOrderSentStatus>;
     connectionEstablished: EventEmitter<Boolean>;
     connectionExists: Boolean;
 
     constructor() {
-        this.foodchanged = new EventEmitter();
+        this.foodChanged = new EventEmitter();
         this.connectionEstablished = new EventEmitter<Boolean>();
         this.orderUpdated = new EventEmitter<IOrder>();
+        this.orderSent = new EventEmitter<IOrderSentStatus>();
         this.connectionExists = false;
     }
 
@@ -63,11 +65,15 @@ export class SignalRService {
 
     private registerOnServerEvents(): void {
         this.proxy.on("FoodUpdated", (data) => {
-            this.foodchanged.emit(data);
+            this.foodChanged.emit(data);
         });
 
         this.proxy.on("OrderUpdated", (data: IOrder) => {
             this.orderUpdated.emit(data);
+        });
+
+        this.proxy.on("OrderSent", (data: IOrderSentStatus) => {
+            this.orderSent.emit(data);
         });
     }
 }

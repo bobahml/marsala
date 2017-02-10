@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using WebApplication1.Auth.Model;
 using WebApplication1.Services.Mail;
 using WebApplication1.Auth;
-using System.Security.Claims;
 
 namespace WebApplication1.Controllers
 {
@@ -48,7 +47,7 @@ namespace WebApplication1.Controllers
             {
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, HttpContext.Request.Scheme);
-                _mailWorker.FastSendEmail(model.Email, "Confirm Marsala account", $"<a href='{callbackUrl}'>Confirm Marsala account</a>", true);
+                _mailWorker.SendAsync(model.Email, "Confirm Marsala account", $"<a href='{callbackUrl}'>Confirm Marsala account</a>", true);
                 _logger.LogInformation($"User created a new account {model.Email} with password.");
                 return Ok();
             }
