@@ -3,8 +3,16 @@
 
     <div role="form">
         <div class="form-group">
-            <label for="userName">Name:</label>
-            <input type="text" class="form-control" placeholder="Please enter your name..." [(ngModel)]="userName" id="userName" />
+            <label for="userName">User:</label>
+
+            <div *ngIf="!checkAnotherUser" class="form-inline">
+                <input type="text" class="form-control" readonly [(ngModel)]="userName" id="userName" />
+                <button class="btn" (click)="readUsersList()">Another user</button>
+            </div>
+            <select *ngIf="checkAnotherUser" class="form-control"  [(ngModel)]="userName" id="userName">
+                <option *ngFor="let u of users" [ngValue]="u">{{u}}</option>
+            </select>
+
         </div>
         <div class="form-group">
             <div class="form-group">

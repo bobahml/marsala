@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 
 import { ContextStore } from "../../Shared/ContextStore";
 import { OrderService } from "../../Services/OrderService";
+import { UsersService } from "../../Services/UsersService";
 import { AuthGuard } from "../../Services/AuthGuard";
 import { MenuService } from "../../Services/MenuService";
 import { Order } from "../../Models/order";
@@ -12,11 +13,14 @@ import { Product } from "../../Models/product";
 @Component({
     selector: "make-order",
     templateUrl: "./app/components/makeAnOrder/makeAnOrder.component.html",
-    providers: [OrderService, MenuService]
+    providers: [OrderService, MenuService, UsersService]
 })
 export class MakeAnOrderComponent implements OnInit {
 
-    userName: string;
+    checkAnotherUser: boolean = false;
+    userName: string = "";
+    users: string[] = [];
+
     header: string = "Loading...";
     salad: Product = new Product("Salad");
     soup: Product = new Product("Soup");
@@ -29,6 +33,7 @@ export class MakeAnOrderComponent implements OnInit {
     constructor(
         private orderService: OrderService,
         private menuService: MenuService,
+        private usersService: UsersService,
         private router: Router,
         authGuard: AuthGuard
     ) {
@@ -39,11 +44,24 @@ export class MakeAnOrderComponent implements OnInit {
         const user = this.contextStore.getCurrentUser();
         if (user) {
             this.userName = user.userName;
+            this.users.push(this.userName);
         }
 
         this.getDailyMenu();
     }
 
+    readUsersList() {
+        this.checkAnotherUser = true;
+        this.usersService.getAllUsers()
+            .then((arr: string[]) => {
+                for (let i = 0; i < arr.length; i++) {
+                    if (this.users.indexOf(arr[i]) === -1) {
+                        this.users.push(arr[i]);
+                    }
+                }
+            })
+            .catch(error => this.header = error.messsage || error);
+    }
 
     isOrderValid() {
 
