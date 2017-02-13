@@ -3,8 +3,7 @@
 
     <div role="form">
         <div class="form-group">
-            <label for="userName">User:</label>
-
+            <label for="userName">User</label>
             <div *ngIf="!checkAnotherUser" class="form-inline">
                 <input type="text" class="form-control" readonly [(ngModel)]="userName" id="userName" />
                 <button class="btn" (click)="readUsersList()">Another user</button>
@@ -12,7 +11,14 @@
             <select *ngIf="checkAnotherUser" class="form-control"  [(ngModel)]="userName" id="userName">
                 <option *ngFor="let u of users" [ngValue]="u">{{u}}</option>
             </select>
-
+        </div>
+       
+         <div class="form-group">
+            <label for="paymentMethod">Payment method</label>
+            <select class="form-control" [(ngModel)]="paymentMethod" id="paymentMethod">
+                <option value="1">Cash</option>
+                <option value="2">Card</option>
+            </select>
         </div>
         <div class="form-group">
             <div class="form-group">

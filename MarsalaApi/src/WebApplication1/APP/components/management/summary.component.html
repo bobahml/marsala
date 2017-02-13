@@ -1,5 +1,5 @@
 ﻿<div class="container">
-    
+
     <div class="container">
         <h2>Prepare the order to sending</h2>
         <div class="form-group">
@@ -13,26 +13,28 @@
             <label>Total orders: {{summary.orders.length}}</label>
             <table class="table">
                 <thead>
-                <tr>
-                    <th>User</th>
-                    <th>Salad</th>
-                    <th>Soup</th>
-                    <th>MainCourse</th>
-                    <th>Drink</th>
-                    <th>Snacks</th>
-                    <th>Remove</th>
-                </tr>
+                    <tr>
+                        <th>User</th>
+                        <th>Salad</th>
+                        <th>Soup</th>
+                        <th>MainCourse</th>
+                        <th>Drink</th>
+                        <th>Snacks</th>
+                        <th>Payment</th>
+                        <th>Remove</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor='let value of summary.orders'>
-                    <td>{{value.userName}}</td>
-                    <td>{{value.salad}}</td>
-                    <td>{{value.soup}}</td>
-                    <td>{{value.mainCourse}}</td>
-                    <td>{{value.drink}}</td>
-                    <td>{{value.snacks}}</td>
-                    <td><button class="btn btn-sm" (click)="removeOrder(value.userName)"><i class="glyphicon glyphicon-remove"></i></button></td>
-                </tr>
+                    <tr *ngFor='let value of summary.orders'>
+                        <td>{{value.userName}}</td>
+                        <td>{{value.salad}}</td>
+                        <td>{{value.soup}}</td>
+                        <td>{{value.mainCourse}}</td>
+                        <td>{{value.drink}}</td>
+                        <td>{{value.snacks}}</td>
+                        <td><span style="width: 16px;" class="glyphicon" [class.glyphicon-credit-card]="value.paymentMethod==2"></span></td>
+                        <td><button class="btn btn-sm" (click)="removeOrder(value.userName)"><i class="glyphicon glyphicon-remove"></i></button></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -76,7 +78,7 @@
                         <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Send by e-mail!
                     </button>
                 </div>
-                
+
                 <div class="row top-buffer">
                     <button class="btn" title="Copy order to clipboard!"
                             (click)="copyToClipboard(orderInput)">

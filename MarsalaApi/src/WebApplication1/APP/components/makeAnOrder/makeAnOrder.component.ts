@@ -6,7 +6,7 @@ import { OrderService } from "../../Services/OrderService";
 import { UsersService } from "../../Services/UsersService";
 import { AuthGuard } from "../../Services/AuthGuard";
 import { MenuService } from "../../Services/MenuService";
-import { Order } from "../../Models/order";
+import { Order, PaymentMethod } from "../../Models/order";
 import { Product } from "../../Models/product";
 
 
@@ -19,6 +19,7 @@ export class MakeAnOrderComponent implements OnInit {
 
     checkAnotherUser: boolean = false;
     userName: string = "";
+    paymentMethod: PaymentMethod = PaymentMethod.Cash;
     users: string[] = [];
 
     header: string = "Loading...";
@@ -64,7 +65,6 @@ export class MakeAnOrderComponent implements OnInit {
     }
 
     isOrderValid() {
-
         return this.userName
             && (this.salad.weigt() + this.soup.weigt() + this.mainCourse.weigt() >= 2)
             && this.drink.hasValue();
@@ -74,7 +74,8 @@ export class MakeAnOrderComponent implements OnInit {
     makeAnOrder() {
 
         const order = new Order();
-        order.UserName = this.userName ? this.userName : "Unknown";
+        order.UserName = this.userName;
+        order.PaymentMethod = this.paymentMethod;
         order.Salad = this.salad.value;
         order.Soup = this.soup.value;
         order.MainCourse = this.mainCourse.value;

@@ -117,6 +117,12 @@ namespace WebApplication1.Services
 				sb.AppendLine($"{course.Name} ({course.Count})");
 			sb.AppendLine();
 
+			if (total.Orders.Any(o=>o.PaymentMethod == PaymentMethod.Card))
+				sb.AppendLine("Оплату планируем произвести картой.");
+			else
+				sb.AppendLine("Оплату планируем произвести наличными.");
+			sb.AppendLine();
+
 			sb.AppendLine("Спасибо!");
 
 			total.OrderText = sb.ToString();

@@ -1,5 +1,6 @@
 ﻿export interface IOrder {
     UserName: string;
+    PaymentMethod: PaymentMethod;
     Salad: string;
     Soup: string;
     MainCourse: string;
@@ -9,11 +10,17 @@
 
 export class Order implements IOrder {
     UserName: string;
+    PaymentMethod: PaymentMethod;
     Salad: string;
     Soup: string;
     MainCourse: string;
     Drink: string;
     Snacks: string[] = [];
+}
+
+export enum PaymentMethod {
+    Cash = 1,
+    Card = 2
 }
 
 export interface ICourse {
