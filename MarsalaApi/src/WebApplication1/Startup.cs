@@ -106,9 +106,16 @@ namespace WebApplication1
             services.AddLogging();
 
             services.AddSingleton<IFileParser, FileParser>();
-            services.AddSingleton<IMenuService, MenuService>();
-            services.AddSingleton<IOrderService, OrderService>();
-            services.AddSingleton<IClientInterationService, ClientInterationService>();
+
+			services.AddTransient<IMenuService, MenuService>();
+			services.AddTransient<IMenuStore, MenuStore>();
+			
+
+
+			services.AddTransient<IOrderService, OrderService>();
+			services.AddTransient<IOrdersStore, OrdersStore>();
+
+			services.AddSingleton<IClientInterationService, ClientInterationService>();
 
             SetupIdentityServices(services);
         }

@@ -8,7 +8,7 @@ using WebApplication1.DAL;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170131122259_init")]
+    [Migration("20170214180715_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,6 +173,31 @@ namespace WebApplication1.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("WebApplication1.DAL.DaylyMenuStore", b =>
+                {
+                    b.Property<string>("Date")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("MenuJson");
+
+                    b.HasKey("Date");
+
+                    b.ToTable("DaylyMenus");
+                });
+
+            modelBuilder.Entity("WebApplication1.DAL.OrderStore", b =>
+                {
+                    b.Property<string>("Date");
+
+                    b.Property<string>("UserName");
+
+                    b.Property<string>("OrderJson");
+
+                    b.HasKey("Date", "UserName");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

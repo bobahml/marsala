@@ -174,6 +174,31 @@ namespace WebApplication1.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("WebApplication1.DAL.DaylyMenuStore", b =>
+                {
+                    b.Property<string>("Date")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("MenuJson");
+
+                    b.HasKey("Date");
+
+                    b.ToTable("DaylyMenus");
+                });
+
+            modelBuilder.Entity("WebApplication1.DAL.OrderStore", b =>
+                {
+                    b.Property<string>("Date");
+
+                    b.Property<string>("UserName");
+
+                    b.Property<string>("OrderJson");
+
+                    b.HasKey("Date", "UserName");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")

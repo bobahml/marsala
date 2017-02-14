@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Services;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace WebApplication1.Controllers
 {
@@ -16,33 +17,32 @@ namespace WebApplication1.Controllers
 		}
 
 		[HttpPost]
-		public Order PostOrder([FromBody]Order order)
+		public async Task<IActionResult> PostOrder([FromBody]Order order)
 		{
-			_orderService.MakeAnOrder(order);
-			return order;
+			await _orderService.MakeAnOrder(order);
+			return Accepted();
 		}
 
 		[HttpDelete]
 		[Route("{userName}")]
-		public Summary DeleteOrder(string userName)
+		public Task<Summary> DeleteOrder(string userName)
 		{
-			var summary = _orderService.DeleteOrder(userName);
-			return summary;
+			return _orderService.DeleteOrder(userName);
 		}
 
 		[HttpGet]
 		[Route("summary")]
-		public Summary GetSummary()
+		public Task<Summary> GetSummary()
 		{
 			return _orderService.GetSummary();
 		}
 
 		[HttpPost]
 		[Route("send")]
-		public IActionResult SendSummary()
+		public async Task<IActionResult> SendSummary()
 		{
 			var currentUser = HttpContext.User.FindFirst(ClaimTypes.Name).Value;
-			_orderService.SendOrderAsync(currentUser);
+			await _orderService.StartOrderSending(currentUser);
 			return Ok();
 		}
 	}

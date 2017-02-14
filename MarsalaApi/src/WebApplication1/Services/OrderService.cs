@@ -1,19 +1,17 @@
 ﻿using System;
 using Common.Model;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using WebApplication1.Services.Mail;
+using WebApplication1.DAL;
+using System.Threading.Tasks;
 
 namespace WebApplication1.Services
 {
 	public interface IOrderService
 	{
-		void MakeAnOrder(Order order);
-		Summary GetSummary();
-		Summary DeleteOrder(string userName);
-		void SendOrderAsync(string senderName);
+		Task MakeAnOrder(Order order);
+		Task<Summary> GetSummary();
+		Task<Summary> DeleteOrder(string userName);
+		Task StartOrderSending(string senderName);
 	}
 
 
@@ -21,130 +19,41 @@ namespace WebApplication1.Services
 	{
 		private readonly IClientInterationService _clientInterationService;
 		private readonly IMailWorker _mailWorker;
-		private DateTime _orderDate = DateTime.Now.Date;
-		private readonly ConcurrentDictionary<string, Order> _orders = new ConcurrentDictionary<string, Order>();
+		private readonly IOrdersStore _ordersStore;
+		private readonly DateTime _orderDate = DateTime.Now.Date;
 
-		public OrderService(IClientInterationService clientInterationService, IMailWorker mailWorker)
+		public OrderService(IClientInterationService clientInterationService, IMailWorker mailWorker, IOrdersStore ordersStore)
 		{
 			_clientInterationService = clientInterationService;
 			_mailWorker = mailWorker;
+			_ordersStore = ordersStore;
 		}
 
-		public void MakeAnOrder(Order order)
+		public async Task MakeAnOrder(Order order)
 		{
-			if (DateTime.Now.Date != _orderDate)
-			{
-				_orderDate = DateTime.Now.Date;
-				_orders.Clear();
-			}
-			_orders[order.UserName] = order;
-
+			await _ordersStore.SaveOrder(_orderDate, order);
 			_clientInterationService.NotifyOrderUpdated(order);
 		}
 
-		public Summary GetSummary()
+		public async Task<Summary> GetSummary()
 		{
-			var total = new Summary
-			{
-				Orders = _orders.Values,
-				Salad = new List<Course>(),
-				Soup = new List<Course>(),
-				MainCourse = new List<Course>(),
-				Drink = new List<Course>(),
-				Snacks = new List<Course>(),
-				OrderText = string.Empty
-			};
-
-			foreach (var order in _orders.Values)
-			{
-				UpdateAggregation(order.Salad, total.Salad);
-				UpdateAggregation(order.Soup, total.Soup);
-				UpdateAggregation(order.MainCourse, total.MainCourse);
-				UpdateAggregation(order.Drink, total.Drink);
-
-				if (order.Snacks!= null)
-				{
-					foreach (var snack in order.Snacks)
-					{
-						UpdateAggregation(snack, total.Snacks);
-					}
-				}
-			}
-
-			BindOrderText(total);
-
-			return total;
+			var orders = await _ordersStore.GetOrdersByDate(_orderDate);
+			var summary = SummaryHelper.GenerateSummary(orders);
+			return summary;
 		}
 
-		public Summary DeleteOrder(string userName)
+		public async Task<Summary> DeleteOrder(string userName)
 		{
-			Order o;
-			if (_orders.TryRemove(userName, out o))
-			{
-				_clientInterationService.NotifyOrderUpdated(new Order { UserName = userName });
-			}
-			
-			return GetSummary();
+			await _ordersStore.DeleteOrder(_orderDate, userName);
+			var summary = await GetSummary();
+			return summary;
 		}
 
-		private static void BindOrderText(Summary total)
+		public async Task StartOrderSending(string senderName)
 		{
-			var sb = new StringBuilder();
-			sb.AppendLine("Добрый день!");
-			sb.AppendLine("Хотели бы заказать:");
-			sb.AppendLine();
+			var summary = await GetSummary();
 
-			foreach (var course in total.Salad)
-				sb.AppendLine($"{course.Name} ({course.Count})");
-			sb.AppendLine();
-
-			foreach (var course in total.Soup)
-				sb.AppendLine($"{course.Name} ({course.Count})");
-			sb.AppendLine();
-
-
-			foreach (var course in total.MainCourse)
-				sb.AppendLine($"{course.Name} ({course.Count})");
-			sb.AppendLine();
-
-
-			foreach (var course in total.Drink)
-				sb.AppendLine($"{course.Name} ({course.Count})");
-			sb.AppendLine();
-
-
-			foreach (var course in total.Snacks)
-				sb.AppendLine($"{course.Name} ({course.Count})");
-			sb.AppendLine();
-
-			if (total.Orders.Any(o=>o.PaymentMethod == PaymentMethod.Card))
-				sb.AppendLine("Оплату планируем произвести картой.");
-			else
-				sb.AppendLine("Оплату планируем произвести наличными.");
-			sb.AppendLine();
-
-			sb.AppendLine("Спасибо!");
-
-			total.OrderText = sb.ToString();
-		}
-
-		private static void UpdateAggregation(string name, ICollection<Course> dic)
-		{
-			var val = name.Trim();
-			if (!string.IsNullOrEmpty(val))
-			{
-				var exists = dic.FirstOrDefault(d => d.Name == val);
-				if (exists != null)
-					exists.Count++;
-				else dic.Add(new Course { Name = val, Count = 1 });
-			}
-		}
-
-		public void SendOrderAsync(string senderName)
-		{
-			var summary = GetSummary();
-			
-			_mailWorker.SendAsync("Заказ бизнес ланч", summary.OrderText, result => 
+			_mailWorker.SendAsync("Заказ бизнес ланч", summary.OrderText, result =>
 			{
 				var status = new OrderSentStatus
 				{

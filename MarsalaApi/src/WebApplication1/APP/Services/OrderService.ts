@@ -22,7 +22,7 @@ export class OrderService {
         return this.request.delete<ISummary>(`order/${userName}`);
     }
 
-    makeAnOrder(order: IOrder): Promise<IOrder> {
-		return this.request.post<IOrder>("order", order);
+    makeAnOrder(order: IOrder): Promise<boolean> {
+        return this.request.postEmpty("order", order);
     }
 }

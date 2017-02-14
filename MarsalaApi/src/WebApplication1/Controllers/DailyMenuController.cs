@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Services;
 using WebApplication1.Services.Mail;
+using System.Threading.Tasks;
 
 namespace WebApplication1.Controllers
 {
@@ -25,7 +26,7 @@ namespace WebApplication1.Controllers
 		}
 
 		[HttpGet]
-		public DailyMenu GetTodaysMenu()
+		public Task<DailyMenu> GetTodaysMenu()
 		{
 			return _menuService.GetTodaysMenu();
 		}
@@ -33,12 +34,12 @@ namespace WebApplication1.Controllers
 
 		[HttpPost]
 		[Route("uploadByEmail")]
-        [ProducesResponseType(typeof(DailyMenu[]), 200)]
-        public IActionResult UploadByEmail()
+		[ProducesResponseType(typeof(DailyMenu[]), 200)]
+		public async Task<IActionResult> UploadByEmail()
 		{
 			var file = _mailWorker.GetLastSupportedAttachment(null);
 			if (file == null) //No fresh messages to parse
-				return Ok(_menuService.GetAllMenus());
+				return Ok(new DailyMenu[0]);
 
 			var dates = CustomDateParser.TryParseStartDateFromSubject(file.MessageSubject).ToArray();
 			var startDate = dates.Any() ? dates[0] : file.MessageDate.Date;
@@ -49,7 +50,7 @@ namespace WebApplication1.Controllers
 
 			if (result.Any())
 			{
-				_menuService.SetActualMenu(result, startDate);
+				await _menuService.SetActualMenu(result, startDate);
 				return Ok(result);
 			}
 			return BadRequest("Could not get a menu from a file");
@@ -57,7 +58,7 @@ namespace WebApplication1.Controllers
 
 		[HttpPost]
 		[Route("upload")]
-		public IActionResult UploadFile([FromQuery]string date, IFormCollection files)
+		public async Task<IActionResult> UploadFile([FromQuery]string date, IFormCollection files)
 		{
 			if (files.Files == null || files.Files.Count == 0)
 				return BadRequest();
@@ -77,7 +78,7 @@ namespace WebApplication1.Controllers
 
 				if (result.Any())
 				{
-					_menuService.SetActualMenu(result, startDate);
+					await _menuService.SetActualMenu(result, startDate);
 					return Ok(result);
 				}
 			}
@@ -85,7 +86,7 @@ namespace WebApplication1.Controllers
 			return BadRequest("Could not get a menu from a file");
 		}
 
-		
+
 	}
 
 }

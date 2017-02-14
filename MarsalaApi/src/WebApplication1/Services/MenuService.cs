@@ -3,80 +3,57 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Common.Model;
+using WebApplication1.DAL;
+using System.Threading.Tasks;
 
 namespace WebApplication1.Services
 {
 	public interface IMenuService
 	{
-		DateTime? LastUpdateDate { get; }
-
-		void SetActualMenu(ICollection<DailyMenu> result, DateTime startDate);
-		DailyMenu GetTodaysMenu();
-
-		DailyMenu[] GetAllMenus();
+		Task SetActualMenu(ICollection<DailyMenu> result, DateTime startDate);
+		Task<DailyMenu> GetTodaysMenu();
 	}
-
 
 	public class MenuService : IMenuService
 	{
 		private readonly IClientInterationService _clientInterationService;
-		private readonly Dictionary<string, DailyMenu> _menus;
+		private readonly IMenuStore _menuStore;
 		private const string DateFormat = "yyyy-MM-dd";
 
-		public MenuService(IClientInterationService clientInterationService)
+		public MenuService(IClientInterationService clientInterationService, IMenuStore menuStore)
 		{
 			_clientInterationService = clientInterationService;
-			_menus = new Dictionary<string, DailyMenu>();
+			_menuStore = menuStore;
 		}
 
-
-		public DateTime? LastUpdateDate { get; private set; }
-
-		public void SetActualMenu(ICollection<DailyMenu> actualMenu, DateTime date)
+		public async Task SetActualMenu(ICollection<DailyMenu> actualMenu, DateTime date)
 		{
 			if (actualMenu.Count == 0)
 				return;
 
-			_menus.Clear();
-
 			var startDate = date.Date;
-			LastUpdateDate = startDate;
-
+			var menus = new Dictionary<string, DailyMenu>();
 			foreach (var m in actualMenu)
 			{
 				if (string.IsNullOrEmpty(m.Header))
 					m.Header = startDate.ToString("d MMMM (dddd)");
 
-				_menus.Add(startDate.ToString(DateFormat), m);
+				menus.Add(startDate.ToString(DateFormat), m);
 				startDate = startDate.AddDays(1);
 			}
 
+			await _menuStore.AddMenu(menus);
 			_clientInterationService.NotifyFoodUpdated();
 		}
 
-		public DailyMenu GetTodaysMenu()
+		public async Task<DailyMenu> GetTodaysMenu()
 		{
-			var date = DateTime.Now.Date;
+			var now = DateTime.Now.Date;
+			var manu = await _menuStore.GetMenuByDate(now);
+			if (manu != null)
+				return manu;
 
-			if (_menus.Count == 0)
-				return new DailyMenu { Header = date.ToString("d MMMM (dddd)") };
-
-			var key = date.ToString(DateFormat);
-			DailyMenu m;
-			if (_menus.TryGetValue(key, out m))
-				return m;
-
-
-			var mindiff = _menus
-				.OrderBy(p => Math.Abs((DateTime.ParseExact(p.Key, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None) - date).TotalSeconds))
-					.First();
-
-			return mindiff.Value;
-		}
-
-		public DailyMenu[] GetAllMenus()
-		{
-			return _menus.Values.ToArray();
-		}
+			return new DailyMenu { Header = now.ToString("d MMMM (dddd)") };
+		}		
 	}
 }
