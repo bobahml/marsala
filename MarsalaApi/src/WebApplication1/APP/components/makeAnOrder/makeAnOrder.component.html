@@ -2,23 +2,31 @@
     <h2>Please make an order!</h2>
 
     <div role="form">
-        <div class="form-group">
-            <label for="userName">User</label>
-            <div *ngIf="!checkAnotherUser" class="form-inline">
-                <input type="text" class="form-control" readonly [(ngModel)]="userName" id="userName" />
-                <button class="btn" (click)="readUsersList()">Another user</button>
+        <div role="form">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="userName">User</label>
+
+                    <div id="userName" class="form-inline">
+                        <input type="text" *ngIf="!checkAnotherUser" class="form-control" readonly [(ngModel)]="userName" />
+                        <button class="btn" *ngIf="!checkAnotherUser" (click)="readUsersList()">Other...</button>
+
+                        <select *ngIf="checkAnotherUser" class="form-control" [(ngModel)]="userName">
+                            <option *ngFor="let u of users" [ngValue]="u">{{u}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="paymentMethod">Payment method</label>
+                    <div id="paymentMethod" class="form-inline">
+                        <select class="form-control" [(ngModel)]="paymentMethod">
+                            <option value="1">Cash</option>
+                            <option value="2">Card</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <select *ngIf="checkAnotherUser" class="form-control"  [(ngModel)]="userName" id="userName">
-                <option *ngFor="let u of users" [ngValue]="u">{{u}}</option>
-            </select>
-        </div>
-       
-         <div class="form-group">
-            <label for="paymentMethod">Payment method</label>
-            <select class="form-control" [(ngModel)]="paymentMethod" id="paymentMethod">
-                <option value="1">Cash</option>
-                <option value="2">Card</option>
-            </select>
         </div>
         <div class="form-group">
             <div class="form-group">
