@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuParserWpfClient", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "src\Common\Common.csproj", "{DC22A62C-506F-4EB2-9B43-6BBED880D850}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Tests", "Common.Tests\Common.Tests.csproj", "{5367048C-209C-4B1F-AC10-23EC6A984265}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Tests", "src\Common.Tests\Common.Tests.csproj", "{5367048C-209C-4B1F-AC10-23EC6A984265}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
