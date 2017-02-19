@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "exports": {
+    "Common/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.5.2",
+      "compile": {
+        "bin/Debug/Common.dll": {}
+      },
+      "runtime": {
+        "../../packages/DocX.1.0.0.22/lib/net40/DocX.dll": {},
+        "bin/Debug/Common.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/Common.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    }
+  }
+}
