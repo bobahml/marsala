@@ -1,5 +1,7 @@
-import { platformBrowser } from '@angular/platform-browser';
-import { enableProdMode } from '@angular/core';
-import { AppModuleNgFactory } from '../aot/angularApp/app/app.module.ngfactory';
-enableProdMode();
-platformBrowser().bootstrapModuleFactory(AppModuleNgFactory);
+"use strict";
+var platform_browser_1 = require("@angular/platform-browser");
+var core_1 = require("@angular/core");
+var app_module_ngfactory_1 = require("../aot/angularApp/app/app.module.ngfactory");
+core_1.enableProdMode();
+platform_browser_1.platformBrowser().bootstrapModuleFactory(app_module_ngfactory_1.AppModuleNgFactory);
+//# sourceMappingURL=main-aot.js.map

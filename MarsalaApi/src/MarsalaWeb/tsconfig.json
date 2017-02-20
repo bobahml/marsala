@@ -17,11 +17,14 @@
       "node"
     ]
   },
-  "files": [
-    "angularApp/app/app.module.ts",
-    "angularApp/app/about/about.module.ts",
-    "angularApp/main.ts"
+  "include": [
+    "angularApp/**/*"
   ],
+  "exclude": [
+    "node_modules",
+    "angularApp/main-aot.ts"
+  ],
+
   "awesomeTypescriptLoaderOptions": {
     "useWebpackText": true
   },

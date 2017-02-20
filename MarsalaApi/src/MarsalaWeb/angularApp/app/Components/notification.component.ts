@@ -107,7 +107,7 @@ export class PushNotificationComponent implements OnInit, OnDestroy {
             this.onShow.emit({ notification });
         };
 
-        notification.onclick = (event : Event) => {
+        notification.onclick = (event: Event) => {
             this.onClick.emit({ event, notification });
         };
 

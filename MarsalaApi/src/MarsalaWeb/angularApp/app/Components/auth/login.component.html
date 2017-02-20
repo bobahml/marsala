@@ -1,0 +1,35 @@
+﻿<div class="col-md-6 col-md-offset-3">
+    <h2>Login</h2>
+    <form #f="ngForm" novalidate (ngSubmit)="login($event);">
+        <div class="form-group">
+            <label for="">Username</label>
+            <input type="text" class="form-control" name="username" [(ngModel)]="user.UserName"
+                   required minlength="4" maxlength="15" pattern="^[a-zA-Z0-9]+$" #username="ngModel">
+            <small [hidden]="username.valid || (username.pristine && !f.submitted)" class="text-danger">
+                Username is required (4-15 characters) alphanumeric format.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="">Password</label>
+            <input type="password" class="form-control" name="password" [(ngModel)]="user.Password"
+                   required minlength="6" reverse="true" #password="ngModel">
+            <small [hidden]="password.valid || (password.pristine && !f.submitted)" class="text-danger">
+                Password is required (6+ characters).
+            </small>
+        </div>
+
+        <button [disabled]="f.form.invalid" type="submit" class="btn btn-default">Login</button>
+
+      
+
+        <div *ngIf="registrationCompleted" class="alert alert-info">
+            <label>Please check your email to complete registration</label>
+        </div>
+
+        <div *ngIf="error" class="alert alert-danger">
+            {{error | json}}
+        </div>
+    </form>
+
+    <a routerLink="/register" routerLinkActive="active">Create a new account</a>
+</div>

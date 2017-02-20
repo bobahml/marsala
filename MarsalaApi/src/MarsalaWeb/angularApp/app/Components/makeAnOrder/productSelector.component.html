@@ -1,0 +1,5 @@
+﻿<h3>{{product.header}}</h3>
+<div class="list-group">
+    <label *ngFor='let str of product.collection' title="{{str}}" class="btn btn-default list-group-item dots" [class.active]='isSelected(str)' (click)="select(str)">{{str}}</label>
+</div>
+<input type="text" class="form-control" [(ngModel)]="product.value"/>

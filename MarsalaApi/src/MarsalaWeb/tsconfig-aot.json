@@ -15,10 +15,12 @@
       "dom"
     ]
   },
-  "files": [
-    "angularApp/app/app.module.ts",
-    "angularApp/app/about/about.module.ts",
-    "angularApp/main-aot.ts"
+  "include": [
+    "angularApp/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "angularApp/main.ts"
   ],
   "angularCompilerOptions": {
     "genDir": "aot",

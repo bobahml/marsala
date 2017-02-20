@@ -1,8 +1,13 @@
-﻿<navigation></navigation>
+﻿<nav *ngIf="isAuthorizationPassed" class="navbar navbar-default navbar-static-top">
+    <div class="navbar-header">
+        <ul class="nav navbar-nav">
+            <li [routerLinkActive]="['active']"><a [routerLink]="['/management']">Management</a></li>
+            <li [routerLinkActive]="['active']"><a [routerLink]="['/makeAnOrder']">Make an order</a></li>
+            <li [routerLinkActive]="['active']"><a [routerLink]="['/summary']">Total summary</a></li>
+        </ul>
+    </div>
+</nav>
 
 <div class="container">
-
     <router-outlet></router-outlet>
-
-    <customfooter></customfooter>
 </div>

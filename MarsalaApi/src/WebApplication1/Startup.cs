@@ -34,7 +34,6 @@ namespace WebApplication1
             Configuration = builder.Build();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IAuthService authService)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -76,10 +75,7 @@ namespace WebApplication1
 
             app.UseSignalR("/signalr");
         }
-            
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             // Setup options with DI

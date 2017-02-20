@@ -1,0 +1,69 @@
+﻿<div class="container">
+    <h2>Please update menu file!</h2>
+
+    <div class="form-group">
+        <div class="form-group">
+            <div class="form-inline">
+                <label for="startDateInput">Start date</label>
+                <input type="date" class="form-control" [(ngModel)]="startDate" id="startDateInput" />
+
+                <label class="btn btn-default btn-file">
+                    Select local file...<input type="file" accept=".doc,.docx,.xls,.xlsx" style="display: none;" (change)="onChange($event)"/>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-inline">
+                <label for="uploadWithEmailBtn">Uploading file with e-mail</label>
+                <button class="btn btn-primary" (click)="uploadFromEmail()" id="uploadWithEmailBtn">Upload via e-mail</button>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+<div class="container" *ngIf="loadedMenus.length">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Header</th>
+                <th>salad</th>
+                <th>soup</th>
+                <th>mainCourse</th>
+                <th>drink</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let value of loadedMenus'>
+                <td>
+                    <label>{{value.header}}</label>
+                </td>
+                <td>
+                    <div class="list-group">
+                        <label *ngFor='let value of value.salad' class="list-group-item">{{value}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="list-group">
+                        <label *ngFor='let value of value.soup' class="list-group-item">{{value}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="list-group">
+                        <label *ngFor='let value of value.mainCourse' class="list-group-item">{{value}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="list-group">
+                        <label *ngFor='let value of value.drink' class="list-group-item">{{value}}</label>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<footer class="footer">
+    <a class="btn  btn-default" href="/api/files/offlineClient">Download offline parser for Windows</a>
+</footer>

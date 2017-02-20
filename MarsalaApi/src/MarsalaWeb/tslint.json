@@ -12,10 +12,10 @@
 			"spaces"
 		],
 		"label-position": true,
-		"max-line-length": [
-			true,
-			200
-		],
+    "max-line-length": [
+      true,
+      200
+    ],
 		"member-access": false,
 		"member-ordering": [
 			true,
@@ -37,7 +37,7 @@
 		"no-duplicate-variable": true,
 		"no-empty": false,
 		"no-eval": true,
-		"no-inferrable-types": [ true ],
+		"no-inferrable-types": [ false ],
 		"no-shadowed-variable": false,
 		"no-string-literal": false,
 		"no-switch-case-fall-through": false,
@@ -55,7 +55,7 @@
 		],
 		"quotemark": [
 			true,
-			"single"
+			"double"
 		],
 		"radix": false,
 		"semicolon": [
