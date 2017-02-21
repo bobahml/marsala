@@ -9,7 +9,7 @@ import * as $ from "jquery";
 export class SignalRService {
 
     private proxy: SignalR.Hub.Proxy;
-    private proxyName: string = "messages";
+    private proxyName = "messages";
     private connection: SignalR.Hub.Connection;
 
     foodChanged: EventEmitter<any>;
@@ -53,11 +53,11 @@ export class SignalRService {
 
     private startConnection(): void {
         this.connection.start().done((data) => {
-            console.log("Now connected " + data.transport.name + ", connection ID= " + data.id);
+            console.log(`Now connected ${data.transport.name}, connection ID= ${data.id}`);
             this.connectionEstablished.emit(true);
             this.connectionExists = true;
         }).fail((error) => {
-            console.log("Could not connect " + error);
+            console.log(`Could not connect ${error}`);
             this.connectionEstablished.emit(false);
             this.connectionExists = false;
         });

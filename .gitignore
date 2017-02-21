@@ -255,3 +255,4 @@ MarsalaApi/src/MarsalaWeb/wwwroot/
 MarsalaApi/src/MarsalaWeb/angularApp/app/**/*.js
 **/angularApp/app/**/*.js
 **/angularApp/app/**/*.map
+MarsalaWeb/aot

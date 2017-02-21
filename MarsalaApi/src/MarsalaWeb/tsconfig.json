@@ -17,12 +17,10 @@
       "node"
     ]
   },
-  "include": [
-    "angularApp/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "angularApp/main-aot.ts"
+
+  "files": [
+    "angularApp/app/app.module.ts",
+    "angularApp/main.ts"
   ],
 
   "awesomeTypescriptLoaderOptions": {

@@ -15,12 +15,9 @@
       "dom"
     ]
   },
-  "include": [
-    "angularApp/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "angularApp/main.ts"
+  "files": [
+    "angularApp/app/app.module.ts",
+    "angularApp/main-aot.ts"
   ],
   "angularCompilerOptions": {
     "genDir": "aot",
