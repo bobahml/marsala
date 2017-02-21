@@ -13,16 +13,16 @@
 })
 export class CollapseDirective {
 	// style
-	private height: string;
+	height: string;
 	// classes
 	// shown
-	private isExpanded: boolean = true;
+	isExpanded = true;
 	// hidden
-	private isCollapsed: boolean = false;
+	isCollapsed = false;
 	// stale state
-	private isCollapse: boolean = true;
+	isCollapse = true;
 	// animation state
-	private isCollapsing: boolean = false;
+	isCollapsing = false;
 
 	@Input() set collapse(value: boolean) {
 		this.isExpanded = value;

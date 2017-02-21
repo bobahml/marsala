@@ -28,14 +28,16 @@ export interface IMultiSelectTexts {
     templateUrl: "multiProductSelector.component.html"
 })
 export class MultiselectDropdown implements OnInit {
-    title: string;
+
     @Input() product: Product;
     @Input() settings: IMultiSelectSettings;
     @Input() texts: IMultiSelectTexts;
     @Output() selectionLimitReached = new EventEmitter();
 
-    private numSelected: number = 0;
-    private isVisible: boolean = false;
+    title: string;
+    isVisible = false;
+    numSelected = 0;
+  
     private defaultSettings: IMultiSelectSettings = {
         pullRight: false,
         buttonClasses: "btn btn-default",

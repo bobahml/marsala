@@ -1,9 +1,9 @@
 ﻿import { Injectable, EventEmitter } from "@angular/core";
 import { SETTINGS } from "../Shared/settings";
 import { IOrder, IOrderSentStatus } from "../Models/order";
-
-import "signalR";
 import * as $ from "jquery";
+import "signalR";
+
 
 @Injectable()
 export class SignalRService {

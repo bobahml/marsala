@@ -1,37 +1,40 @@
-var path = require('path');
+var path = require("path");
 
-var webpack = require('webpack');
+var webpack = require("webpack");
 
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
-var helpers = require('./webpack.helpers');
+var HtmlWebpackPlugin = require("html-webpack-plugin");
+var CopyWebpackPlugin = require("copy-webpack-plugin");
+var CleanWebpackPlugin = require("clean-webpack-plugin");
+var helpers = require("./webpack.helpers");
 
-console.log('@@@@@@@@@ USING PRODUCTION @@@@@@@@@@@@@@@');
+console.log("@@@@@@@@@ USING PRODUCTION @@@@@@@@@@@@@@@");
 
 module.exports = {
 
     entry: {
-        'vendor': './angularApp/vendor.ts',
-        'polyfills': './angularApp/polyfills.ts',
-        'app': './angularApp/main-aot.ts' // AoT compilation
+        'vendor': "./angularApp/vendor.ts",
+        'polyfills': "./angularApp/polyfills.ts",
+        'app': "./angularApp/main-aot.ts" // AoT compilation
     },
 
     output: {
-        path: './wwwroot/',
-        filename: 'dist/[name].[hash].bundle.js',
-        chunkFilename: 'dist/[id].[hash].chunk.js',
-        publicPath: '/'
+        path: "./wwwroot/",
+        filename: "dist/[name].[hash].bundle.js",
+        chunkFilename: "dist/[id].[hash].chunk.js",
+        publicPath: "/"
     },
 
     resolve: {
-        extensions: ['.ts', '.js', '.json', '.css', '.scss', '.html']
+        alias: {
+            jquery: "jquery/src/jquery"
+        },
+        extensions: [".ts", ".js", ".json", ".css", ".scss", ".html"]
     },
 
     devServer: {
         historyApiFallback: true,
-        stats: 'minimal',
-        outputPath: path.join(__dirname, 'wwwroot/')
+        stats: "minimal",
+        outputPath: path.join(__dirname, "wwwroot/")
     },
 
     module: {
@@ -39,30 +42,30 @@ module.exports = {
             {
                 test: /\.ts$/,
                 loaders: [
-                    'awesome-typescript-loader',
-                    'angular-router-loader?aot=true&genDir=aot/'
+                    "awesome-typescript-loader",
+                    "angular-router-loader?aot=true&genDir=aot/"
                 ]
             },
             {
                 test: /\.(png|jpg|gif|woff|woff2|ttf|svg|eot)$/,
-                loader: 'file-loader?name=assets/[name]-[hash:6].[ext]'
+                loader: "file-loader?name=assets/[name]-[hash:6].[ext]"
             },
             {
                 test: /favicon.ico$/,
-                loader: 'file-loader?name=/[name].[ext]'
+                loader: "file-loader?name=/[name].[ext]"
             },
             {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader'
+                loader: "style-loader!css-loader"
             },
             {
                 test: /\.scss$/,
                 exclude: /node_modules/,
-                loaders: ['style-loader', 'css-loader', 'sass-loader']
+                loaders: ["style-loader", "css-loader", "sass-loader"]
             },
             {
                 test: /\.html$/,
-                loader: 'raw-loader'
+                loader: "raw-loader"
             }
         ],
         exprContextCritical: false
@@ -71,8 +74,8 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(
             [
-                './wwwroot/dist',
-                './wwwroot/assets'
+                "./wwwroot/dist",
+                "./wwwroot/assets"
             ]
         ),
         new webpack.NoEmitOnErrorsPlugin(),
@@ -87,17 +90,17 @@ module.exports = {
         }),
         new webpack.optimize.CommonsChunkPlugin(
             {
-                name: ['vendor', 'polyfills']
+                name: ["vendor", "polyfills"]
             }),
 
         new HtmlWebpackPlugin({
-            filename: 'index.html',
-            inject: 'body',
-            template: 'angularApp/index.html'
+            filename: "index.html",
+            inject: "body",
+            template: "angularApp/index.html"
         }),
 
         new CopyWebpackPlugin([
-            { from: './angularApp/images/*.*', to: 'assets/', flatten: true }
+            { from: "./angularApp/images/*.*", to: "assets/", flatten: true }
         ])
     ]
 };

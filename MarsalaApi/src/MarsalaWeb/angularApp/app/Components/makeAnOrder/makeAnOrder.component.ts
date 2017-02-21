@@ -62,7 +62,7 @@ export class MakeAnOrderComponent implements OnInit {
                     }
                 }
             })
-            .catch(error => this.header = error.messsage || error);
+            .catch(error => this.header = error);
     }
 
     isOrderValid() {
@@ -85,7 +85,7 @@ export class MakeAnOrderComponent implements OnInit {
 
         this.orderService.makeAnOrder(order)
             .then(o => this.router.navigate(["summary"]))
-            .catch(error => this.header = error.messsage || error);
+            .catch(error => this.header = error);
 
     }
 
@@ -103,7 +103,7 @@ export class MakeAnOrderComponent implements OnInit {
                     this.snacks.setCollection(menu.snacks);
                 }
             })
-            .catch(error => this.header = error.messsage || error);
+            .catch(error => this.header = error);
     }
 
 }

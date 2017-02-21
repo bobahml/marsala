@@ -20,11 +20,6 @@
 
         <button [disabled]="f.form.invalid" type="submit" class="btn btn-default">Login</button>
 
-      
-
-        <div *ngIf="registrationCompleted" class="alert alert-info">
-            <label>Please check your email to complete registration</label>
-        </div>
 
         <div *ngIf="error" class="alert alert-danger">
             {{error | json}}

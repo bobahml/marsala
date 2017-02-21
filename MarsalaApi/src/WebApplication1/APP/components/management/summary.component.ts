@@ -26,13 +26,13 @@ export class SummaryComponent implements OnInit {
     reloadSummary() {
         this.makeOrderService.getTodaySummary()
             .then(res => this.summary = res)
-            .catch(error => console.log(error.messsage || error));
+            .catch(error => console.log(error));
     }
 
     removeOrder(userName: string) {
         this.makeOrderService.removeOrder(userName)
             .then(res => this.summary = res)
-            .catch(error => console.log(error.messsage || error));
+            .catch(error => console.log(error));
     }
 
     copyToClipboard(copyTextarea: any) {

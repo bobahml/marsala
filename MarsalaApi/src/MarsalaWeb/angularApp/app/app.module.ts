@@ -10,9 +10,11 @@ import { MakeAnOrderComponent } from "./components/makeAnOrder/makeAnOrder.compo
 import { CollectionSelectorComponent } from "./components/makeAnOrder/productSelector.component";
 import { MultiselectDropdown } from "./components/makeAnOrder/multiProductSelector.component";
 import { AddDailyMenuComponent } from "./components/management/addDailyMenu.component";
+import { PushNotificationComponent } from "./components/notification.component";
 import { SummaryComponent } from "./components/management/summary.component";
 import { CollapseDirective } from "./Directives/CollapseDirective";
 import { EqualValidator } from "./Directives/EqualValidator";
+
 
 
 import { AuthGuard } from "./Services/AuthGuard";
@@ -56,6 +58,7 @@ const routing = RouterModule.forRoot( appRoutes, routeConfig );
         AddDailyMenuComponent,
         SummaryComponent,
         CollapseDirective,
+        PushNotificationComponent,
         EqualValidator
     ],
 
