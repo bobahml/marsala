@@ -246,13 +246,7 @@ paket-files/
 .fake/
 .fakeBuild/
 
-wwwroot/libs/
-wwwroot/app/
-MarsalaApi/src/WebApplication1/wwwroot/app/
-MarsalaApi/src/WebApplication1/wwwroot/libs/
-MarsalaApi/src/WebApplication1/project.fragment.lock.json
-MarsalaApi/src/MarsalaWeb/wwwroot/
-MarsalaApi/src/MarsalaWeb/angularApp/app/**/*.js
+wwwroot/
 **/angularApp/app/**/*.js
 **/angularApp/app/**/*.map
-MarsalaWeb/aot
+MarsalaWeb/aot/
