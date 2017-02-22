@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Common.Model;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Services;
+using MarsalaWeb.Services;
 
-namespace Angular2WebpackVisualStudio.Controllers
+namespace MarsalaWeb.Controllers
 {
 	[Route("api/[controller]")]
 	public class OrderController : Controller

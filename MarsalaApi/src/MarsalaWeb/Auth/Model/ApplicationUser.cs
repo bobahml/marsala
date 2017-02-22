@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace WebApplication1.Auth.Model
+namespace MarsalaWeb.Auth.Model
 {
 	public class ApplicationUser : IdentityUser
 	{

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.Auth.Model;
+using MarsalaWeb.Auth.Model;
 
-namespace Angular2WebpackVisualStudio.DAL
+namespace MarsalaWeb.DAL
 {
 	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	{

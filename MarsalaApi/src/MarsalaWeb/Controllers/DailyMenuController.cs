@@ -6,10 +6,10 @@ using Common.Model;
 using Common.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Services;
-using WebApplication1.Services.Mail;
+using MarsalaWeb.Services;
+using MarsalaWeb.Services.Mail;
 
-namespace Angular2WebpackVisualStudio.Controllers
+namespace MarsalaWeb.Controllers
 {
 	[Route("api/[controller]")]
 	public class DailyMenuController : Controller

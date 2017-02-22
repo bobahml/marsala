@@ -1,8 +1,8 @@
 ﻿using Common.Model;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
-using WebApplication1.Hubs;
+using MarsalaWeb.Hubs;
 
-namespace Angular2WebpackVisualStudio.Services
+namespace MarsalaWeb.Services
 {
 	public interface IClientInterationService
 	{

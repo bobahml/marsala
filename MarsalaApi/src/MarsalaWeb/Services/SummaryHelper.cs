@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WebApplication1.Services
+namespace MarsalaWeb.Services
 {
 	internal static class SummaryHelper
 	{

@@ -4,10 +4,10 @@ using System.Globalization;
 using System.Linq;
 using Common.Model;
 using System.Threading.Tasks;
-using Angular2WebpackVisualStudio.DAL;
-using Angular2WebpackVisualStudio.Services;
+using MarsalaWeb.DAL;
+using MarsalaWeb.Services;
 
-namespace WebApplication1.Services
+namespace MarsalaWeb.Services
 {
 	public interface IMenuService
 	{

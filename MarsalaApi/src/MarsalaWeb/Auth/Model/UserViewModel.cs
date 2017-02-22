@@ -1,5 +1,5 @@
 ﻿
-namespace WebApplication1.Auth.Model
+namespace MarsalaWeb.Auth.Model
 {
     public class UserViewModel
     {

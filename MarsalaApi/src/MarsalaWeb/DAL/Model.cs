@@ -1,4 +1,4 @@
-﻿namespace Angular2WebpackVisualStudio.DAL
+﻿namespace MarsalaWeb.DAL
 {
 	public class DaylyMenuStore
 	{

@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Common.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Services;
+using MarsalaWeb.Services;
 
-namespace Angular2WebpackVisualStudio.Controllers
+namespace MarsalaWeb.Controllers
 {
 	[Route("api/[controller]")]
 	public class FilesController : Controller

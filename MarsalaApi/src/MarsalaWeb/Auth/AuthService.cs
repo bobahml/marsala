@@ -7,7 +7,7 @@ using System.Text;
 using Microsoft.AspNetCore.Builder;
 using System.Collections.Generic;
 
-namespace WebApplication1.Auth
+namespace MarsalaWeb.Auth
 {
     public interface IAuthService
     {

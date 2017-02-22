@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Linq;
-using Angular2WebpackVisualStudio.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Angular2WebpackVisualStudio.Models;
-using Angular2WebpackVisualStudio.Services;
-using Common.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using WebApplication1.Auth;
-using WebApplication1.Auth.Model;
-using WebApplication1.Services;
-using WebApplication1.Services.Mail;
+using Common.Services;
+using MarsalaWeb.DAL;
+using MarsalaWeb.Auth;
+using MarsalaWeb.Auth.Model;
+using MarsalaWeb.Services;
+using MarsalaWeb.Services.Mail;
 
-namespace Angular2WebpackVisualStudio
+namespace MarsalaWeb
 {
 	public class Startup
 	{

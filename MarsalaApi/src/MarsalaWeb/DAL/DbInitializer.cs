@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Angular2WebpackVisualStudio.DAL
+namespace MarsalaWeb.DAL
 {
     public static class DbInitializer
     {

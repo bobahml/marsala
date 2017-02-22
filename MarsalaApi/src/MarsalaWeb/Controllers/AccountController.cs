@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebApplication1.Auth;
-using WebApplication1.Auth.Model;
-using WebApplication1.Services.Mail;
+using MarsalaWeb.Auth;
+using MarsalaWeb.Auth.Model;
+using MarsalaWeb.Services.Mail;
 
-namespace Angular2WebpackVisualStudio.Controllers
+namespace MarsalaWeb.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller

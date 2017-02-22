@@ -5,7 +5,7 @@ using Common.Model;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace Angular2WebpackVisualStudio.DAL
+namespace MarsalaWeb.DAL
 {
 	public interface IOrdersStore
 	{

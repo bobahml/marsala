@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication1.Auth.Model
+namespace MarsalaWeb.Auth.Model
 {
     public class LoginViewModel
     {

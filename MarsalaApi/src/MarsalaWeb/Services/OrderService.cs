@@ -1,11 +1,11 @@
 ﻿using System;
 using Common.Model;
-using WebApplication1.Services.Mail;
+using MarsalaWeb.Services.Mail;
 using System.Threading.Tasks;
-using Angular2WebpackVisualStudio.DAL;
-using Angular2WebpackVisualStudio.Services;
+using MarsalaWeb.DAL;
+using MarsalaWeb.Services;
 
-namespace WebApplication1.Services
+namespace MarsalaWeb.Services
 {
 	public interface IOrderService
 	{

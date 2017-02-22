@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace WebApplication1.Services.Mail
+namespace MarsalaWeb.Services.Mail
 {
 	public interface IMailWorker
 	{

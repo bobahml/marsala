@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.Auth.Model;
+using MarsalaWeb.Auth.Model;
 
-namespace Angular2WebpackVisualStudio.Controllers
+namespace MarsalaWeb.Controllers
 {
 	[Route("api/[controller]")]
 	public class UsersController : Controller

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Hubs;
 
-namespace WebApplication1.Hubs
+namespace MarsalaWeb.Hubs
 {
     [Authorize]
     [HubName("messages")]

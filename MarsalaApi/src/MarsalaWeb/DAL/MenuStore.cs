@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Common.Model;
 using Newtonsoft.Json;
 
-namespace Angular2WebpackVisualStudio.DAL
+namespace MarsalaWeb.DAL
 {
 	public interface IMenuStore
 	{

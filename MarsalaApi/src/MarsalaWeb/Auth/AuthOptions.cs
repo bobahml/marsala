@@ -1,4 +1,4 @@
-﻿namespace WebApplication1.Auth
+﻿namespace MarsalaWeb.Auth
 {
     public class AuthOptions
     {

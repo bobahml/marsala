@@ -1,6 +1,6 @@
 using System;
 
-namespace WebApplication1.Services.Mail
+namespace MarsalaWeb.Services.Mail
 {
 	public class MenuFile
 	{
