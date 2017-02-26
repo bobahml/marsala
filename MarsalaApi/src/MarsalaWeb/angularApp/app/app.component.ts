@@ -79,8 +79,8 @@ export class AppComponent implements OnInit {
         });
 
         this.signalRService.orderSent.subscribe((status: IOrderSentStatus) => {
-            const header = status.IsSuccess ? "📧 Success." : "📧 Error.";
-            this.showNotification(header, `Sender: ${status.SenderName}. ${status.StatusText}`, () => this.router.navigate(["summary"]));
+            const header = status.isSuccess ? "📧 Success." : "📧 Error.";
+            this.showNotification(header, `Sender: ${status.senderName}. ${status.statusText}`, () => this.router.navigate(["summary"]));
         });
     }
 

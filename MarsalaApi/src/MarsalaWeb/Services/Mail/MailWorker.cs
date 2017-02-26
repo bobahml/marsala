@@ -129,7 +129,7 @@ namespace MarsalaWeb.Services.Mail
 				catch (Exception e)
 				{
 					status.StatusText = $"Failure sending mail error message: {e.Message}";
-					status.IsSuccess = true;
+					status.IsSuccess = false;
 					_logger.LogError($"SendMailError {item.MailMessage.To}: {item.MailMessage.Body}. Error={e}");
 				}
 				finally

@@ -3,7 +3,6 @@ using Common.Model;
 using MarsalaWeb.Services.Mail;
 using System.Threading.Tasks;
 using MarsalaWeb.DAL;
-using MarsalaWeb.Services;
 
 namespace MarsalaWeb.Services
 {
@@ -13,6 +12,7 @@ namespace MarsalaWeb.Services
 		Task<Summary> GetSummary();
 		Task<Summary> DeleteOrder(string userName);
 		Task StartOrderSending(string senderName);
+		OrderSentStatus GetStatus();
 	}
 
 
@@ -22,6 +22,7 @@ namespace MarsalaWeb.Services
 		private readonly IMailWorker _mailWorker;
 		private readonly IOrdersStore _ordersStore;
 		private readonly DateTime _orderDate = DateTime.Now.Date;
+		private static OrderSentStatus _lastSendStatus = new OrderSentStatus();
 
 		public OrderService(IClientInterationService clientInterationService, IMailWorker mailWorker, IOrdersStore ordersStore)
 		{
@@ -53,6 +54,13 @@ namespace MarsalaWeb.Services
 		public async Task StartOrderSending(string senderName)
 		{
 			var summary = await GetSummary();
+			_lastSendStatus = new OrderSentStatus
+			{
+				SenderName = senderName,
+				StatusText = "Sending in progress",
+				IsSuccess = true,
+				SentDate = DateTime.UtcNow,
+			};
 
 			_mailWorker.SendAsync("Заказ бизнес ланч", summary.OrderText, result =>
 			{
@@ -60,10 +68,17 @@ namespace MarsalaWeb.Services
 				{
 					SenderName = senderName,
 					StatusText = result.StatusText,
-					IsSuccess = result.IsSuccess
+					IsSuccess = result.IsSuccess,
+					SentDate = DateTime.UtcNow,
 				};
+				_lastSendStatus = status;
 				_clientInterationService.NotifyOrderSent(status);
 			});
+		}
+
+		public OrderSentStatus GetStatus()
+		{
+			return _lastSendStatus;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { OrderService } from "../../Services/OrderService";
-import { ISummary, Summary } from "../../Models/order";
+import { ISummary, Summary, IOrderSentStatus } from "../../Models/order";
 
 
 @Component({
@@ -14,20 +14,34 @@ import { ISummary, Summary } from "../../Models/order";
 
 export class SummaryComponent implements OnInit {
 
+    lastSentStatus: IOrderSentStatus = null;
     summary: ISummary = new Summary();
-    isDetailsCollapsed: boolean = true;
+    isDetailsCollapsed = true;
 
     constructor(private makeOrderService: OrderService) {
     }
 
     ngOnInit() {
+        this.reloadFromServer();
+    }
+
+    reloadFromServer() {
         this.reloadSummary();
+        this.reloadSentStatus();
     }
 
     reloadSummary() {
         this.makeOrderService.getTodaySummary()
             .then(res => this.summary = res)
             .catch(error => console.log(error));
+    }
+
+    reloadSentStatus() {
+        this.makeOrderService.getSentStatus()
+            .then(res => this.lastSentStatus = res)
+            .catch(error => console.log(error));
+
+        console.log(this.lastSentStatus);
     }
 
     removeOrder(userName: string) {
@@ -48,7 +62,10 @@ export class SummaryComponent implements OnInit {
 
     sendByEmail(copyTextarea: any) {
         this.makeOrderService.sendByEmail()
-            .then(res => this.summary.orderText = "The order will be sent shortly. You will receive a notification.")
+            .then(res => {
+                this.lastSentStatus = res;
+                this.summary.orderText = "The order will be sent shortly. You will receive a notification.";
+            })
             .catch(error => {
                 this.summary.orderText = error;
                 console.log(error);

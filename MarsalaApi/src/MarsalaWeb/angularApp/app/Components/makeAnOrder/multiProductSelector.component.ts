@@ -37,7 +37,7 @@ export class MultiselectDropdown implements OnInit {
     title: string;
     isVisible = false;
     numSelected = 0;
-  
+
     private defaultSettings: IMultiSelectSettings = {
         pullRight: false,
         buttonClasses: "btn btn-default",

@@ -3,11 +3,11 @@
     <div class="container">
         <h2>Prepare the order to sending</h2>
         <div class="form-group">
-            <button class="btn btn-default" (click)="reloadSummary()">Refresh...</button>
+            <button class="btn btn-default" (click)="reloadFromServer()">Refresh...</button>
         </div>
     </div>
 
-    <div role="form" *ngIf='summary.orders.length'>
+    <div role="form" *ngIf="summary.orders.length">
 
         <div class="form-group">
             <label>Total orders: {{summary.orders.length}}</label>
@@ -77,6 +77,15 @@
                             (click)="sendByEmail()">
                         <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Send by e-mail!
                     </button>
+                </div>
+
+                <div *ngIf="lastSentStatus!=null" class="row">
+                    <span class="label" ng-class="lastSentStatus.isSuccess ? 'label-success' : 'label-danger'">
+                        Last sent:
+                        &nbsp;<span>{{lastSentStatus.senderName}}</span>
+                        &nbsp;<span>{{lastSentStatus.sentDate}}</span>
+                        <span *ngIf="!lastSentStatus.IsSuccess">&nbsp;{{lastSentStatus.statusText}}</span>
+                    </span>
                 </div>
 
                 <div class="row top-buffer">

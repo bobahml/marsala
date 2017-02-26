@@ -250,3 +250,4 @@ wwwroot/
 **/angularApp/app/**/*.js
 **/angularApp/app/**/*.map
 MarsalaWeb/aot/
+MarsalaApi/src/MarsalaWeb/aot/

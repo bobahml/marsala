@@ -37,13 +37,20 @@ namespace MarsalaWeb.Controllers
 			return _orderService.GetSummary();
 		}
 
+		[HttpGet]
+		[Route("status")]
+		public OrderSentStatus GetStatus()
+		{
+			return _orderService.GetStatus();
+		}
+
 		[HttpPost]
 		[Route("send")]
-		public async Task<IActionResult> SendSummary()
+		public async Task<OrderSentStatus> SendSummary()
 		{
 			var currentUser = HttpContext.User.FindFirst(ClaimTypes.Name).Value;
 			await _orderService.StartOrderSending(currentUser);
-			return Ok();
+			return _orderService.GetStatus();
 		}
 	}
 }
