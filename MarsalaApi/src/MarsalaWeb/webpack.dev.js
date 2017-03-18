@@ -82,7 +82,7 @@ module.exports = {
         exprContextCritical: false
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({ name: ["app", "polyfills"] }),
+        new webpack.optimize.CommonsChunkPlugin({  name: ["vendor", "polyfills"] }),
 
         new CleanWebpackPlugin(
             [
