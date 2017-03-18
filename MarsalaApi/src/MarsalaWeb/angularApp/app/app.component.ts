@@ -10,7 +10,6 @@ import { AuthGuard } from "./Services/AuthGuard";
 
 
 @Component({
-    moduleId: module.id,
     selector: "my-app",
     templateUrl: "app.component.html"
 })
@@ -27,7 +26,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.subscribeToEvents();
-        this.isAuthorizationPassed = this.contextStore.isLoggedIn();
+        this.connectIfAuthorized();
     }
 
     private showNotification(title: string, body: string, click: () => any) {
@@ -56,15 +55,7 @@ export class AppComponent implements OnInit {
 
     private subscribeToEvents(): void {
 
-        this.contextStore.userChanged.subscribe((user: IUserToken) => {
-            this.isAuthorizationPassed = this.contextStore.isLoggedIn();
-
-            if (this.isAuthorizationPassed) {
-                this.signalRService.connect(user.token);
-            } else {
-                this.signalRService.disconnect();
-            }
-        });
+        this.contextStore.userChanged.subscribe((user: IUserToken) => this.connectIfAuthorized());
 
         this.signalRService.orderUpdated.subscribe((order: IOrder) => {
             const user = this.contextStore.getCurrentUser();
@@ -79,9 +70,18 @@ export class AppComponent implements OnInit {
         });
 
         this.signalRService.orderSent.subscribe((status: IOrderSentStatus) => {
-            const header = status.isSuccess ? "📧 Success." : "📧 Error.";
-            this.showNotification(header, `Sender: ${status.senderName}. ${status.statusText}`, () => this.router.navigate(["summary"]));
+            const header = status.IsSuccess ? "📧 Success." : "📧 Error.";
+            this.showNotification(header, `Sender: ${status.SenderName}. ${status.StatusText}`, () => this.router.navigate(["summary"]));
         });
     }
 
+    private connectIfAuthorized() {
+        this.isAuthorizationPassed = this.contextStore.isLoggedIn();
+
+        if (this.isAuthorizationPassed) {
+            this.signalRService.connect(this.contextStore.getToken());
+        } else {
+            this.signalRService.disconnect();
+        }
+    }
 }

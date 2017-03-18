@@ -22,7 +22,6 @@ export interface IMultiSelectTexts {
 }
 
 @Component({
-    moduleId: module.id,
     selector: "multiselect-dropdown",
     styles: ["a { outline: none; }"],
     templateUrl: "multiProductSelector.component.html"

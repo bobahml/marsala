@@ -49,8 +49,8 @@ export class Summary {
 }
 
 export interface IOrderSentStatus {
-    senderName: string;
-    statusText: string;
-    isSuccess: boolean;
-    sentDate: Date;
+    SenderName: string;
+    StatusText: string;
+    IsSuccess: boolean;
+    SentDate: Date;
 }

@@ -3,7 +3,6 @@ import { AuthenticationService } from "../../Services/AuthenticationService";
 import { RegisterUser } from "../../models/user";
 
 @Component({
-    moduleId: module.id,
 	templateUrl: "register.component.html",
 	providers: [AuthenticationService]
 })

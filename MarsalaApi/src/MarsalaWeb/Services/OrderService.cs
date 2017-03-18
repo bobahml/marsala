@@ -22,7 +22,12 @@ namespace MarsalaWeb.Services
 		private readonly IMailWorker _mailWorker;
 		private readonly IOrdersStore _ordersStore;
 		private readonly DateTime _orderDate = DateTime.Now.Date;
-		private static OrderSentStatus _lastSendStatus = new OrderSentStatus();
+		private static OrderSentStatus _lastSendStatus = new OrderSentStatus
+		{
+			StatusText = "Not sent",
+			SenderName = "Nobody",
+			IsSuccess = false
+		};
 
 		public OrderService(IClientInterationService clientInterationService, IMailWorker mailWorker, IOrdersStore ordersStore)
 		{
@@ -58,7 +63,7 @@ namespace MarsalaWeb.Services
 			{
 				SenderName = senderName,
 				StatusText = "Sending in progress",
-				IsSuccess = true,
+				IsSuccess = false,
 				SentDate = DateTime.UtcNow,
 			};
 

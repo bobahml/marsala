@@ -80,12 +80,11 @@
                 </div>
 
                 <div *ngIf="lastSentStatus!=null" class="row">
-                    <span class="label" ng-class="lastSentStatus.isSuccess ? 'label-success' : 'label-danger'">
-                        Last sent:
-                        &nbsp;<span>{{lastSentStatus.senderName}}</span>
-                        &nbsp;<span>{{lastSentStatus.sentDate}}</span>
-                        <span *ngIf="!lastSentStatus.IsSuccess">&nbsp;{{lastSentStatus.statusText}}</span>
-                    </span>
+                    <p>
+                        <span class="badge">{{lastSentStatus.senderName}}</span>
+                        &nbsp;<span class="badge">{{lastSentStatus.sentDate | date}}</span>
+                        <span *ngIf="!lastSentStatus.isSuccess">&nbsp;{{lastSentStatus.statusText}}</span>
+                    </p>
                 </div>
 
                 <div class="row top-buffer">

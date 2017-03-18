@@ -4,7 +4,6 @@ import { ISummary, Summary, IOrderSentStatus } from "../../Models/order";
 
 
 @Component({
-    moduleId: module.id,
     selector: "summary",
     templateUrl: "summary.component.html",
     styles: [".top-buffer {margin-top: 20px;}"],
@@ -40,8 +39,6 @@ export class SummaryComponent implements OnInit {
         this.makeOrderService.getSentStatus()
             .then(res => this.lastSentStatus = res)
             .catch(error => console.log(error));
-
-        console.log(this.lastSentStatus);
     }
 
     removeOrder(userName: string) {
@@ -66,10 +63,7 @@ export class SummaryComponent implements OnInit {
                 this.lastSentStatus = res;
                 this.summary.orderText = "The order will be sent shortly. You will receive a notification.";
             })
-            .catch(error => {
-                this.summary.orderText = error;
-                console.log(error);
-            });
+            .catch(error => this.summary.orderText = error);
     }
 
     private clearSelection() {

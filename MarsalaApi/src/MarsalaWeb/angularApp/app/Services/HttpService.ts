@@ -1,4 +1,5 @@
 ﻿import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
 import "rxjs/add/operator/toPromise";
@@ -9,7 +10,8 @@ import { UserContextStore } from "../Shared/UserContextStore";
 @Injectable()
 export class HttpService {
 
-    constructor(private http: Http, private contextStore: UserContextStore) {
+    constructor(private http: Http, private contextStore: UserContextStore,
+        private router: Router) {
     }
 
     getapiUrl(): string {
@@ -20,7 +22,7 @@ export class HttpService {
         return this.http.delete(`${SETTINGS.apiUrl}${url}`, this.getRequestOptions())
             .toPromise()
             .then(this.extractData)
-            .catch(this.handleError);
+            .catch(e => this.handleError(e, this.router));
     }
 
     post<T>(url: string, object: any): Promise<T> {
@@ -29,7 +31,7 @@ export class HttpService {
         return this.http.post(`${SETTINGS.apiUrl}${url}`, options.body, options)
             .toPromise()
             .then(this.extractData)
-            .catch(this.handleError);
+            .catch(e => this.handleError(e, this.router));
     }
 
     postEmpty(url: string, object: any): Promise<boolean> {
@@ -38,17 +40,17 @@ export class HttpService {
         return this.http.post(`${SETTINGS.apiUrl}${url}`, options.body, options)
             .toPromise()
             .then(o => true)
-            .catch(this.handleError);
+            .catch(e => this.handleError(e, this.router));
     }
 
     get<T>(url: string): Promise<T> {
 
-        const options: RequestOptions = this.getRequestOptions();
+        const options = this.getRequestOptions();
 
         return this.http.get(`${SETTINGS.apiUrl}${url}`, options)
             .toPromise()
             .then(this.extractData)
-            .catch(this.handleError);
+            .catch(e => this.handleError(e, this.router));
     }
 
     /**
@@ -60,7 +62,7 @@ export class HttpService {
      */
     upload<T>(url: string, files: File[]): Promise<T> {
         return new Promise((resolve, reject) => {
-            let xhr: XMLHttpRequest = new XMLHttpRequest();
+            const xhr: XMLHttpRequest = new XMLHttpRequest();
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
@@ -72,14 +74,14 @@ export class HttpService {
                 }
             };
 
-            let formData: FormData = new FormData();
+            const formData: FormData = new FormData();
             for (let i = 0; i < files.length; i++) {
                 formData.append(files[i].name, files[i], files[i].name);
             }
 
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Accept", "application/json");
-            let token: string = this.contextStore.getToken();
+            const token: string = this.contextStore.getToken();
             if (token) {
                 xhr.setRequestHeader("Authorization", "Bearer " + token);
             }
@@ -87,15 +89,12 @@ export class HttpService {
         });
     }
 
-
-
-
     private getHeaders(): Headers {
         const headers: Headers = new Headers();
         headers.append("Content-Type", "application/json");
         headers.append("Accept", "application/json");
 
-        let token: string = this.contextStore.getToken();
+        const token: string = this.contextStore.getToken();
         if (token) {
             headers.append("Authorization", "Bearer " + token);
         }
@@ -117,10 +116,12 @@ export class HttpService {
         return res.json() || {};
     }
 
-    private handleError(error: Response): any {
+    private handleError(error: Response, router: Router): any {
         console.error("An error occurred", error);
         if (error.status === 400) {
             return Promise.reject(error.json());
+        } else if (error.status === 401) {
+            router.navigate(["login"]);
         }
         return Promise.reject(error.statusText);
     }

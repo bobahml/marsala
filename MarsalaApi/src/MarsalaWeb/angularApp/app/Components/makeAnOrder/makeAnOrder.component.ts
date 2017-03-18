@@ -11,7 +11,6 @@ import { Product } from "../../Models/product";
 
 
 @Component({
-    moduleId: module.id,
     selector: "make-order",
     templateUrl: "makeAnOrder.component.html",
     providers: [OrderService, MenuService, UsersService]

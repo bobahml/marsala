@@ -5,7 +5,6 @@ import { IUser } from "../../models/user";
 import { AuthenticationService } from "../../Services/AuthenticationService";
 
 @Component({
-    moduleId: module.id,
     templateUrl: "login.component.html",
     providers: [AuthenticationService]
 })

@@ -5,7 +5,6 @@ import { IDailyMenu, DailyMenu } from "../../Models/dailyMenu";
 
 
 @Component({
-    moduleId: module.id,
     selector: "add-dailyMenu",
     templateUrl: "addDailyMenu.component.html",
     providers: [MenuService]
@@ -22,8 +21,8 @@ export class AddDailyMenuComponent implements OnInit {
     }
 
     onChange(event: any) {
-        let target = <HTMLInputElement>(event.target || event.srcElement);
-        let fileList: FileList = target.files;
+        const target = (event.target || event.srcElement) as HTMLInputElement;
+        const fileList = target.files;
 
         if (fileList == null || fileList.length !== 1) {
             return;
