@@ -17,7 +17,7 @@ module.exports = {
     },
 
     output: {
-        path: "./wwwroot/",
+        path: __dirname + "/wwwroot/",
         filename: "dist/[name].[hash].bundle.js",
         chunkFilename: "dist/[id].[hash].chunk.js",
         publicPath: "/"
@@ -33,7 +33,7 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         stats: "minimal",
-        outputPath: path.join(__dirname, "wwwroot/")
+        outputPath: path.join(__dirname, "/wwwroot/")
     },
 
     module: {
