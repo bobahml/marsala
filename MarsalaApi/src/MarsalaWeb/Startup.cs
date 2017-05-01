@@ -75,7 +75,7 @@ namespace MarsalaWeb
 					name: "default",
 					template: "{controller}/{action}/{id?}");
 			});
-
+			app.UseWebSockets();
 			app.UseSignalR("/signalr");
 		}
 

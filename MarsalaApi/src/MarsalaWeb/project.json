@@ -3,7 +3,6 @@
     "AE.Net.Mail": "1.7.10",
     "Microsoft.Bcl.Build": "1.0.21",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0",
-    "Microsoft.AspNetCore.SignalR.Server": "0.2.0-preview2-22683",
     "AsyncCollections": "1.3.8",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.1.1",
     "Microsoft.AspNetCore.Diagnostics": "1.1.1",
@@ -24,7 +23,9 @@
     "Microsoft.Extensions.Logging": "1.1.1",
     "Microsoft.Extensions.Logging.Console": "1.1.1",
     "Microsoft.Extensions.Logging.Debug": "1.1.1",
-    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.1"
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.1",
+    "Microsoft.AspNetCore.WebSockets": "1.0.1",
+    "Microsoft.AspNetCore.SignalR.Server": "0.2.0-preview2-22683"
   },
 
   "tools": {

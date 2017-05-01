@@ -35,10 +35,13 @@ export class SignalRService {
         if (this.connectionExists) {
             return;
         }
-        this.connection = $.hubConnection(SETTINGS.signalRUrl);
-        this.connection.qs = { "authorization": token };
+        this.connection = $.hubConnection(SETTINGS.signalRUrl, {
+            logging: false,
+            useDefaultPath: false
+        });
 
-        this.proxy = this.connection.createHubProxy(this.proxyName);
+        this.connection.qs = { "authorization": token };
+   
         this.registerOnServerEvents();
         this.startConnection();
     }
@@ -64,6 +67,7 @@ export class SignalRService {
     }
 
     private registerOnServerEvents(): void {
+        this.proxy = this.connection.createHubProxy(this.proxyName);
         this.proxy.on("FoodUpdated", (data) => {
             this.foodChanged.emit(data);
         });
