@@ -54,3 +54,11 @@ export interface IOrderSentStatus {
     IsSuccess: boolean;
     SentDate: Date;
 }
+
+export interface ISummaryText {
+    OrderText: string;
+}
+
+export class SummaryText implements ISummaryText {
+    OrderText: string;
+}

@@ -18,4 +18,10 @@ namespace Common.Model
 		Cash = 1,
 		Card = 2
 	}
+
+	public class SummaryText
+	{
+		public string OrderText { get; set; }
+	}
+
 }

@@ -11,7 +11,7 @@ namespace MarsalaWeb.Services
 		Task MakeAnOrder(Order order);
 		Task<Summary> GetSummary();
 		Task<Summary> DeleteOrder(string userName);
-		Task StartOrderSending(string senderName);
+		void StartOrderSending(string senderName, SummaryText summaryText);
 		OrderSentStatus GetStatus();
 	}
 
@@ -56,9 +56,8 @@ namespace MarsalaWeb.Services
 			return summary;
 		}
 
-		public async Task StartOrderSending(string senderName)
+		public void StartOrderSending(string senderName, SummaryText summaryText)
 		{
-			var summary = await GetSummary();
 			_lastSendStatus = new OrderSentStatus
 			{
 				SenderName = senderName,
@@ -67,7 +66,7 @@ namespace MarsalaWeb.Services
 				SentDate = DateTime.UtcNow,
 			};
 
-			_mailWorker.SendAsync("Заказ бизнес ланч", summary.OrderText, result =>
+			_mailWorker.SendAsync("Заказ бизнес ланч", summaryText.OrderText, result =>
 			{
 				var status = new OrderSentStatus
 				{

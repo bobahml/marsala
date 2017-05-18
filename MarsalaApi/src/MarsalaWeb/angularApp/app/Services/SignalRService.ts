@@ -41,7 +41,7 @@ export class SignalRService {
         });
 
         this.connection.qs = { "authorization": token };
-   
+
         this.registerOnServerEvents();
         this.startConnection();
     }

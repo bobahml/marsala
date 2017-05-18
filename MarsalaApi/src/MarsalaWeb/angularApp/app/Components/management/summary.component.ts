@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { OrderService } from "../../Services/OrderService";
-import { ISummary, Summary, IOrderSentStatus } from "../../Models/order";
+import { ISummary, Summary, IOrderSentStatus, SummaryText } from "../../Models/order";
 
 
 @Component({
@@ -57,8 +57,10 @@ export class SummaryComponent implements OnInit {
         }
     }
 
-    sendByEmail(copyTextarea: any) {
-        this.makeOrderService.sendByEmail()
+    sendByEmail(textareaValue: string) {
+        const summaryText = new SummaryText();
+        summaryText.OrderText = textareaValue;
+        this.makeOrderService.sendByEmail(summaryText)
             .then(res => {
                 this.lastSentStatus = res;
                 this.summary.orderText = "The order will be sent shortly. You will receive a notification.";

@@ -1,7 +1,7 @@
 ﻿import { Injectable } from "@angular/core";
 
 import { HttpService } from "../Services/HttpService";
-import { IOrder, ISummary, IOrderSentStatus } from "../Models/order";
+import { IOrder, ISummary, IOrderSentStatus, ISummaryText } from "../Models/order";
 
 
 @Injectable()
@@ -18,8 +18,8 @@ export class OrderService {
         return this.request.get<IOrderSentStatus>("order/status");
     }
 
-    sendByEmail(): Promise<IOrderSentStatus> {
-        return this.request.post<IOrderSentStatus>("order/send", "");
+    sendByEmail(summaryText: ISummaryText): Promise<IOrderSentStatus> {
+        return this.request.post<IOrderSentStatus>("order/send", summaryText);
     }
 
     removeOrder(userName: string): Promise<ISummary> {
